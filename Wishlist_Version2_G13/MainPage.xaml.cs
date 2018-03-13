@@ -12,19 +12,52 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Wishlist_Version2_G13.Controllers;
+using Wishlist_Version2_G13.Views.OtherWishlists;
+using Wishlist_Version2_G13.Views.OwnWishlists;
+using Wishlist_Version2_G13.Views.Profile;
+using Wishlist_Version2_G13.Views.Social;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Wishlist_Version2_G13
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+
+        RuntimeInfo Runtime { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
+            Runtime = RuntimeInfo.Instance;
+            Runtime.SetBounds(Window.Current.Bounds.Height, Window.Current.Bounds.Width);
+            MainFrame.Navigate(typeof(Wishlists), Runtime.LoggedInUser);
         }
+
+        //THERE CAN ONLY BE ONE!
+        public void SideBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            SplitNav.IsPaneOpen = !SplitNav.IsPaneOpen;
+        }
+        public void ButtonMyProfile_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(ProfileView), Runtime.LoggedInUser);
+        }
+        public void ButtonMyWishlists_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(Wishlists), Runtime.LoggedInUser);
+        }
+        public void ButtonOtherWishlists_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(WishlistsOthers), Runtime.LoggedInUser);
+        }
+        public void ButtonSocial_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(SocialView));
+        }
+
+
+
     }
 }

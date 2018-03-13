@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Wishlist_Version2_G13.Models;
 
 namespace Wishlist_Version2_G13.ViewModels.Commands
 {

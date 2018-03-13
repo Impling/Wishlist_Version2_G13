@@ -15,8 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+using Wishlist_Version2_G13.Views.OwnWishlists;
 
 namespace Wishlist_Version2_G13.Views.OtherWishlists
 {

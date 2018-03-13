@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels;
+using Wishlist_Version2_G13.Views.Profile;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
