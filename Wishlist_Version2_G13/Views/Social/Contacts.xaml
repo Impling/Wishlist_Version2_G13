@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="Wishlist_Version2_G13.Views.Social.Contacts"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wishlist_Version2_G13.Views.Social"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="using:Wishlist_Version2_G13.Models"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  brief information template  -->
+        <DataTemplate x:Key="ItemView" x:DataType="src:User">
+            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
+                    <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
+                    <TextBlock Margin="5, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <!--  details expand template  -->
+        <DataTemplate x:Key="SelectedItemView" x:DataType="src:User">
+            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
+                    <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
+                    <TextBlock Margin="5, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Margin="12, 15, 12, 0" Text="{x:Bind Path=Email, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="My Friends" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
+
+
+        <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  >
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Grid Grid.Row="2" x:Name="Buttons">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+            <Button Content="Add" Click="AddFriendButton_Click"  Grid.Row="0" Grid.Column="0" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="ButtonAdd" Visibility="Visible"/>
+            <Button Content="View" Click="ViewDetailButton_Click" Grid.Row="0" Grid.Column="1" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="ButtonView" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Page>

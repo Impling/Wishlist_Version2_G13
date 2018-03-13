@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="Wishlist_Version2_G13.Views.OwnWishlists.AddBuyers"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wishlist_Version2_G13.Views.OwnWishlists"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="using:Wishlist_Version2_G13.Models"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  brief information template  -->
+        <DataTemplate x:Key="ItemView" x:DataType="src:User">
+            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
+                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="User: " HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Participant selection" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
+
+        <StackPanel>
+            <ListBox x:Name="myContacts" ItemTemplate="{StaticResource ItemView}" SelectionMode="Multiple" SelectionChanged="SelectionChanged_buyer" SelectedItem="{Binding selectedContact, Mode=TwoWay}" ItemsSource="{Binding activeUser.Contacts, Mode=TwoWay}"  Margin="5,5,5,5" >
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Command="{Binding addBuyers}" Click="Button_AddBuyers" x:Name="ButtonAddBuyer" Grid.Row="0" Grid.Column="1" Margin="10"  HorizontalAlignment="Stretch" Content="Add selected buyer(s)" Visibility="Visible"/>
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+</Page>

@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="Wishlist_Version2_G13.Views.OwnWishlists.ListCreation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wishlist_Version2_G13.Views.OwnWishlists"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock Text="Een Nieuwe Wishlist aanmaken" />
+        <!--the user can put the name of the wishlist in this Textbox-->
+        <TextBlock Text="Naam lijst:" />
+        <TextBox x:Name="Namelist"/>
+        <!--the user geeft reden/occasion waarom event plaatsvind => vrije string ipv enum (to much variety in events)-->
+        <TextBlock Text="Reden voor wishlist:" />
+        <TextBox x:Name="NameOccasion"/>
+        <!--the user deadline datum tegen wanneer wishlist afgesloten word (week na afsluiten word wishlist uit zichtbaarheid verwijderd)-->
+        <TextBlock Text="Dealine van wishlist:" />
+        <DatePicker x:Name="eventDatePicker" CalendarIdentifier="GregorianCalendar"/>
+        <!--User geeft op of deze wishlist open (zichtbaar voor mensen in contaclist) of gesloten is (enkel op invite)-->
+        <CheckBox x:Name="checkboxPublic" Content="enkel op uitnodiging" Checked="HandleCheck" Unchecked="HandleUnchecked" Width="360" />
+        <TextBlock x:Name="checkboxinfo" Text="Vrienden kunnen deelname aanvragen."/>
+        <!--Tooltips toevoegen-->
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Add list" Click="ButtonAdd_Click" />
+            <Button Content="Back" Click="ButtonBack_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Page>

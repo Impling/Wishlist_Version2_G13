@@ -1,0 +1,104 @@
+﻿<Page
+    x:Class="Wishlist_Version2_G13.Views.OwnWishlists.WishListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wishlist_Version2_G13.Views.OwnWishlists"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="using:Wishlist_Version2_G13.Models"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  brief information template  -->
+        <DataTemplate x:Key="ItemView" x:DataType="src:Item">
+            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                    <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Name, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
+                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+
+        </DataTemplate>
+        <!--  details expand template  -->
+        <DataTemplate x:Key="SelectedItemView" x:DataType="src:Item">
+            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock  Margin="0, 5,5, 5" FontSize="22" Text="{x:Bind Path=Name, Mode=OneWay}"  HorizontalAlignment="Left"/>
+
+                </StackPanel>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Orientation="Horizontal">
+                        <HyperlinkButton NavigateUri="{x:Bind WebLink}">
+                            <Image Margin="0, 15, 12, 0" Width="100" Height="120" Source="{x:Bind Path=Image, Mode=OneWay}" />
+                        </HyperlinkButton>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
+                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
+                        <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                        <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Category: "/>
+                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="{x:Bind Path=Category, Mode=OneWay}" />
+                    </StackPanel>
+
+                </Grid>
+
+                <TextBlock Margin="10, 10, 10, 2" FontSize="18" Text="Description: "/>
+                <Border BorderBrush="Gray" BorderThickness="2" Grid.Row="0" Margin="0, 0, 10, 10">
+                    <TextBlock TextWrapping="Wrap"  Margin="10, 10, 10, 10" FontSize="18" Text="{x:Bind Path=Description, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="Title" TextWrapping="Wrap" Text="{Binding selectedWishlist.Title, Mode=TwoWay}" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
+        </Grid>
+        <StackPanel>
+            <ListBox x:Name="myWishlistItems" ItemTemplate="{StaticResource ItemView}" SelectionChanged="SelectionChanged_WishlistItem" ItemsSource="{Binding selectedWishlist.Items, Mode=TwoWay}" SelectedItem="{Binding seletedItem, Mode=TwoWay}" Margin="5,5,5,5" >
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button x:Name="ButtonAdd" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10" Width="110" HorizontalAlignment="Center" Content="Add Item" Click="Button_Click" VerticalAlignment="Bottom"   Visibility="Visible"/>
+                <Button x:Name="ButtonAddBuyer" Grid.Row="0" Grid.Column="1" Margin="10" Width="110" HorizontalAlignment="Center" Content="Add Buyer(s)" Click="ButtonAddBuyers_Click"  Visibility="Visible"/>
+                <Button x:Name="ButtonRemove" Command="{Binding removeItemCommand}" CommandParameter="Untitled" Grid.Row="0" Grid.Column="2" Margin="10" Width="110" HorizontalAlignment="Center" Content="Remove" Visibility="Collapsed"/>
+                <Button x:Name="DetailItemBuyerButton" Content="{Binding seletedItem, Mode=TwoWay}" Command="{Binding buyItemCommand}" Grid.Row="1" Grid.ColumnSpan="3" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Visibility="Collapsed"></Button>
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+</Page>

@@ -1,0 +1,58 @@
+﻿PROJECT ANALYSIS
+
+user logs in (no need to choose between buyer or owner) - but has option to register as new user - User logs in using email as username and password
+
+default main view is list of user's own wishlists (if empty its button [ + create wishlist])
+user can swipe to show sidebar
+sidebar has 5 options
+	- profile											//Simple view showing user profile pic, name, email, current amount of wishlists, maybe age or something
+	- own wishlists										//same as default view
+	- current wishlist user is participating in			//list of all wishlist user is currenly active as a buyer
+	- Favorites											//single wishlist containing gifts that would just be nice to have but nothing special (favorite clothing brand, favorite whine, flower..)
+	- Social											//List of contacts the user knows
+
+profile view is just showing simple info nothing special
+
+own wishlists when empty is the add wishlist button => bringsyou to
+	-Create wishlist view
+
+	otherwise shows list of wishlists default ordered in order of deadline, then alphabeticlay, selecting wishlist brings you to
+	-Wishlist view (owner)
+
+Current wishlists following, shows list you are participating in ordered by (you havent bought anything for it yet, deadline, title) pressing button brings you to wishlist view
+	-Wishlist view (Buyer)
+
+Favorites - shows wishlist view (favorite) this wishlist has no buyers  
+	(if not yet made just button to add this wishlist)
+	(otherwise has button to add items)
+
+Social - shows list of contacts clicking on contacts gives contactview + button on top to add contacts (via mail, facebook account or otherwise)
+	-Contactview (on top their name, profile picture and email underneath a button to see that persons favorites list (viewable by everyone), under that a list of that persons wishlist with basic information (cannot be viewed if you havent joined it yet, otherwise it is button to request to join)
+
+Create wishlist view - give title deadline, event, eventname => then ask if you allready want to add items (if so keep going to additem page and return)
+	=> then asked to add contacts (if so get list of contacts and mark in checkbox which to add, or add via email if not yet in contacts)
+	confirm creation of wishlist
+
+Wishlist view (owner)
+	show title - event - deadline of wishlist on top and then a list of items (show only name and checbox) ordered by category, each item has checkbox to see if it is bought or not (but does not show who until after deadline) and a button to add an item to wishlist (not really needed but maybe buttons to delete, edit wishlistitem as long as no one has bought it yet)
+	has extra buttons [Add item] and [add buyer]
+
+Wislist view (buyer)
+	similar to owner but does not have buttons to add item or buyer, 
+	if item not bought show checkbox, mark and confirm to set yourself as buyer
+	if bought show small profile pick of who bought it
+
+Wislist view (favorite)
+	similar to owner view only that it has no checkboxes for bought or not (owner gets to see add item button, buyer/contact does not)
+
+itemview - clicking on item in list in wishlist view bring you to information page of item, showing picture, name, full description, category...
+	also has checkbox to set as bought or not
+
+
+
+REMARKS
+- can multiple people buy same gift by buying together?
+
+
+-Top bar shows currently logged in user and logoutbutton (maybe replace profile in sidetab with this name to go to profile page)	
+	
