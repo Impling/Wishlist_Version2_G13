@@ -1,0 +1,8 @@
+﻿<Application
+    x:Class="Wishlist_Version2_G13.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Wishlist_Version2_G13"
+    RequestedTheme="Light">
+
+</Application>
