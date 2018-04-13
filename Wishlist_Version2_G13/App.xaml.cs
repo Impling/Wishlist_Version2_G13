@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,15 @@ namespace Wishlist_Version2_G13
     /// </summary>
     sealed partial class App : Application
     {
+
+        // This MobileServiceClient has been configured to communicate with the Azure Mobile Service and   
+        // Azure Gateway using the application url. You're all set to start working with your Mobile Service!
+        public static MobileServiceClient MobileService =
+        new MobileServiceClient(
+            "https://wishlistversion2backend.azurewebsites.net"
+        );
+
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().

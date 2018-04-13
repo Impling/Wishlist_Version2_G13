@@ -46,5 +46,21 @@ namespace WishlistManager.Controllers
             return new ObjectResult(item);
         }
 
+        //CREATE
+        [HttpPost]
+        public IActionResult Create([FromBody] TodoItem item)
+        {
+            if (item == null)   // If no item given return faulty request
+
+            {
+                return BadRequest();
+            }
+
+            _context.TodoItems.Add(item);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
+        }
+
     }
 }

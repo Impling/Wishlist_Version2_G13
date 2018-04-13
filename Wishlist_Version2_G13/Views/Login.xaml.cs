@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -13,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Controllers;
+using Wishlist_Version2_G13.Service;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,7 +33,7 @@ namespace Wishlist_Version2_G13.Views
 
         public void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // testDbAsync();
+            testDbAsync();
 
 
             Runtime.LoggedInUserId = 1;
@@ -41,20 +44,21 @@ namespace Wishlist_Version2_G13.Views
 
         public async void testDbAsync()
         {
-            TodoItem item = new TodoItem
+            HttpClient client = new HttpClient();
+            var json = await client.GetStringAsync(new Uri("https://wishlistmanager.azurewebsites.net/api/user/"));
+
+            var item = new TodoItem()
             {
-                Text = "Awesome item",
-                Complete = false
+                Name = "Awesome item",
+                IsComplete = false
             };
-            //await App.WishlistVM8ServiceFinalClient.GetTable<TodoItem>().InsertAsync(item);
+            //await App.MobileService.GetTable<todoitem>().InsertAsync(item);
+
+            var itemJson = JsonConvert.SerializeObject(item);
+            var res = await client.PostAsync("https://wishlistmanager.azurewebsites.net/api/todo", new StringContent(itemJson, System.Text.Encoding.UTF8, "application/json"));
+
         }
 
     }
 
-    public class TodoItem
-    {
-        public string Id { get; set; }
-        public string Text { get; set; }
-        public bool Complete { get; set; }
-    }
 }

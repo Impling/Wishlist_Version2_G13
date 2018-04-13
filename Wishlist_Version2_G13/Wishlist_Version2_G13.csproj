@@ -107,7 +107,8 @@
     <Compile Include="Models\Wishlist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\TestRepository.cs" />
-    <Compile Include="Repository\ToDoItem.cs" />
+    <Compile Include="Repository\UserItem.cs" />
+    <Compile Include="Service\TodoItem.cs" />
     <Compile Include="ViewModels\Commands\AcceptMessageCommand.cs" />
     <Compile Include="ViewModels\Commands\AddBuyersCommand.cs" />
     <Compile Include="ViewModels\Commands\AddWishlistItemCommand.cs" />
@@ -166,6 +167,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Connected Services\WishlistVersion2BackendMobileApp\ConnectedService.json" />
     <None Include="Wishlist_Version2_G13_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -246,12 +248,24 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Json.NET.Web">
+      <Version>1.0.49</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.Mobile.Client">
+      <Version>4.0.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.4</Version>
+      <Version>6.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
