@@ -97,18 +97,53 @@
 
 
 
-		4.3)Updating
+		4.3)Updating  (returns respons HTTP 204) uses HTTP PUT -> For partial update use HTTP PATCH (otherwise complete overwrite with only info given in update)
+
+		[HttpPut("{id}")]
+		public IActionResult Update(long id, [FromBody] TodoItem item)
+		{
+			if (item == null || item.Id != id)
+			{
+				return BadRequest();
+			}
+
+			var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+			if (todo == null)
+			{
+				return NotFound();
+			}
+
+			todo.IsComplete = item.IsComplete;
+			todo.Name = item.Name;
+
+			_context.TodoItems.Update(todo);
+			_context.SaveChanges();
+			return new NoContentResult();
+		}
 
 
 
 
-		4.4)Deleting	
+		4.4)Deleting (Http response 204)
+		
+		[HttpDelete("{id}")]
+		public IActionResult Delete(long id)
+		{
+			var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+			if (todo == null)
+			{
+				return NotFound();
+			}
+
+			_context.TodoItems.Remove(todo);
+			_context.SaveChanges();
+			return new NoContentResult();
+		}
+
+
 		
 
-
-
-
-		4.5) using jquery for controlled funtions/
+		//PATCH??
 
 
 
@@ -118,7 +153,55 @@
 5)Run (cntrl + F5) will open db in browser on http://localhost:port/api/values   [Port randomly determined]
 
 
+in properties launchsettings.json add launcurl for always using port 5000 for our backend -> ip should be set to the ip of your pc
 
+    "WishlistManager": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://192.168.0.249:5000/api/user",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+
+
+	in program.cs change the code to the following below
+
+	    public static void Main(string[] args)
+        {
+            //BuildWebHost(args).Run();
+
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls("http://*:5000")								//go for port 5000
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
+
+
+		To run this as a service and keep it active on the background in the Play button dropdown select WishlistManager-> this will both open the browser and run the service,
+		the url used in lauchurl can be used in the other project Wishlist version2 to connect to this service, scrap that only one can run at a time.
+
+
+		For azure -> Right click Wishlistmanager project and publish -> log in with account with azure subscirption
+
+		create new web api (ignore sql pure rest json)
+
+		Appname: Wishlistmanager
+		create new resourcegroup: WishlistVersion2
+
+		and publish -> will automatically start your service and open it in browser using your url (http://wishlistmanager.azurewebsites.net/api/user) (note: added api/user myself) this url can now be used in the other project to connect to the data
+		!!Dont know yet how updating this web app works to expand db funtionality (Dont forget to write this down as well)
+
+		Memo to self: This sh*t took me 1 hour to figure out, whilst in first semester it just didn't work when trying to for an entire week.
+		Self-Analysis: Error in getting result in first semester do do mixing different methods, 
+			Correct modus operandi: create web app project first with api, and publish as web app from visual studio, only use azure portal for overview services
+			Errors made in first semester: - failed to convert web api project to azure service, either because slightly outdated slides and Azure portal confusion (tried to much from the azure portal side, needed to start from existing web app)
+			                               - When setting up database went from the presumtion of setting up sql database (Why did i do that?), Azure did stuff itself on background, made it harder to figure out where problem was.
 
 
 
