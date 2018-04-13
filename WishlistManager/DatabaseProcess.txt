@@ -205,5 +205,31 @@ in properties launchsettings.json add launcurl for always using port 5000 for ou
 
 
 
+		client project can now connect to backend using REST
 
+		tested with below code in Login just to check
+
+		public async void testDbAsync()
+        {
+            //GET TEST
+            HttpClient client = new HttpClient();
+            var json = await client.GetStringAsync(new Uri(Runtime.RestUrl + "user"));
+
+            //Post TEST
+            var item = new TodoItem()
+            {
+                Name = "Awesome item",
+                IsComplete = false
+            };
+
+            //Post works
+            //var itemJson = JsonConvert.SerializeObject(item);
+            //var res = await client.PostAsync(Runtime.RestUrl +"todo", new StringContent(itemJson, System.Text.Encoding.UTF8, "application/json"));
+            
+            //UPDATE TEST
+
+
+            //DELETE TEST
+
+        }
 
