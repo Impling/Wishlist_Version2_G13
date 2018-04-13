@@ -14,7 +14,6 @@ namespace Wishlist_Version2_G13.Controllers
         public User User { get; set; }      //currently logged in user on the app
         public Wishlist SelectedWishlist { get; set; }
         public Item SelectedItem { get; set; }
-        public static string RestUrl { get; set; } = "https://wishlistmanager.azurewebsites.net/api";
 
         //Constructors
         public AppController() { }

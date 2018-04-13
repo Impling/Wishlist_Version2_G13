@@ -15,6 +15,7 @@ namespace Wishlist_Version2_G13.Controllers
         public User LoggedInUser { get; set; }
         public AppController AppController { get; set; }
         public TestRepository TestRepos { get; set; }
+        public string RestUrl { get; } = "https://wishlistmanager.azurewebsites.net/api/";
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
 
@@ -41,5 +42,6 @@ namespace Wishlist_Version2_G13.Controllers
             ScreenHeight = height;
             ScreenWidth = width;
         }
+
     }
 }

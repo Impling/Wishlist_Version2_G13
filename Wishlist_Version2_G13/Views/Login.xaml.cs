@@ -35,7 +35,6 @@ namespace Wishlist_Version2_G13.Views
         {
             testDbAsync();
 
-
             Runtime.LoggedInUserId = 1;
             Runtime.LoggedInUser = Runtime.TestRepos.GetUsers().FirstOrDefault(u => u.UserId == 1);
             Runtime.SetUserInApp();
@@ -44,18 +43,25 @@ namespace Wishlist_Version2_G13.Views
 
         public async void testDbAsync()
         {
+            //GET TEST
             HttpClient client = new HttpClient();
-            var json = await client.GetStringAsync(new Uri("https://wishlistmanager.azurewebsites.net/api/user/"));
+            var json = await client.GetStringAsync(new Uri(Runtime.RestUrl + "user"));
 
+            //Post TEST
             var item = new TodoItem()
             {
                 Name = "Awesome item",
                 IsComplete = false
             };
-            //await App.MobileService.GetTable<todoitem>().InsertAsync(item);
 
-            var itemJson = JsonConvert.SerializeObject(item);
-            var res = await client.PostAsync("https://wishlistmanager.azurewebsites.net/api/todo", new StringContent(itemJson, System.Text.Encoding.UTF8, "application/json"));
+            //Post works
+            //var itemJson = JsonConvert.SerializeObject(item);
+            //var res = await client.PostAsync(Runtime.RestUrl +"todo", new StringContent(itemJson, System.Text.Encoding.UTF8, "application/json"));
+            
+            //UPDATE TEST
+
+
+            //DELETE TEST
 
         }
 
