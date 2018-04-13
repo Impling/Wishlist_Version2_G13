@@ -1,0 +1,126 @@
+﻿
+1)create folder Models
+ - for each table we want in db create a class of the objects found in the table 
+	ex.: TodoItem -> give variables (+getters and setters) of the columns needed in table -> add public long Id {get;set;} (When item is created db will generate id)
+ - For each table we need a database context -> controls and guides entity framework functionallity of the corresponding data model (in case of example TodoContext) so add class ToDoContext to Models folder
+	this class implements DbContext
+	code for example
+	
+	public class TodoContext : DbContext
+    {
+        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
+        {
+        }
+
+        public DbSet<TodoItem> TodoItems { get; set; }
+    }
+
+2) Register the database context
+- in the Startup.cs file in the ConfigureServices method add the context we wish to use
+	code for example
+
+	    public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));         //Add context of ToDo - and assign tablename "TodoList"
+            
+			services.AddMvc();
+        }
+ - do this for each model
+
+ 3) Add controller
+	- Right click controller folder and select add -> new item -> Web API Controller Class  (or API CONTROLLER CLASS)
+	in case of example name TodoController
+
+	[Route("api/[controller]")]					//In case of example we need to replace [controller] with our own TodoController but we leave out the Controller suffix -> [Route("api/Todo")]	
+    public class TodoController : Controller
+    {
+        private readonly TodoContext _context;
+
+        public TodoController(TodoContext context)
+        {
+            _context = context;
+
+            if (_context.TodoItems.Count() == 0) //Generate basic value incase context empty
+            {
+                _context.TodoItems.Add(new TodoItem { Name = "Item1" });
+                _context.SaveChanges();
+            }
+        }
+    }
+
+	-this is still an empty controller class, this controller will be fleshed out with the neceseary funtionality.
+
+
+	4) Controlling db - All code added to TodoController unless otherwise mentioned
+
+		4.1)Getting
+			- base get - getall                                   GET /api/todo				//Note that todo is the name we se as route instead of [controller], (route is not case sensitive so we can use either Todo or todo)
+			(returns IEnumerable as mvc serializes it to JSON, if succesfull response code 200)
+
+			[HttpGet]
+			public IEnumerable<TodoItem> GetAll()
+			{
+				return _context.TodoItems.ToList();	//ToList to convert dbdata to list of all data of table
+			}
+
+
+			-GEt by id                                              GET /api/todo/{id}
+			(Returns NotFound type if item not found (error 404) or ObjectResult (Success code 200))
+
+			[HttpGet("{id}", Name = "GetTodo")]					//set parameter used in get to filter
+			public IActionResult GetById(long id)
+			{
+				var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
+				if (item == null)
+				{
+					return NotFound();
+				}
+			return new ObjectResult(item);
+			}
+
+
+		4.2)Creating (returns respons HTTP 201) [can be done manually via postman - posting raw JSON - only data, id is generated automaticly]
+
+		[HttpPost]
+		public IActionResult Create([FromBody] TodoItem item)
+		{
+			if (item == null)	/If no item given return faulty request
+			{
+				return BadRequest();
+			}
+
+			_context.TodoItems.Add(item);
+			_context.SaveChanges();
+
+			return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
+		}
+
+
+
+		4.3)Updating
+
+
+
+
+		4.4)Deleting	
+		
+
+
+
+
+		4.5) using jquery for controlled funtions/
+
+
+
+
+
+
+5)Run (cntrl + F5) will open db in browser on http://localhost:port/api/values   [Port randomly determined]
+
+
+
+
+
+
+
+
