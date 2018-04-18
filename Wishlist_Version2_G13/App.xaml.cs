@@ -29,7 +29,7 @@ namespace Wishlist_Version2_G13
         // Azure Gateway using the application url. You're all set to start working with your Mobile Service!
         public static MobileServiceClient MobileService =
         new MobileServiceClient(
-            "https://wishlistversion2backend.azurewebsites.net"
+            "https://wishlistg13.azurewebsites.net"
         );
 
 

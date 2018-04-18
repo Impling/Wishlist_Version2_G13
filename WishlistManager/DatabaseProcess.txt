@@ -196,12 +196,8 @@ in properties launchsettings.json add launcurl for always using port 5000 for ou
 
 		and publish -> will automatically start your service and open it in browser using your url (http://wishlistmanager.azurewebsites.net/api/user) (note: added api/user myself) this url can now be used in the other project to connect to the data
 		!!Dont know yet how updating this web app works to expand db funtionality (Dont forget to write this down as well)
+		pressumably just republish manager
 
-		Memo to self: This sh*t took me 1 hour to figure out, whilst in first semester it just didn't work when trying to for an entire week.
-		Self-Analysis: Error in getting result in first semester do do mixing different methods, 
-			Correct modus operandi: create web app project first with api, and publish as web app from visual studio, only use azure portal for overview services
-			Errors made in first semester: - failed to convert web api project to azure service, either because slightly outdated slides and Azure portal confusion (tried to much from the azure portal side, needed to start from existing web app)
-			                               - When setting up database went from the presumtion of setting up sql database (Why did i do that?), Azure did stuff itself on background, made it harder to figure out where problem was.
 
 
 

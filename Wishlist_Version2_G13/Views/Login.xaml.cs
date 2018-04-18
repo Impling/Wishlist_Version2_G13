@@ -43,6 +43,25 @@ namespace Wishlist_Version2_G13.Views
 
         public async void testDbAsync()
         {
+
+            /*
+            TodoItem item = new TodoItem
+            {
+                Text = "Awesome item",
+                Complete = false
+            };
+            try
+            {
+                await App.MobileService.GetTable<TodoItem>().InsertAsync(item);
+            }
+            catch(Exception e) {
+                Console.WriteLine(e.Message);
+            }
+            */
+            
+
+            
+
             //GET TEST
             HttpClient client = new HttpClient();
             var json = await client.GetStringAsync(new Uri(Runtime.RestUrl + "user"));
@@ -62,7 +81,7 @@ namespace Wishlist_Version2_G13.Views
 
 
             //DELETE TEST
-
+            
         }
 
     }
