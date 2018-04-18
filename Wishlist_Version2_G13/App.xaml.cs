@@ -31,6 +31,7 @@ namespace Wishlist_Version2_G13
         new MobileServiceClient(
             "https://wishlistg13.azurewebsites.net"
         );
+        //laptopsync test
 
 
         /// <summary>
