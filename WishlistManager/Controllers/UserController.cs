@@ -9,7 +9,7 @@ using WishlistManager.Models;
 
 namespace WishlistManager.Controllers
 {
-
+    [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller
     {
@@ -23,9 +23,9 @@ namespace WishlistManager.Controllers
 
             if (_context.Users.Count() == 0) //Generate basic value incase context empty - For demonstration and testpurposes - a few things will be generated (easier to clear DB and refill with base values)
             {
-                _context.Users.Add(new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com" });
-                _context.Users.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com" });
-                _context.Users.Add(new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com" });
+                _context.Users.Add(new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com", FavoriteId=1 });
+                _context.Users.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", FavoriteId = 2 });
+                _context.Users.Add(new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com", FavoriteId = 3 });
                 _context.SaveChanges();
             }
         }

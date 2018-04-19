@@ -75,7 +75,7 @@ namespace Wishlist_Version2_G13.Views
 
             //Post works
             //var itemJson = JsonConvert.SerializeObject(item);
-            //var res = await client.PostAsync(Runtime.RestUrl +"todo", new StringContent(itemJson, System.Text.Encoding.UTF8, "application/json"));
+            //var res = await client.PostAsync(Runtime.RestUrl +"todo", new StringContent(itemJson, System.Text.Encoding.UTF16, "application/json"));
             
             //UPDATE TEST
 
