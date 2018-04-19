@@ -35,13 +35,13 @@ namespace WishlistManager.Controllers
                 */
             }
         }
-
+        
         //GET CALLS
         [HttpGet]
         public IEnumerable<WishItem> GetAll()
         {
             return _context.Wishes.ToList();
         }
-
+        
     }
 }
