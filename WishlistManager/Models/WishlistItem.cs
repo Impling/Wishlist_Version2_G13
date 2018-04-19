@@ -9,7 +9,8 @@ namespace WishlistManager.Models
     {
         public long Id { get; set; }
         public string Title { get; set; }           //Title,name of wishlist
-        public long OwnerId { get; set; }           //Id of wishlist owner
+        //public long OwnerId { get; set; }           //Id of wishlist owner
+        public UserItem Owner { get; set; }          //Wishlist owner
         public DateTime Deadline { get; set; }      //Deadline wishlist event, ?Does this need to be a string for web service
 
         //List of id's of users participating in wishlist

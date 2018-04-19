@@ -26,15 +26,38 @@ namespace WishlistManager.Controllers
             {
                 //long[] contacts = { 2, 3 };
                 //List<long> contacts = new List<long>(){ 2, 3 };
-                List<UserItem> contacts = new List<UserItem>();
-                contacts.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", FavoriteId = 2 });
 
-                _context.Users.Add(new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com", FavoriteId=1 , Contacts = contacts });
-                /*
-                _context.Users.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", FavoriteId = 2 });
-                //contacts = new long[] { 1 };
-                _context.Users.Add(new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com", FavoriteId = 3 , Contacts = contacts });
-            */
+                //List<UserItem> contacts = new List<UserItem>();
+                //contacts.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", FavoriteId = 2 });
+                //Declare users
+                UserItem u1 = new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com"/*, FavoriteWishlist=f1 */};
+                UserItem u2 = new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com"/*, FavoriteWishlist = f1 */};
+                UserItem u3 = new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com"/*, FavoriteWishlist = f1 */};
+
+                WishlistItem f1 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true };
+                WishlistItem f2 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true };
+                WishlistItem f3 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true };
+
+                //Init users
+                _context.Users.Add(u1);
+                _context.Users.Add(u2);
+                _context.Users.Add(u3);
+                // init contacts
+                u1.Contacts.Add(u2);
+                u1.Contacts.Add(u3);
+                u2.Contacts.Add(u1);
+                u3.Contacts.Add(u1);
+                //init favorites
+                u1.FavoriteWishlist = f1;
+                u2.FavoriteWishlist = f2;
+                u3.FavoriteWishlist = f3;
+
+
+                //_context.Users.FirstOrDefault(t => t.Id == 1).Contacts.Append(u2);
+                //_context.Users.FirstOrDefault(t => t.Id == 1).Contacts.Add(u3);
+                //_context.Users.FirstOrDefault(t => t.Id == 2).Contacts.Add(u1);
+                //_context.Users.FirstOrDefault(t => t.Id == 3).Contacts.Add(u1);
+
                 _context.SaveChanges();
             }
         }
@@ -44,7 +67,12 @@ namespace WishlistManager.Controllers
         [HttpGet]
         public IEnumerable<UserItem> GetAll()
         {
-            return _context.Users.Include(t => t.Contacts).ToList();
+            return _context.Users   .Include(t => t.Contacts)
+                                    .Include(t => t.Messages)
+                                    //.Include(t => t.MyWishlists)
+                                    //.Include(t => t.OtherWishlists)
+                                    //.Include(t => t.FavoriteWishlist)
+                                    .ToList();
         }
 
         [HttpGet("{id}", Name = "GetUser")]
