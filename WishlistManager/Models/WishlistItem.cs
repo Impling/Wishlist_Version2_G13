@@ -9,13 +9,10 @@ namespace WishlistManager.Models
     {
         public long Id { get; set; }
         public string Title { get; set; }           //Title,name of wishlist
-        //public long OwnerId { get; set; }           //Id of wishlist owner
         public UserItem Owner { get; set; }          //Wishlist owner
         public DateTime Deadline { get; set; }      //Deadline wishlist event, ?Does this need to be a string for web service
-
-        //List of id's of users participating in wishlist
-        //List of id's of items in wishlist
-
+        public List<UserItem> Participants { get; set; } = new List<UserItem>();
+        public List<WishItem> Gifts { get; set; } = new List<WishItem>();
         public string Occasion { get; set; }        //Descriptor of event
         public bool IsOpen { get; set; }            //Bool for accesslevel of wishlist
     }
