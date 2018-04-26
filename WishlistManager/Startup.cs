@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using WishlistManager.Data;
 using WishlistManager.Models;
 
 namespace WishlistManager
@@ -19,6 +20,11 @@ namespace WishlistManager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            WishlistDbContext _context = new WishlistDbContext();
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+            new WishlistDataInitializer(_context).InitializeData();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +32,7 @@ namespace WishlistManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList")); //Testcontext for experimenting
             services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Users"));
             services.AddDbContext<WishlistContext>(opt => opt.UseInMemoryDatabase("Wishlists"));

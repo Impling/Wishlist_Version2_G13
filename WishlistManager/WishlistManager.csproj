@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180426120846_Reset.cs" />
     <Compile Remove="Migrations\20180426120846_Reset.Designer.cs" />
+    <Compile Remove="Migrations\20180426122313_CorrectFavorite.cs" />
+    <Compile Remove="Migrations\20180426122313_CorrectFavorite.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

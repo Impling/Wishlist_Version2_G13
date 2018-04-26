@@ -63,11 +63,11 @@ namespace WishlistManager.Data
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict); //If user removed the wishlist he was following should not be untouched
 
-            //u.HasOne(t => t.FavoriteWishlist)     //
-            //    .WithOne(t => t.User)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade)        //Aslo remove wish items
-            //    ;  
+            u.HasOne(t => t.FavoriteWishlist)     //
+                .WithOne()
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict)        //Aslo remove wish items
+                ;  
         }
 
         private void MapWishlist(EntityTypeBuilder<Wishlist> wl)

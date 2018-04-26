@@ -27,6 +27,7 @@ namespace WishlistManager.Models
         protected Wishlist()
         {
             //IsOpen = true; //already set in buildmodel
+            Deadline = new DateTime(); //If not set use default datetime
             Participants = new HashSet<User>();
         }
 
@@ -40,6 +41,13 @@ namespace WishlistManager.Models
             Title = title;
             Occasion = description;
             IsOpen = isOpen;
+        }
+        public Wishlist(string title, string description, bool isOpen, DateTime deadline) : this()
+        {
+            Title = title;
+            Occasion = description;
+            IsOpen = isOpen;
+            Deadline = deadline;
         }
 
         #endregion

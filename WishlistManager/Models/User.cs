@@ -41,7 +41,9 @@ namespace WishlistManager.Models
         #endregion
 
         #region Methods
-
+        public void addOwnWishlist(Wishlist wishlist) {
+            MyWishlists.Add(wishlist);
+        }
 
         #endregion
 
