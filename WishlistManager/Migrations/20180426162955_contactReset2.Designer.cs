@@ -11,8 +11,8 @@ using WishlistManager.Data;
 namespace WishlistManager.Migrations
 {
     [DbContext(typeof(WishlistDbContext))]
-    [Migration("20180426121222_Reset")]
-    partial class Reset
+    [Migration("20180426162955_contactReset2")]
+    partial class contactReset2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,24 @@ namespace WishlistManager.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("WishlistManager.Data.WishlistDbContext+UserContact", b =>
+                {
+                    b.Property<int>("UserContactId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Contact");
+
+                    b.Property<int>("User");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("UserContactId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserContact");
+                });
 
             modelBuilder.Entity("WishlistManager.Models.User", b =>
                 {
@@ -31,25 +49,29 @@ namespace WishlistManager.Migrations
                         .HasColumnName("Email")
                         .HasMaxLength(40);
 
-                    b.Property<int?>("FavoriteWishlistWishlistId");
-
-                    b.Property<int?>("FavoriteWishlistWishlistId1");
+                    b.Property<int?>("FavoriteWishlistWishlistId")
+                        .IsRequired();
 
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnName("Firstname")
                         .HasMaxLength(30);
 
+                    b.Property<int>("IdContact");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnName("Lastname")
                         .HasMaxLength(30);
 
+                    b.Property<int?>("WishlistId");
+
                     b.HasKey("UserId");
 
-                    b.HasIndex("FavoriteWishlistWishlistId");
+                    b.HasIndex("FavoriteWishlistWishlistId")
+                        .IsUnique();
 
-                    b.HasIndex("FavoriteWishlistWishlistId1");
+                    b.HasIndex("WishlistId");
 
                     b.ToTable("Users");
                 });
@@ -64,9 +86,7 @@ namespace WishlistManager.Migrations
                         .HasColumnType("date");
 
                     b.Property<bool>("IsOpen")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("IsOpen")
-                        .HasDefaultValue(true);
+                        .HasColumnName("IsOpen");
 
                     b.Property<string>("Occasion")
                         .IsRequired()
@@ -90,16 +110,25 @@ namespace WishlistManager.Migrations
                     b.ToTable("Wishlists");
                 });
 
+            modelBuilder.Entity("WishlistManager.Data.WishlistDbContext+UserContact", b =>
+                {
+                    b.HasOne("WishlistManager.Models.User")
+                        .WithMany("Contacts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("WishlistManager.Models.User", b =>
                 {
+                    b.HasOne("WishlistManager.Models.Wishlist", "FavoriteWishlist")
+                        .WithOne()
+                        .HasForeignKey("WishlistManager.Models.User", "FavoriteWishlistWishlistId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("WishlistManager.Models.Wishlist")
                         .WithMany("Participants")
-                        .HasForeignKey("FavoriteWishlistWishlistId")
+                        .HasForeignKey("WishlistId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("WishlistManager.Models.Wishlist", "FavoriteWishlist")
-                        .WithMany()
-                        .HasForeignKey("FavoriteWishlistWishlistId1");
                 });
 
             modelBuilder.Entity("WishlistManager.Models.Wishlist", b =>
@@ -112,7 +141,7 @@ namespace WishlistManager.Migrations
                     b.HasOne("WishlistManager.Models.User")
                         .WithMany("OtherWishlists")
                         .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

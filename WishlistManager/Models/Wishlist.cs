@@ -26,7 +26,7 @@ namespace WishlistManager.Models
         #region Constructors
         protected Wishlist()
         {
-            //IsOpen = true; //already set in buildmodel
+            IsOpen = true; //already set in buildmodel
             Deadline = new DateTime(); //If not set use default datetime
             Participants = new HashSet<User>();
         }
@@ -52,5 +52,15 @@ namespace WishlistManager.Models
 
         #endregion
 
+        #region Methods
+        public void addParticipant(User user) {
+            Participants.Add(user);
+        }
+
+        public void addParticipants(List<User> users) {
+            users.ForEach(u => Participants.Add(u));
+        }
+
+        #endregion
     }
 }

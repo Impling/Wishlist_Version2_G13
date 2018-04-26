@@ -30,14 +30,24 @@ namespace WishlistManager.Data
 
                 Wishlist w1 = new Wishlist("Happy times", "Anniversery", false, new DateTime(2018, 12, 16));
                 Wishlist w2 = new Wishlist("New Garden", "Garden renovations finished", true, new DateTime(2018, 9, 2));
-                //Wishlist w3 = new Wishlist("Birthday", "Its my birhtday", false, new DateTime(2018, 11, 30));
-                //Wishlist w4 = new Wishlist("Wedding", "Me and hubby getting married", true, new DateTime(2019, 6, 3));
+                Wishlist w3 = new Wishlist("Birthday", "Its my birhtday", false, new DateTime(2018, 11, 30));
+                Wishlist w4 = new Wishlist("Wedding", "Me and hubby getting married", true, new DateTime(2019, 6, 3));
 
-                u1.addOwnWishlist(w1);
-                u1.addOwnWishlist(w2);
+
 
                 User[] users = new User[] { u1, u2, u3 };
                 _context.Users.AddRange(users);
+
+                u1.AddContact(u2);
+                u1.AddContact(u3);
+                
+                u1.AddOwnWishlist(w1);
+                u1.AddOwnWishlist(w2);
+                u2.AddOwnWishlist(w3);
+                u3.AddOwnWishlist(w4);
+
+                w3.addParticipant(u1);
+
                 _context.SaveChanges();
 
                 //Add wishlists to user

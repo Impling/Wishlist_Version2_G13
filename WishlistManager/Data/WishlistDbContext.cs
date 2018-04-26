@@ -25,6 +25,20 @@ namespace WishlistManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
+            modelBuilder.Entity<UserContact>()
+                .HasKey(t => new { t.UserId, t.ContactId });
+
+            modelBuilder.Entity<UserContact>()
+                .HasOne(pt => pt.User)
+                .WithMany(p => p.Contacts)
+                .HasForeignKey(pt => pt.ContactId);
+
+            modelBuilder.Entity<UserContact>()
+                .HasOne(pt => pt.Contact)
+                .WithMany(t => t.Contacts)
+                .HasForeignKey(pt => pt.UserId);
+            */
             modelBuilder.Entity<User>(MapUser);
             modelBuilder.Entity<Wishlist>(MapWishlist);
 
@@ -55,18 +69,24 @@ namespace WishlistManager.Data
                 .IsRequired()
                 .HasMaxLength(40);
 
+            u.HasMany(t => t.Contacts)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            
+
             u.HasMany(t => t.MyWishlists)
                 .WithOne(t => t.User)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             u.HasMany(t => t.OtherWishlists)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Restrict); //If user removed the wishlist he was following should not be untouched
+                .OnDelete(DeleteBehavior.SetNull); //If user removed the wishlist he was following should not be untouched
 
             u.HasOne(t => t.FavoriteWishlist)     //
                 .WithOne()
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict)        //Aslo remove wish items
+                .OnDelete(DeleteBehavior.SetNull)        //Aslo remove wish items
                 ;  
         }
 
@@ -92,8 +112,8 @@ namespace WishlistManager.Data
 
             wl.Property(t => t.IsOpen)
                 .HasColumnName("IsOpen")
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             wl.HasOne(t => t.User)
                 .WithMany(t => t.MyWishlists)
@@ -106,6 +126,14 @@ namespace WishlistManager.Data
         }
 
         #endregion
+
+        public class UserContact {
+            public int UserContactId { get; set; }
+            public int User { get; set; }
+            public int Contact { get; set; }
+            //public User Contact { get; set; }
+
+        }
 
     }
 }
