@@ -55,6 +55,19 @@ namespace WishlistManager.Data
                 .IsRequired()
                 .HasMaxLength(40);
 
+            u.HasMany(t => t.MyWishlists)
+                .WithOne(t => t.User)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            u.HasMany(t => t.OtherWishlists)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict); //If user removed the wishlist he was following should not be untouched
+
+            //u.HasOne(t => t.FavoriteWishlist)     //
+            //    .WithOne(t => t.User)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade)        //Aslo remove wish items
+            //    ;  
         }
 
         private void MapWishlist(EntityTypeBuilder<Wishlist> wl)
@@ -81,6 +94,15 @@ namespace WishlistManager.Data
                 .HasColumnName("IsOpen")
                 .IsRequired()
                 .HasDefaultValue(true);
+
+            wl.HasOne(t => t.User)
+                .WithMany(t => t.MyWishlists)
+                .OnDelete(DeleteBehavior.SetNull);  //When removing wishlist, user can stay
+
+            wl.HasMany(t => t.Participants)
+                .WithOne()
+                .OnDelete(DeleteBehavior.SetNull);  //When removing wishlist, user can stay
+
         }
 
         #endregion
