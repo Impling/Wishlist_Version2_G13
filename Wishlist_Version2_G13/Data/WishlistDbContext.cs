@@ -12,22 +12,20 @@ namespace Wishlist_Version2_G13.Data
     public class WishlistDbContext : DbContext
     {
         #region Properties
-        string ConnectionString { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         #endregion
 
         #region Constructors
-        public WishlistDbContext(string connectionString) {
-            ConnectionString = connectionString;
+        public WishlistDbContext() {
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionstring = @"Server=tcp:wishlistg13.database.windows.net,1433;Initial Catalog=WishlistDB;Persist Security Info=False;User ID= Impling;Password= Wishlistg13;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var connectionstring = @"Server=tcp:wishlistg13.database.windows.net,1433;Initial Catalog=WishlistDB;Persist Security Info=False;User ID= Impling;Password= Wishlistg13;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             //optionsBuilder.UseSqlServer(connectionstring);
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(connectionstring);
             //Sql connection for UWP projects
             //optionsBuilder.UseSqlite("Data Source=wishlist.db");    //Local database
         }

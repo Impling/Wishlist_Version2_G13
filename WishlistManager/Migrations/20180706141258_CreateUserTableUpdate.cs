@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace WishlistManager.Migrations
 {
-    public partial class reset : Migration
+    public partial class CreateUserTableUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,6 @@ namespace WishlistManager.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
                     Firstname = table.Column<string>(maxLength: 30, nullable: false),
-                    IdContact = table.Column<int>(nullable: false),
                     Lastname = table.Column<string>(maxLength: 30, nullable: false),
                     Password = table.Column<string>(maxLength: 30, nullable: false)
                 },

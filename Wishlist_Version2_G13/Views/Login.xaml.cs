@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Data;
+using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.Service;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -39,6 +40,19 @@ namespace Wishlist_Version2_G13.Views
         {
 
             const string GetUserEmailString = "Select Email From Users Where Users.FIRSTNAME = 'Victor'";
+
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+                    List<User> users = context.Users.ToList();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
 
             try {
                 using (SqlConnection conn = Runtime.GetSqlServerConnection()) {

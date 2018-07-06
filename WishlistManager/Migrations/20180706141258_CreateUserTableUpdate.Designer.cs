@@ -11,8 +11,8 @@ using WishlistManager.Data;
 namespace WishlistManager.Migrations
 {
     [DbContext(typeof(WishlistDbContext))]
-    [Migration("20180705133149_reset")]
-    partial class reset
+    [Migration("20180706141258_CreateUserTableUpdate")]
+    partial class CreateUserTableUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,8 +35,6 @@ namespace WishlistManager.Migrations
                         .IsRequired()
                         .HasColumnName("Firstname")
                         .HasMaxLength(30);
-
-                    b.Property<int>("IdContact");
 
                     b.Property<string>("Lastname")
                         .IsRequired()

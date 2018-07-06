@@ -35,8 +35,6 @@ namespace WishlistManager.Migrations
                         .HasColumnName("Firstname")
                         .HasMaxLength(30);
 
-                    b.Property<int>("IdContact");
-
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnName("Lastname")

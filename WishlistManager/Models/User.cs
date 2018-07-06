@@ -11,7 +11,7 @@ namespace WishlistManager.Models
 
         #region Properties
         public int UserId { get; set; }
-        public int IdContact { get; set; }
+        //public int IdContact { get; set; }
         public string Firstname { get; set; }                               //name of user
         public string Lastname { get; set; }
         public string Email { get; set; }                                   //email of user, can be used to add user to contacts/friendlist
