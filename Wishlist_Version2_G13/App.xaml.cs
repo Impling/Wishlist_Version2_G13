@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Views;
+using Microsoft.EntityFrameworkCore;
+using Wishlist_Version2_G13.Data;
 
 namespace Wishlist_Version2_G13
 {
@@ -24,6 +26,11 @@ namespace Wishlist_Version2_G13
     /// </summary>
     sealed partial class App : Application
     {
+
+        //Connectionstring for sql server running on Azure cloud
+        private string connectionString  =
+            @"Server=tcp:wishlistg13.database.windows.net,1433;Initial Catalog=WishlistDB;Persist Security Info=False;User ID= Impling;Password= Wishlistg13;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public string ConnectionString { get => connectionString; set => connectionString = value; }
 
         // This MobileServiceClient has been configured to communicate with the Azure Mobile Service and   
         // Azure Gateway using the application url. You're all set to start working with your Mobile Service!
@@ -42,6 +49,7 @@ namespace Wishlist_Version2_G13
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
         }
 
         /// <summary>

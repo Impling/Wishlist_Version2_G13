@@ -25,6 +25,8 @@ namespace Wishlist_Version2_G13.Models
         //STill needs image added once db in order
 
         //Constructors
+        public User() { }
+
         public User(string firstname, string lastname, string email, string password)
         {
             //Look up how to do unique id !!! TO DO

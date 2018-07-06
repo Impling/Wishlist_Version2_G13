@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wishlist_Version2_G13.Data;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.Repository;
 
@@ -15,7 +18,7 @@ namespace Wishlist_Version2_G13.Controllers
         public User LoggedInUser { get; set; }
         public AppController AppController { get; set; }
         public TestRepository TestRepos { get; set; }
-        public string RestUrl { get; } = "https://wishlistmanager.azurewebsites.net/api/";
+        public WishlistDbContext Context { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
 
@@ -30,11 +33,13 @@ namespace Wishlist_Version2_G13.Controllers
             TestRepos = new TestRepository();
             AppController = new AppController();
 
+          
         }
 
         public void SetUserInApp()
         {
             AppController.User = this.LoggedInUser;
+            
         }
 
         public void SetBounds(double height, double width)
@@ -42,6 +47,12 @@ namespace Wishlist_Version2_G13.Controllers
             ScreenHeight = height;
             ScreenWidth = width;
         }
+
+        public SqlConnection GetSqlServerConnection() {
+            return new SqlConnection((App.Current as App).ConnectionString);
+
+        }
+
 
     }
 }

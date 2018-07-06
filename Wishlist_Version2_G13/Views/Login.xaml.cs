@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,6 +18,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Controllers;
+using Wishlist_Version2_G13.Data;
 using Wishlist_Version2_G13.Service;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -33,7 +37,27 @@ namespace Wishlist_Version2_G13.Views
 
         public void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            testDbAsync();
+
+            const string GetUserEmailString = "Select Email From Users Where Users.FIRSTNAME = 'Victor'";
+
+            try {
+                using (SqlConnection conn = Runtime.GetSqlServerConnection()) {
+                    conn.Open();
+                    if (conn.State == System.Data.ConnectionState.Open) {
+                        using (SqlCommand cmd = conn.CreateCommand()) {
+                            cmd.CommandText = GetUserEmailString;
+                            using (SqlDataReader reader = cmd.ExecuteReader()) {
+                                while (reader.Read()) {
+                                    var email = reader.GetString(0);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception eSql) {
+                Debug.WriteLine("Exception: " + eSql.Message);
+            }
 
             Runtime.LoggedInUserId = 1;
             Runtime.LoggedInUser = Runtime.TestRepos.GetUsers().FirstOrDefault(u => u.UserId == 1);
@@ -41,48 +65,7 @@ namespace Wishlist_Version2_G13.Views
             Frame.Navigate(typeof(MainPage)); //mainpage is own wishlists
         }
 
-        public async void testDbAsync()
-        {
 
-            /*
-            TodoItem item = new TodoItem
-            {
-                Text = "Awesome item",
-                Complete = false
-            };
-            try
-            {
-                await App.MobileService.GetTable<TodoItem>().InsertAsync(item);
-            }
-            catch(Exception e) {
-                Console.WriteLine(e.Message);
-            }
-            */
-            
-
-            
-
-            //GET TEST
-            HttpClient client = new HttpClient();
-            var json = await client.GetStringAsync(new Uri(Runtime.RestUrl + "user"));
-
-            //Post TEST
-            var item = new TodoItem()
-            {
-                Name = "Awesome item",
-                IsComplete = false
-            };
-
-            //Post works
-            //var itemJson = JsonConvert.SerializeObject(item);
-            //var res = await client.PostAsync(Runtime.RestUrl +"todo", new StringContent(itemJson, System.Text.Encoding.UTF16, "application/json"));
-            
-            //UPDATE TEST
-
-
-            //DELETE TEST
-            
-        }
 
     }
 
