@@ -15,6 +15,7 @@ namespace Wishlist_Version2_G13.Models
         public string Firstname { get; set; }              //name of user
         public string Lastname { get; set; }
         public string Email { get; set; }                  //email of user, can be used to add user to contacts/friendlist
+        public string Password { get; set; }
         public ObservableCollection<User> Contacts { get; set; }           //list of people the user can add to his wishlist (get from phone contact list or facebook account)
         public ObservableCollection<Message> Notifications { get; set; }
         public ObservableCollection<Wishlist> MyWishlists { get; set; }    //Wishlists of the user - functionality(wishlist stays for owner even after deadline, and all the buyers become visible to him)
@@ -24,12 +25,13 @@ namespace Wishlist_Version2_G13.Models
         //STill needs image added once db in order
 
         //Constructors
-        public User(string firstname, string lastname, string email)
+        public User(string firstname, string lastname, string email, string password)
         {
             //Look up how to do unique id !!! TO DO
             Firstname = firstname;
             Lastname = lastname;
             Email = email;
+            Password = password;
             Contacts = new ObservableCollection<User>();
             Notifications = new ObservableCollection<Message>();
             MyWishlists = new ObservableCollection<Wishlist>();

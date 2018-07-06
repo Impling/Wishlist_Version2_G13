@@ -17,9 +17,9 @@ namespace Wishlist_Version2_G13.Repository
 
             Users = new List<User>();
 
-            User UserOne = new User("Timo", "Spanhove", "timo.spanhove@hotmail.com");
-            User UserTwo = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com");
-            User UserThree = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com");
+            User UserOne = new User("Timo", "Spanhove", "timo.spanhove@hotmail.com", "Password1");
+            User UserTwo = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com", "Password2");
+            User UserThree = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com", "Password3");
 
             UserOne.UserId = 1;
             UserTwo.UserId = 2;

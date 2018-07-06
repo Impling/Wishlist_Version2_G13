@@ -30,10 +30,11 @@ namespace WishlistManager.Controllers
                 //List<UserItem> contacts = new List<UserItem>();
                 //contacts.Add(new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", FavoriteId = 2 });
                 //Declare users
-                UserItem u1 = new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com", Id = 1};
-                UserItem u2 = new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", Id = 2};
-                UserItem u3 = new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com", Id= 3};
+                UserItem u1 = new UserItem { Firstname = "Timo", Lastname = "Spanhove", Email = "Timo.spanhove@Hotmail.com", Password = "Password1", Id = 1};
+                UserItem u2 = new UserItem { Firstname = "Victor", Lastname = "Van Weyenberg", Email = "Vic.VW@hotmail.com", Password = "Password1", Id = 2};
+                UserItem u3 = new UserItem { Firstname = "Sander", Lastname = "De Sutter", Email = "Sander.desutter@hotmail.com", Password = "Password1", Id= 3};
 
+                /*
                 WishlistItem f1 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true, Owner = u1, Id = 1};
                 WishlistItem f2 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true, Owner = u2, Id = 2 };
                 WishlistItem f3 = new WishlistItem { Title = "My Favorites", Occasion = "General", IsOpen = true, Owner = u3, Id = 3 };
@@ -57,9 +58,9 @@ namespace WishlistManager.Controllers
                 u2.MyWishlists = new List<WishlistItem> { w3 };
                 u3.MyWishlists = new List<WishlistItem> { w4 };
                 u1.OtherWishlists = new List<WishlistItem> { w3 };
-
+                */
                 //Init users
-                u2.Contacts = new List<UserItem> { u1 };
+                //u2.Contacts = new List<UserItem> { u1 };
                 _context.Users.Add(u1);
                 _context.Users.Add(u2);
                 _context.Users.Add(u3);
