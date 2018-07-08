@@ -49,6 +49,31 @@ namespace WishlistManager.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("WishlistManager.Models.UserContact", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("ContactId");
+
+                    b.HasKey("UserId", "ContactId");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("UserContact");
+                });
+
+            modelBuilder.Entity("WishlistManager.Models.UserContact", b =>
+                {
+                    b.HasOne("WishlistManager.Models.User", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId");
+
+                    b.HasOne("WishlistManager.Models.User", "User")
+                        .WithMany("Contacts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 #pragma warning restore 612, 618
         }
     }

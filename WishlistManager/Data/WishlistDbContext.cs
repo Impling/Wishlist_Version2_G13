@@ -41,7 +41,9 @@ namespace WishlistManager.Data
                 .WithMany(t => t.Contacts)
                 .HasForeignKey(pt => pt.UserId);
             */
+ modelBuilder.Entity<UserContact>(MapUserContact);
             modelBuilder.Entity<User>(MapUser);
+           
             //modelBuilder.Entity<Wishlist>(MapWishlist);
 
         }
@@ -76,7 +78,13 @@ namespace WishlistManager.Data
                 .IsRequired()
                 .HasMaxLength(30);
 
-            /*
+            
+         /*   
+            u.HasMany(t => t.Contacts)
+                .WithMany()
+                .Map(x => x.ToTable("User_Contacts"));
+              
+             
             u.HasMany(t => t.Contacts)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
@@ -97,6 +105,23 @@ namespace WishlistManager.Data
                 .OnDelete(DeleteBehavior.SetNull)        //Aslo remove wish items
                 ;  
                 */
+        }
+
+        private void MapUserContact(EntityTypeBuilder<UserContact> uc) {
+
+            uc.ToTable("UserContact");
+
+            uc.HasKey(t => new { t.UserId, t.ContactId });  //Use combo of id's for key values
+
+            uc.HasOne(t => t.User)
+                .WithMany(u => u.Contacts);
+            //.HasForeignKey(t => t.UserId);
+
+            uc.HasOne(t => t.Contact)
+                .WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull);
+                //.HasForeignKey(t => t.ContactId);
+
         }
 
         /*
@@ -137,13 +162,7 @@ namespace WishlistManager.Data
         */
         #endregion
 
-        public class UserContact {
-            public int UserContactId { get; set; }
-            public int User { get; set; }
-            public int Contact { get; set; }
-            //public User Contact { get; set; }
 
-        }
         
 
     }

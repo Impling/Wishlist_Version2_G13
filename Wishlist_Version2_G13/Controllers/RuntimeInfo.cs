@@ -33,7 +33,6 @@ namespace Wishlist_Version2_G13.Controllers
             TestRepos = new TestRepository();
             AppController = new AppController();
 
-          
         }
 
         public void SetUserInApp()
@@ -48,6 +47,7 @@ namespace Wishlist_Version2_G13.Controllers
             ScreenWidth = width;
         }
 
+        //TESTCODE for sql server manipulation widouth using DbContext, DELETE LATER(fallback if context does not work later on)
         public SqlConnection GetSqlServerConnection() {
             return new SqlConnection((App.Current as App).ConnectionString);
 

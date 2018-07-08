@@ -25,8 +25,8 @@ namespace WishlistManager.Data
 
                 //Create default users
                 User u1 = new User("Timo", "Spanhove","Timo.spanhove@Hotmail.com","Password1");
-                User u2 = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com", "Password1");
-                User u3 = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com", "Password1");
+                User u2 = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com", "Password2");
+                User u3 = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com", "Password3");
 
                 //Wishlist w1 = new Wishlist("Happy times", "Anniversery", false, new DateTime(2018, 12, 16));
                 //Wishlist w2 = new Wishlist("New Garden", "Garden renovations finished", true, new DateTime(2018, 9, 2));
@@ -51,6 +51,10 @@ namespace WishlistManager.Data
                 _context.SaveChanges();
 
                 //Add wishlists to user
+
+                u1.AddContact(u2);
+
+                _context.SaveChanges();
                 
 
             }

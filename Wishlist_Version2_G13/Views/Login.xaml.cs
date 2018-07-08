@@ -47,6 +47,8 @@ namespace Wishlist_Version2_G13.Views
                 {
                     context.Database.EnsureCreated();
                     List<User> users = context.Users.ToList();
+                    //context.Users.Add(new User("Testy", "Mctestface", "T.T@gmail.com", "Test1234"));
+                    //context.SaveChanges();
                 }
             }
             catch (Exception eContext)

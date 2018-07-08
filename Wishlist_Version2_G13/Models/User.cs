@@ -37,7 +37,6 @@ namespace Wishlist_Version2_G13.Models
 
         public User(string firstname, string lastname, string email, string password)
         {
-            //Look up how to do unique id !!! TO DO
             Firstname = firstname;
             Lastname = lastname;
             Email = email;
