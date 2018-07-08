@@ -76,6 +76,8 @@ namespace Wishlist_Version2_G13.Models
             {
                 OthersWishlists.Add(w);
             }
+
+            //!!!!Make sure that when we add contact it is added to the DbContext, + Added to observable list, (should reload correctly on page reload) 
         }
 
         public void addNotification(Message m)
@@ -121,6 +123,8 @@ namespace Wishlist_Version2_G13.Models
 
         public int ContactId { get; set; }
         public virtual User Contact { get; set; }
+
+        public UserContact(){}
 
         public UserContact(int userId, int contactId, User user, User contact)
         {

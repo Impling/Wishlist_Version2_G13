@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wishlist_Version2_G13.Data;
 using Wishlist_Version2_G13.Models;
 
 namespace Wishlist_Version2_G13.Controllers
@@ -26,21 +28,51 @@ namespace Wishlist_Version2_G13.Controllers
 
         //Functions
         //Function 1)AddContact - add contact to contactlist of logged in user via email address
-        public bool addContact(string email)
+        public bool addContact(string email)//DIRECT ADDING, FIRST SEND REQUEST THEN ON CONFIRM ADD
         {
-            //check email ignore case
-            //1) check if email same as email of loggedInUser, if so dont add and return false          [Errormessage: You cannot add yourself to your contactlist]
-            //2) check if new contact allready exists in contactlist, if so returen false               [Errormessage: You allready have contact {contactname} in your list]
-            //3) check if contact is a registered user (check if contact exists), if so return false    [Errormessage: The contact {email} you wish to add was not found in the user database]
 
-            //Add funtion to retrieve user from DB using email address here
-            //User newContact = new User();   //TEMP UNTIL WE CAN ACTUALY GET USER -  User newContact = GetContact(email); 
+            //TO DO first Send REQUEST, only add on confirm
 
-            //add contact to contactlist of user
-            //User.addContact(newContact);
+            //check email ignore case - Valid email check in view
+          
+            if (email == User.Email){ //MAKE NONCASE SENSITIVE
+                //1) check if email same as email of loggedInUser, if so dont add and return false          [Errormessage: You cannot add yourself to your contactlist]
+                //Messsage
+                return false;
+            }
+            
+            try
+            {
+                using (WishlistDbContext _context = new WishlistDbContext())
+                {
+                    User contact = _context.Users.FirstOrDefault(c => c.Email == email);
+
+                    if (contact == null) {
+                        //3) check if contact is a registered user (check if contact exists), if so return false    [Errormessage: The contact {email} you wish to add was not found in the user database]
+                        //Message
+                        return false;
+                    } else if (_context.Contacts.FirstOrDefault(uc => uc.UserId == User.UserId && uc.ContactId == contact.UserId) != null) {
+                        //2) check if new contact allready exists in contactlist, if so return false               [Errormessage: You allready have contact {contactname} in your list]
+                        //MESSAGE
+                        return false;
+                    }
+                    else {
+                        _context.Contacts.Add(new UserContact(User.UserId, contact.UserId, User, contact)); //duplicate mirrored call for many to many relationship (EF does not support join table well enough to autmate this.)
+                        _context.Contacts.Add(new UserContact(contact.UserId, User.UserId, contact, User));
+                        return true;
+                    }
+                                        
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return false;
+            }
 
             //returen false on failure, true on success
-            return true;
+
+
         }
 
 
@@ -90,12 +122,12 @@ namespace Wishlist_Version2_G13.Controllers
 
         //Function 6)GetOwnWishlist
 
-
-
         public void AddItem(Item i)
         {
             SelectedWishlist.addItem(i);
         }
+
+        
 
     }
 

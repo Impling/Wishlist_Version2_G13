@@ -52,8 +52,9 @@ namespace WishlistManager.Data
 
                 //Add wishlists to user
 
-                u1.AddContact(u2);
-                
+                u1.AddContact(u2);  //Needs to happen to both sides
+                u2.AddContact(u1);
+
                 _context.SaveChanges();
                 
 
