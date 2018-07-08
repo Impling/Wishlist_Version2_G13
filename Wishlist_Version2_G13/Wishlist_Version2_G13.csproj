@@ -102,15 +102,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20180706104645_BaseUser.cs" />
-    <Compile Include="Migrations\20180706104645_BaseUser.designer.cs">
-      <DependentUpon>20180706104645_BaseUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180706120024_CreateUserTableUpdate.cs" />
-    <Compile Include="Migrations\20180706120024_CreateUserTableUpdate.designer.cs">
-      <DependentUpon>20180706120024_CreateUserTableUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\WishlistDbContextModelSnapshot.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Message.cs" />

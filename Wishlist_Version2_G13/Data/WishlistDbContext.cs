@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Wishlist_Version2_G13.Data
     {
         #region Properties
         public DbSet<User> Users { get; set; }
-
+        public DbSet<UserContact> Contacts { get; set; }
         #endregion
 
         #region Constructors
@@ -35,6 +36,7 @@ namespace Wishlist_Version2_G13.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            modelBuilder.Entity<UserContact>(MapUserContact);
             modelBuilder.Entity<User>(MapUser);
 
         }
@@ -70,7 +72,10 @@ namespace Wishlist_Version2_G13.Data
                 .HasColumnName("Password")
                 .IsRequired()
                 .HasMaxLength(30);
-            
+
+
+
+
             /*
             u.HasMany(t => t.Contacts)
                 .WithOne()
@@ -93,6 +98,26 @@ namespace Wishlist_Version2_G13.Data
                 ;  
                 */
         }
+
+
+        private void MapUserContact(EntityTypeBuilder<UserContact> uc)
+        {
+
+            uc.ToTable("UserContact");
+
+            uc.HasKey(t => new { t.UserId, t.ContactId });  //Use combo of id's for key values
+
+            uc.HasOne(t => t.User)
+                .WithMany(u => u.UserContacts);
+            //.HasForeignKey(t => t.UserId);
+
+            uc.HasOne(t => t.Contact)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
+            //.HasForeignKey(t => t.ContactId);
+
+        }
+
 
         #endregion
 

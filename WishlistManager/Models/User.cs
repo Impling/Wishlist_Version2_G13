@@ -16,7 +16,6 @@ namespace WishlistManager.Models
         public string Lastname { get; set; }
         public string Email { get; set; }                                   //email of user, can be used to add user to contacts/friendlist
         public string Password { get; set; }
-        //public virtual ICollection<User> Contacts { get; set; }                        //list of others the user has in contacts - one to many
         public virtual ICollection<UserContact> Contacts { get; set; }
 
             //public List<MessageItem> Messages { get; set; } = new List<MessageItem>();                     //list of messages user recieved - could be determined by get by recipant id in messages

@@ -53,7 +53,7 @@ namespace WishlistManager.Data
                 //Add wishlists to user
 
                 u1.AddContact(u2);
-
+                
                 _context.SaveChanges();
                 
 

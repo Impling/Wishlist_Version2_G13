@@ -19,6 +19,8 @@ namespace Wishlist_Version2_G13.Models
         public string Lastname { get; set; }
         public string Email { get; set; }                  //email of user, can be used to add user to contacts/friendlist
         public string Password { get; set; }
+        public virtual ICollection<UserContact> UserContacts { get; set; }
+
         [NotMapped]
         public ObservableCollection<User> Contacts { get; set; }           //list of people the user can add to his wishlist (get from phone contact list or facebook account)
         [NotMapped]
@@ -69,7 +71,7 @@ namespace Wishlist_Version2_G13.Models
         public void addContact(User contact)
         {
             //AppController gets given email string, looks in database for user retrieves it and calls this function
-            Contacts.Add(contact);
+            //Contacts.Add(contact);
             foreach (Wishlist w in contact.MyWishlists)
             {
                 OthersWishlists.Add(w);
@@ -108,6 +110,29 @@ namespace Wishlist_Version2_G13.Models
         {
             Favorites.Items = gifts;
         }
+
+    }
+
+    //Extra class for the joined table between user and his contacts
+    public class UserContact
+    {
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
+
+        public int ContactId { get; set; }
+        public virtual User Contact { get; set; }
+
+        public UserContact(int userId, int contactId, User user, User contact)
+        {
+
+            UserId = userId;
+            ContactId = contactId;
+
+            User = user;
+            Contact = contact;
+
+        }
+
 
     }
 }

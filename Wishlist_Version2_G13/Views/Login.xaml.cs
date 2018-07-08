@@ -49,6 +49,10 @@ namespace Wishlist_Version2_G13.Views
                     List<User> users = context.Users.ToList();
                     //context.Users.Add(new User("Testy", "Mctestface", "T.T@gmail.com", "Test1234"));
                     //context.SaveChanges();
+
+                    List<User> contacts = context.Contacts.Where(c => c.UserId == users[0].UserId).Select(t => t.Contact).ToList(); //Test get test contact
+                    User contact = contacts[0];//Data passed from contact test
+
                 }
             }
             catch (Exception eContext)

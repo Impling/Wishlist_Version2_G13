@@ -13,6 +13,7 @@ namespace WishlistManager.Data
 
         #region Properties
         public DbSet<User> Users { get; set; }
+        public DbSet<UserContact> Contacts { get; set; }
         //public DbSet<Wishlist> Wishlists { get; set; }
 
         #endregion
@@ -41,7 +42,7 @@ namespace WishlistManager.Data
                 .WithMany(t => t.Contacts)
                 .HasForeignKey(pt => pt.UserId);
             */
- modelBuilder.Entity<UserContact>(MapUserContact);
+            modelBuilder.Entity<UserContact>(MapUserContact);
             modelBuilder.Entity<User>(MapUser);
            
             //modelBuilder.Entity<Wishlist>(MapWishlist);
