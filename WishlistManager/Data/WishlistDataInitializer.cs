@@ -33,6 +33,8 @@ namespace WishlistManager.Data
                 Wishlist w3 = new Wishlist("Birthday", "Its my birhtday", false, new DateTime(2018, 11, 30));
                 Wishlist w4 = new Wishlist("Wedding", "Me and hubby getting married", true, new DateTime(2019, 6, 3));
 
+                Item i1 = new Item("Spoon", "Kitchen");
+
 
                 //Add Users
                 User[] users = new User[] { u1, u2, u3 };
@@ -62,6 +64,8 @@ namespace WishlistManager.Data
                 //w3.addParticipant(u1);
 
                 //Add Items to wishlist
+                w1.AddGift(i1);
+                _context.SaveChanges();
 
                 //Messages done in main app.
 

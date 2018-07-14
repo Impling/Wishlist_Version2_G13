@@ -14,6 +14,7 @@ namespace WishlistManager.Data
         #region Properties
         public DbSet<User> Users { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         public DbSet<UserContact> Contacts { get; set; }
         public DbSet<WishlistParticipant> Participants { get; set; }
@@ -37,12 +38,68 @@ namespace WishlistManager.Data
 
             modelBuilder.Entity<User>(MapUser);
             modelBuilder.Entity<Wishlist>(MapWishlist);
+            modelBuilder.Entity<Item>(MapItems);
 
         }
 
         #endregion
 
         #region Methods
+
+
+
+        private void MapUserContact(EntityTypeBuilder<UserContact> uc) {
+
+            uc.ToTable("UserContacts");
+
+            uc.HasKey(t => new { t.UserId, t.ContactId });  //Use combo of id's for key values
+
+            uc.HasOne(t => t.User)
+                .WithMany(u => u.Contacts);
+            //.HasForeignKey(t => t.UserId);
+
+            uc.HasOne(t => t.Contact)
+                .WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull);
+                //.HasForeignKey(t => t.ContactId);
+
+        }
+        private void MapWishlistParticipant(EntityTypeBuilder<WishlistParticipant> wp)
+        {
+
+            wp.ToTable("WishlistParticipants");
+
+            wp.HasKey(t => new { t.WishlistId, t.ParticipantId });  //Use combo of id's for key values
+
+            wp.HasOne(t => t.Wishlist)
+                .WithMany(w => w.Participants)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+            wp.HasOne(t => t.Participant)
+                .WithMany(u => u.OtherWishlists)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+        }
+        private void MapUserWishlist(EntityTypeBuilder<UserWishlist> uw)
+        {
+
+            uw.ToTable("WishlistOwners");
+
+            uw.HasKey(t => new { t.OwnerId, t.WishlistId });  //Use combo of id's for key values
+
+            uw.HasOne(t => t.Owner)
+                .WithMany(w => w.MyWishlists);
+
+
+            uw.HasOne(t => t.Wishlist)
+                .WithOne(u => u.Owner)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+        }
+
         private static void MapUser(EntityTypeBuilder<User> u)
         {
             //Set table name
@@ -71,25 +128,6 @@ namespace WishlistManager.Data
                 .HasMaxLength(30);
 
         }
-
-        private void MapUserContact(EntityTypeBuilder<UserContact> uc) {
-
-            uc.ToTable("UserContact");
-
-            uc.HasKey(t => new { t.UserId, t.ContactId });  //Use combo of id's for key values
-
-            uc.HasOne(t => t.User)
-                .WithMany(u => u.Contacts);
-            //.HasForeignKey(t => t.UserId);
-
-            uc.HasOne(t => t.Contact)
-                .WithMany()
-                .OnDelete(DeleteBehavior.ClientSetNull);
-                //.HasForeignKey(t => t.ContactId);
-
-        }
-
-        
         private void MapWishlist(EntityTypeBuilder<Wishlist> wl)
         {
             //Set table name
@@ -115,45 +153,59 @@ namespace WishlistManager.Data
                 .IsRequired();
             //.HasDefaultValue(true);
 
-
-        }
-
-        private void MapWishlistParticipant(EntityTypeBuilder<WishlistParticipant> wp)
-        {
-
-            wp.ToTable("WishlistParticipant");
-
-            wp.HasKey(t => new { t.WishlistId, t.ParticipantId });  //Use combo of id's for key values
-
-            wp.HasOne(t => t.Wishlist)
-                .WithMany(w => w.Participants)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-
-            wp.HasOne(t => t.Participant)
-                .WithMany(u => u.OtherWishlists)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-     
-        }
-
-        private void MapUserWishlist(EntityTypeBuilder<UserWishlist> uw)
-        {
-
-            uw.ToTable("WishlistOwner");
-
-            uw.HasKey(t => new { t.OwnerId, t.WishlistId });  //Use combo of id's for key values
-
-            uw.HasOne(t => t.Owner)
-                .WithMany(w => w.MyWishlists);
-
-
-            uw.HasOne(t => t.Wishlist)
-                .WithOne(u => u.Owner)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            wl.HasMany(t => t.Gifts)
+                .WithOne(g => g.Wishlist)
+                .HasForeignKey(g => g.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         }
+        private void MapItems(EntityTypeBuilder<Item> i) {
+            //Set table name
+            i.ToTable("Items");
+            //Map primary key
+            i.HasKey(t => t.ItemId);
+            //Properties
+            i.Property(t => t.Name)
+                 .HasColumnName("Name")
+                 .IsRequired()
+                 .HasMaxLength(50);
+
+            i.Property(t => t.Description)
+                 .HasColumnName("Description")
+                 .IsRequired(false)
+                 .HasMaxLength(300);
+
+            i.Property(t => t.WebLink)
+                 .HasColumnName("Hyperlink")
+                 .IsRequired(false);
+
+            i.Property(t => t.Image)
+                 .HasColumnName("Picture")
+                 .IsRequired(false);
+
+            i.Property(t => t.Category)
+                 .HasColumnName("Category")
+                 .IsRequired()
+                 .HasMaxLength(30);
+
+            i.HasOne(t => t.Buyer)
+                .WithOne()
+                .HasForeignKey<Item>(t => t.BuyerId)
+                .HasConstraintName("ForeignKey_Item_User")
+                .OnDelete(DeleteBehavior.Restrict);
+            /*
+            i.HasOne(t => t.Wishlist)
+                .WithOne()
+                .HasForeignKey<Wishlist>( w => w.WishlistId)
+                .HasConstraintName("ForeignKey_Item_Wishlist")
+                .OnDelete(DeleteBehavior.Restrict);
+                */
+        }
+
+
+        
+
 
         #endregion
 

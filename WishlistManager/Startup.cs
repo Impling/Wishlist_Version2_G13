@@ -33,11 +33,6 @@ namespace WishlistManager
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList")); //Testcontext for experimenting
-            services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Users"));
-            services.AddDbContext<WishlistContext>(opt => opt.UseInMemoryDatabase("Wishlists"));
-            services.AddDbContext<WishContext>(opt => opt.UseInMemoryDatabase("Wishes"));
-            services.AddDbContext<MessageContext>(opt => opt.UseInMemoryDatabase("Messages"));
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             }); ;

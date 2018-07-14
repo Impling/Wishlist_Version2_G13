@@ -17,7 +17,7 @@ namespace WishlistManager.Models
 
         public virtual UserWishlist Owner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
-        //public List<WishItem> Gifts { get; set; } = new List<WishItem>();
+        public virtual List<Item> Gifts { get; set; }
 
         public int NrOfParticipants => Participants.Count;
 
@@ -29,6 +29,7 @@ namespace WishlistManager.Models
             IsOpen = true;                  //already set in buildmodel
             Deadline = new DateTime();      //If not set use default datetime
             Participants = new HashSet<WishlistParticipant>();
+            Gifts = new List<Item>();
         }
 
         public Wishlist(string title, string description) : this()
@@ -62,6 +63,11 @@ namespace WishlistManager.Models
             users.ForEach(u => Participants.Add(u));
         }
         */
+        public void AddGift(Item gift) {
+            Gifts.Add(gift);
+            gift.WishlistId = this.WishlistId;
+        }
+
         #endregion
     }
 
