@@ -13,9 +13,11 @@ namespace WishlistManager.Data
 
         #region Properties
         public DbSet<User> Users { get; set; }
-        public DbSet<UserContact> Contacts { get; set; }
-        //public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
 
+        public DbSet<UserContact> Contacts { get; set; }
+        public DbSet<WishlistParticipant> Participants { get; set; }
+        public DbSet<UserWishlist> OwnedWishlists { get; set; }
         #endregion
 
         #region Constructors
@@ -43,9 +45,11 @@ namespace WishlistManager.Data
                 .HasForeignKey(pt => pt.UserId);
             */
             modelBuilder.Entity<UserContact>(MapUserContact);
+            modelBuilder.Entity<WishlistParticipant>(MapWishlistParticipant);
+            modelBuilder.Entity<UserWishlist>(MapUserWishlist);
+
             modelBuilder.Entity<User>(MapUser);
-           
-            //modelBuilder.Entity<Wishlist>(MapWishlist);
+            modelBuilder.Entity<Wishlist>(MapWishlist);
 
         }
 
@@ -81,16 +85,7 @@ namespace WishlistManager.Data
 
             
          /*   
-            u.HasMany(t => t.Contacts)
-                .WithMany()
-                .Map(x => x.ToTable("User_Contacts"));
-              
-             
-            u.HasMany(t => t.Contacts)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
 
-            
 
             u.HasMany(t => t.MyWishlists)
                 .WithOne(t => t.User)
@@ -125,7 +120,7 @@ namespace WishlistManager.Data
 
         }
 
-        /*
+        
         private void MapWishlist(EntityTypeBuilder<Wishlist> wl)
         {
             //Set table name
@@ -149,22 +144,52 @@ namespace WishlistManager.Data
             wl.Property(t => t.IsOpen)
                 .HasColumnName("IsOpen")
                 .IsRequired();
-                //.HasDefaultValue(true);
+            //.HasDefaultValue(true);
 
-            wl.HasOne(t => t.User)
-                .WithMany(t => t.MyWishlists)
-                .OnDelete(DeleteBehavior.SetNull);  //When removing wishlist, user can stay
-
-            wl.HasMany(t => t.Participants)
-                .WithOne()
-                .OnDelete(DeleteBehavior.SetNull);  //When removing wishlist, user can stay
 
         }
-        */
+
+        private void MapWishlistParticipant(EntityTypeBuilder<WishlistParticipant> wp)
+        {
+
+            wp.ToTable("WishlistParticipant");
+
+            wp.HasKey(t => new { t.WishlistId, t.ParticipantId });  //Use combo of id's for key values
+
+            wp.HasOne(t => t.Wishlist)
+                .WithMany(w => w.Participants)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+            wp.HasOne(t => t.Participant)
+                .WithMany(u => u.OtherWishlists)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+     
+        }
+
+        private void MapUserWishlist(EntityTypeBuilder<UserWishlist> uw)
+        {
+
+            uw.ToTable("WishlistOwner");
+
+            uw.HasKey(t => new { t.OwnerId, t.WishlistId });  //Use combo of id's for key values
+
+            uw.HasOne(t => t.Owner)
+                .WithMany(w => w.MyWishlists);
+
+
+            uw.HasOne(t => t.Wishlist)
+                .WithOne(u => u.Owner)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+        }
+
         #endregion
 
 
-        
+
 
     }
 }

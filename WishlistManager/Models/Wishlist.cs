@@ -11,15 +11,16 @@ namespace WishlistManager.Models
         #region Properties
         public int WishlistId { get; set; }
         public string Title { get; set; }           //Title,name of wishlist
-        //public int  UserId { get; set; }          //Wishlist owner
-        public User User { get; set; }
+
+
         public DateTime Deadline { get; set; }      //Deadline wishlist event, ?Does this need to be a string for web service
-        public ICollection<User> Participants { get; set; }
+        public virtual UserWishlist Owner { get; set; }
+        public virtual ICollection<WishlistParticipant> Participants { get; set; }
         //public List<WishItem> Gifts { get; set; } = new List<WishItem>();
         public string Occasion { get; set; }        //Descriptor of event
         public bool IsOpen { get; set; }            //Bool for accesslevel of wishlist
 
-        public int NrOfParticipants => Participants.Count;
+        //public int NrOfParticipants => Participants.Count;
 
         #endregion
 
@@ -28,7 +29,7 @@ namespace WishlistManager.Models
         {
             IsOpen = true; //already set in buildmodel
             Deadline = new DateTime(); //If not set use default datetime
-            Participants = new HashSet<User>();
+            //Participants = new HashSet<User>();
         }
 
         public Wishlist(string title, string description) : this()
@@ -53,6 +54,7 @@ namespace WishlistManager.Models
         #endregion
 
         #region Methods
+        /*
         public void addParticipant(User user) {
             Participants.Add(user);
         }
@@ -60,7 +62,55 @@ namespace WishlistManager.Models
         public void addParticipants(List<User> users) {
             users.ForEach(u => Participants.Add(u));
         }
-
+        */
         #endregion
+    }
+
+    //Extra class for the joined table between Wishlists and their Participants
+    public class WishlistParticipant
+    {
+        public int WishlistId { get; set; }
+        public virtual Wishlist Wishlist { get; set; }
+
+        public int ParticipantId { get; set; }
+        public virtual User Participant { get; set; }
+
+        public WishlistParticipant(int wishlistId, int participantId, Wishlist wishlist, User participant)
+        {
+
+            WishlistId = wishlistId;
+            ParticipantId = participantId;
+
+            Wishlist = wishlist;
+            Participant = participant;
+
+        }
+
+    }
+
+    //Extra class for the joined table between Wishlists and their owner allowing differentiation between favorite wishlist and created wishlists
+    public class UserWishlist
+    {
+        public int OwnerId { get; set; }
+        public virtual User Owner { get; set; }
+
+        public int WishlistId { get; set; }
+        public virtual Wishlist Wishlist { get; set; }
+
+        public bool IsFavorite { get; set; }
+
+        public UserWishlist(int ownerId, int wishlistId, User owner, Wishlist wishlist, bool isFavorite)
+        {
+
+            OwnerId = ownerId;
+            WishlistId = wishlistId;
+
+            Owner = Owner;
+            Wishlist = wishlist;
+
+            IsFavorite = isFavorite;
+
+        }
+
     }
 }

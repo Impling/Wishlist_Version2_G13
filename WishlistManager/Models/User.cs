@@ -18,10 +18,10 @@ namespace WishlistManager.Models
         public string Password { get; set; }
         public virtual ICollection<UserContact> Contacts { get; set; }
 
-            //public List<MessageItem> Messages { get; set; } = new List<MessageItem>();                     //list of messages user recieved - could be determined by get by recipant id in messages
-        //public ICollection<Wishlist> MyWishlists { get; set; }                //Can be done from wishlist context get by ownerid
-        //public ICollection<Wishlist> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
-        //public Wishlist FavoriteWishlist { get; set; }                  //Single wishlist of favorites
+        //public List<MessageItem> Messages { get; set; } = new List<MessageItem>();                     //list of messages user recieved - could be determined by get by recipant id in messages
+        public virtual ICollection<UserWishlist> MyWishlists { get; set; }                //Can be done from wishlist context get by ownerid
+        public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
+
 
         //public int NrOfMyWishlists => MyWishlists.Count;
         //public int NrOfOtherWishlists => OtherWishlists.Count;
@@ -32,9 +32,9 @@ namespace WishlistManager.Models
         protected User() {
             Contacts = new List<UserContact>();
             //Contacts = new Collection<User>();
-            //MyWishlists = new HashSet<Wishlist>();
-            //OtherWishlists = new HashSet<Wishlist>();
-            //FavoriteWishlist = new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion.");    //Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
+            MyWishlists = new HashSet<UserWishlist>();
+            OtherWishlists = new HashSet<WishlistParticipant>();
+            AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
         }
 
         public User(string firstname, string lastname, string email, string password) : this() {
@@ -48,9 +48,15 @@ namespace WishlistManager.Models
         #endregion
 
         #region Methods
+        //Add personal Favorite wishlist
+        public void AddFavoriteWishlist(Wishlist wishlist)
+        {
+            MyWishlists.Add(new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, true));
+        }
+
         //Add personal wishlist
         public void AddOwnWishlist(Wishlist wishlist) {
-            //MyWishlists.Add(wishlist);
+            MyWishlists.Add(new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, false));
         }
 
         //Add wishlist to closed wishlist you participate in
@@ -107,7 +113,6 @@ namespace WishlistManager.Models
             Contact = contact;
 
         }
-
 
     }
 }
