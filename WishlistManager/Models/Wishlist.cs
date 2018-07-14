@@ -11,25 +11,24 @@ namespace WishlistManager.Models
         #region Properties
         public int WishlistId { get; set; }
         public string Title { get; set; }           //Title,name of wishlist
-
-
+        public string Occasion { get; set; }        //Descriptor of event
+        public bool IsOpen { get; set; }            //Bool for accesslevel of wishlist
         public DateTime Deadline { get; set; }      //Deadline wishlist event, ?Does this need to be a string for web service
+
         public virtual UserWishlist Owner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
         //public List<WishItem> Gifts { get; set; } = new List<WishItem>();
-        public string Occasion { get; set; }        //Descriptor of event
-        public bool IsOpen { get; set; }            //Bool for accesslevel of wishlist
 
-        //public int NrOfParticipants => Participants.Count;
+        public int NrOfParticipants => Participants.Count;
 
         #endregion
 
         #region Constructors
         protected Wishlist()
         {
-            IsOpen = true; //already set in buildmodel
-            Deadline = new DateTime(); //If not set use default datetime
-            //Participants = new HashSet<User>();
+            IsOpen = true;                  //already set in buildmodel
+            Deadline = new DateTime();      //If not set use default datetime
+            Participants = new HashSet<WishlistParticipant>();
         }
 
         public Wishlist(string title, string description) : this()

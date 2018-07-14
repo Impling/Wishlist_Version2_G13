@@ -28,35 +28,42 @@ namespace WishlistManager.Data
                 User u2 = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com", "Password2");
                 User u3 = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com", "Password3");
 
-                //Wishlist w1 = new Wishlist("Happy times", "Anniversery", false, new DateTime(2018, 12, 16));
-                //Wishlist w2 = new Wishlist("New Garden", "Garden renovations finished", true, new DateTime(2018, 9, 2));
-                //Wishlist w3 = new Wishlist("Birthday", "Its my birhtday", false, new DateTime(2018, 11, 30));
-                //Wishlist w4 = new Wishlist("Wedding", "Me and hubby getting married", true, new DateTime(2019, 6, 3));
+                Wishlist w1 = new Wishlist("Happy times", "Anniversery", false, new DateTime(2018, 12, 16));
+                Wishlist w2 = new Wishlist("New Garden", "Garden renovations finished", true, new DateTime(2018, 9, 2));
+                Wishlist w3 = new Wishlist("Birthday", "Its my birhtday", false, new DateTime(2018, 11, 30));
+                Wishlist w4 = new Wishlist("Wedding", "Me and hubby getting married", true, new DateTime(2019, 6, 3));
 
 
-
+                //Add Users
                 User[] users = new User[] { u1, u2, u3 };
                 _context.Users.AddRange(users);
-
-                //u1.AddContact(u2);
-                //u1.AddContact(u3);
-                
-                //u1.AddOwnWishlist(w1);
-                //u1.AddOwnWishlist(w2);
-                //u2.AddOwnWishlist(w3);
-                //u3.AddOwnWishlist(w4);
-
-                //w3.addParticipant(u1);
-
                 _context.SaveChanges();
 
-                //Add wishlists to user
-
+                //Add Contact to users
                 u1.AddContact(u2);  //Needs to happen to both sides
                 u2.AddContact(u1);
-
+                u1.AddContact(u3);  //Needs to happen to both sides
+                u3.AddContact(u1);
                 _context.SaveChanges();
-                
+
+                //Add few wishlists
+                Wishlist[] wishlists = new Wishlist[] { w1, w2, w3, w4 };
+                _context.Wishlists.AddRange(wishlists);
+                _context.SaveChanges();
+          
+                //Store added wishlist in relation table
+                u1.AddOwnWishlist(w1);
+                u1.AddOwnWishlist(w2);
+                u2.AddOwnWishlist(w3);
+                u3.AddOwnWishlist(w4);
+                _context.SaveChanges();
+
+                //Add Participants to closed wishlist
+                //w3.addParticipant(u1);
+
+                //Add Items to wishlist
+
+                //Messages done in main app.
 
             }
 

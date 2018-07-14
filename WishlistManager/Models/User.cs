@@ -31,7 +31,6 @@ namespace WishlistManager.Models
         #region Constructors
         protected User() {
             Contacts = new List<UserContact>();
-            //Contacts = new Collection<User>();
             MyWishlists = new HashSet<UserWishlist>();
             OtherWishlists = new HashSet<WishlistParticipant>();
             AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
@@ -51,12 +50,16 @@ namespace WishlistManager.Models
         //Add personal Favorite wishlist
         public void AddFavoriteWishlist(Wishlist wishlist)
         {
-            MyWishlists.Add(new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, true));
+            UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, true);
+            MyWishlists.Add(userWishlist);
+            wishlist.Owner = userWishlist;
         }
 
         //Add personal wishlist
         public void AddOwnWishlist(Wishlist wishlist) {
-            MyWishlists.Add(new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, false));
+            UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, false);
+            MyWishlists.Add(userWishlist);
+            wishlist.Owner = userWishlist;
         }
 
         //Add wishlist to closed wishlist you participate in

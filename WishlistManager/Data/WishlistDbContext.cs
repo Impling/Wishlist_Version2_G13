@@ -30,20 +30,7 @@ namespace WishlistManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
-            modelBuilder.Entity<UserContact>()
-                .HasKey(t => new { t.UserId, t.ContactId });
-           
-            modelBuilder.Entity<UserContact>()
-                .HasOne(pt => pt.User)
-                .WithMany(p => p.Contacts)
-                .HasForeignKey(pt => pt.ContactId);
 
-            modelBuilder.Entity<UserContact>()
-                .HasOne(pt => pt.Contact)
-                .WithMany(t => t.Contacts)
-                .HasForeignKey(pt => pt.UserId);
-            */
             modelBuilder.Entity<UserContact>(MapUserContact);
             modelBuilder.Entity<WishlistParticipant>(MapWishlistParticipant);
             modelBuilder.Entity<UserWishlist>(MapUserWishlist);
@@ -83,24 +70,6 @@ namespace WishlistManager.Data
                 .IsRequired()
                 .HasMaxLength(30);
 
-            
-         /*   
-
-
-            u.HasMany(t => t.MyWishlists)
-                .WithOne(t => t.User)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            u.HasMany(t => t.OtherWishlists)
-                .WithOne()
-                .OnDelete(DeleteBehavior.SetNull); //If user removed the wishlist he was following should not be untouched
-
-            u.HasOne(t => t.FavoriteWishlist)     //
-                .WithOne()
-                .IsRequired()
-                .OnDelete(DeleteBehavior.SetNull)        //Aslo remove wish items
-                ;  
-                */
         }
 
         private void MapUserContact(EntityTypeBuilder<UserContact> uc) {
