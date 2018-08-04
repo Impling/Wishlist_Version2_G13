@@ -18,7 +18,7 @@ namespace WishlistManager.Models
         public string Password { get; set; }
         public virtual ICollection<UserContact> Contacts { get; set; }
 
-        //public List<MessageItem> Messages { get; set; } = new List<MessageItem>();                     //list of messages user recieved - could be determined by get by recipant id in messages
+        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();                     //list of messages user recieved - could be determined by get by recipant id in messages
         public virtual ICollection<UserWishlist> MyWishlists { get; set; }                //Can be done from wishlist context get by ownerid
         public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
 
@@ -31,9 +31,11 @@ namespace WishlistManager.Models
         #region Constructors
         protected User() {
             Contacts = new List<UserContact>();
-            MyWishlists = new HashSet<UserWishlist>();
-            OtherWishlists = new HashSet<WishlistParticipant>();
+            MyWishlists = new List<UserWishlist>();
+            OtherWishlists = new List<WishlistParticipant>();
             AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
+            Messages = new List<Message>();
+            //List has functionallity like ordening, while Hashset is quicker in removing and adding
         }
 
         public User(string firstname, string lastname, string email, string password) : this() {

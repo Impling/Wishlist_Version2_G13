@@ -11,63 +11,63 @@ namespace WishlistManager.Models
         public int MessageId { get; set; }
         public int Sender { get; set; }               //Sender as id (multiple relations with same class not supported) - try foreign key
         public User Receiver { get; set; }
-        public Boolean IsInvite { get; set; }              //Is invite to join wishlist or is request by friend to join wishlist
+        //public Boolean IsInvite { get; set; }              //Is invite to join wishlist or is request by friend to join wishlist, check if needed as property
         public Boolean IsAccepted { get; set; }            //not really needed if we delete messages that have been handled, however if we want to keep messagelog but not allow another accept we could use this
         public Wishlist RelatedWishlist { get; set; }      //wishlist to join or invite to
         public String MessageContent { get; set; }
         public DateTime DateCreated { get; set; }
 
         #region Constructors
-        public Message(int sender, User receiver) {
-            Sender = sender;
+        public Message(User sender, User receiver) {
+            Sender = sender.UserId;
             Receiver = receiver;
 
             IsAccepted = false;
         }
 
         //Constructor for invite/request to add to contact list
-        public Message(int sender, User receiver, Boolean isInvite) : this(sender, receiver)
+        public Message(User sender, User receiver, Boolean isInvite) : this(sender, receiver)
         {
-            IsInvite = isInvite;
+            //IsInvite = isInvite;
 
-            GenerateMessageContact();
+            GenerateMessageContact(isInvite, sender);
             DateCreated = System.DateTime.Now;
         }
 
-        public Message(int sender, User receiver, Boolean isInvite, Wishlist relatedWishlist) : this(sender, receiver)
+        public Message(User sender, User receiver, Boolean isInvite, Wishlist relatedWishlist) : this(sender, receiver)
         {
-            IsInvite = isInvite;
+            //IsInvite = isInvite;
             RelatedWishlist = relatedWishlist;
 
-            GenerateMessageWishlist();
+            GenerateMessageWishlist(isInvite, sender);
             DateCreated = System.DateTime.Now;
         }
         #endregion
 
         #region Methods
-        private void GenerateMessageContact()
+        private void GenerateMessageContact(bool isInvite, User sender)
         {
 
-            if (IsInvite)
+            if (isInvite)
             {
-                MessageContent = String.Format("{0} {1}: Will u toevoegen aan zijn contacten. ", Sender.Firstname, Sender.Lastname);
+                MessageContent = String.Format("{0} {1}: Will u toevoegen aan zijn contacten. ", sender.Firstname, sender.Lastname);
             }
             else
             {
-                MessageContent = String.Format("{0} {1}: Zou graag toegevoegd worden aan uw contacten.", Sender.Firstname, Sender.Lastname);
+                MessageContent = String.Format("{0} {1}: Zou graag toegevoegd worden aan uw contacten.", sender.Firstname, sender.Lastname);
             }
 
         }
-        private void GenerateMessageWishlist()
+        private void GenerateMessageWishlist(bool isInvite, User sender)
         {
 
-            if (IsInvite)
+            if (isInvite)
             {
-                MessageContent = String.Format("{0} {1}: Heeft u uitgenodigd om deel te nemen aan wishlist {2}. ", Sender.Firstname, Sender.Lastname, RelatedWishlist.Title);
+                MessageContent = String.Format("{0} {1}: Heeft u uitgenodigd om deel te nemen aan wishlist {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
             }
             else
             {
-                MessageContent = String.Format("{0} {1} wenst deel te nemen aan wishlist {2}. ", Sender.Firstname, Sender.Lastname, RelatedWishlist.Title);
+                MessageContent = String.Format("{0} {1} wenst deel te nemen aan wishlist {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
             }
 
         }

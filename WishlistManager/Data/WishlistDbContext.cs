@@ -15,6 +15,7 @@ namespace WishlistManager.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Message> messages {get; set;}
 
         public DbSet<UserContact> Contacts { get; set; }
         public DbSet<WishlistParticipant> Participants { get; set; }
@@ -39,6 +40,7 @@ namespace WishlistManager.Data
             modelBuilder.Entity<User>(MapUser);
             modelBuilder.Entity<Wishlist>(MapWishlist);
             modelBuilder.Entity<Item>(MapItems);
+            modelBuilder.Entity<Message>(MapMessages);
 
         }
 
@@ -202,8 +204,37 @@ namespace WishlistManager.Data
                 .OnDelete(DeleteBehavior.Restrict);
                 */
         }
+        private void MapMessages(EntityTypeBuilder<Message> m) {
+            //Set table name
+            m.ToTable("Messages");
+            //Map primary key
+            m.HasKey(t => t.MessageId);
+
+            //Properties
+            m.Property(t => t.MessageContent)
+                 .HasColumnName("Content")
+                 .IsRequired();
+
+            m.Property(t => t.IsAccepted)
+                .HasColumnName("Accepted")
+                .IsRequired();
+
+            m.Property(t => t.DateCreated)
+                 .HasColumnName("CreationDate")
+                 .IsRequired();
+
+            m.HasOne(t => t.Receiver)
+                .WithMany(u => u.Messages)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            m.HasOne(t => t.RelatedWishlist)
+                .WithMany()
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
+        }
         
 
 

@@ -28,7 +28,7 @@ namespace WishlistManager.Models
         {
             IsOpen = true;                  //already set in buildmodel
             Deadline = new DateTime();      //If not set use default datetime
-            Participants = new HashSet<WishlistParticipant>();
+            Participants = new List<WishlistParticipant>();
             Gifts = new List<Item>();
         }
 
