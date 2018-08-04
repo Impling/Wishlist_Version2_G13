@@ -13,7 +13,9 @@ namespace WishlistManager.Models
         public User Receiver { get; set; }
         //public Boolean IsInvite { get; set; }              //Is invite to join wishlist or is request by friend to join wishlist, check if needed as property
         public Boolean IsAccepted { get; set; }            //not really needed if we delete messages that have been handled, however if we want to keep messagelog but not allow another accept we could use this
-        public Wishlist RelatedWishlist { get; set; }      //wishlist to join or invite to
+
+        public int? WishlistId { get; set; }
+        public virtual Wishlist RelatedWishlist { get; set; }      //wishlist to join or invite to
         public String MessageContent { get; set; }
         public DateTime DateCreated { get; set; }
 

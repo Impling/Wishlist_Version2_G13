@@ -15,7 +15,7 @@ namespace WishlistManager.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Message> messages {get; set;}
+        public DbSet<Message> Messages {get; set;}
 
         public DbSet<UserContact> Contacts { get; set; }
         public DbSet<WishlistParticipant> Participants { get; set; }
@@ -228,8 +228,9 @@ namespace WishlistManager.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            m.HasOne(t => t.RelatedWishlist)
+            m.HasOne(t => t.RelatedWishlist)        //Relationship is nullable
                 .WithMany()
+                .HasForeignKey(t => t.WishlistId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
