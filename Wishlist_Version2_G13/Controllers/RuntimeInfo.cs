@@ -35,10 +35,36 @@ namespace Wishlist_Version2_G13.Controllers
 
         }
 
-        public void SetUserInApp()
+        public void SetUserInApp(User u)
         {
-            AppController.User = this.LoggedInUser;
+            LoggedInUser = u;
+            LoggedInUserId = u.UserId;
+            AppController.SetupLoggedInUser(u);
             
+        }
+
+        public bool LoginUser(string email, string password) {  //Throw error on failure
+
+            //Check if user exists in database
+            User user = AppController.LoginUser(email, password);
+
+            if (user == null)
+            {
+                //Message: User not found in database please try again
+                return false;
+            }
+            else if (!user.Password.Equals(password))
+            {
+                //Message: The given password was incorrect.
+                return false;
+            }
+            else
+            {
+                //Message: Login successfull
+                SetUserInApp(user);
+                return true;
+            }
+
         }
 
         public void SetBounds(double height, double width)

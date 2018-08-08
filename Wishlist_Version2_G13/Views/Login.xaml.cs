@@ -39,20 +39,25 @@ namespace Wishlist_Version2_G13.Views
         public void LoginButton_Click(object sender, RoutedEventArgs e)
         {
 
-            const string GetUserEmailString = "Select Email From Users Where Users.FIRSTNAME = 'Victor'";
+            Runtime.LoginUser("Timo.spanhove@Hotmail.com", "Password1"); //Current strings for testing, replace with viewbox data later on 
 
+            /*
+            //TEST DB connection
             try
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
-                    context.Database.EnsureCreated();
-                    List<User> users = context.Users.ToList();
+                    context.Database.EnsureCreated();                    
+                    
+                    //DB connection tests
+
+                    //List<User> users = context.Users.ToList();
                     //context.Users.Add(new User("Testy", "Mctestface", "T.T@gmail.com", "Test1234"));
                     //context.SaveChanges();
 
                     //List<UserContact> userContacts = context.Contacts.ToList(); //Test get test
-                    List<User> contacts = context.Contacts.Where(c => c.UserId == users[0].UserId).Select(t => t.Contact).ToList(); //Test get test contact
-                    User contact = contacts[0];//Data passed from contact test
+                    //List<User> contacts = context.Contacts.Where(c => c.UserId == users[0].UserId).Select(t => t.Contact).ToList(); //Test get test contact
+                    //User contact = contacts[0];//Data passed from contact test
 
                 }
             }
@@ -60,29 +65,13 @@ namespace Wishlist_Version2_G13.Views
             {
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
+            */
 
-            try {
-                using (SqlConnection conn = Runtime.GetSqlServerConnection()) {
-                    conn.Open();
-                    if (conn.State == System.Data.ConnectionState.Open) {
-                        using (SqlCommand cmd = conn.CreateCommand()) {
-                            cmd.CommandText = GetUserEmailString;
-                            using (SqlDataReader reader = cmd.ExecuteReader()) {
-                                while (reader.Read()) {
-                                    var email = reader.GetString(0);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception eSql) {
-                Debug.WriteLine("Exception: " + eSql.Message);
-            }
+            //call get textfield password and textfield user, if validated => go to mainpage and set login user to logged in user in runtime
 
-            Runtime.LoggedInUserId = 1;
-            Runtime.LoggedInUser = Runtime.TestRepos.GetUsers().FirstOrDefault(u => u.UserId == 1);
-            Runtime.SetUserInApp();
+            //Runtime.LoggedInUserId = 1;
+            //Runtime.LoggedInUser = Runtime.TestRepos.GetUsers().FirstOrDefault(u => u.UserId == 1);
+            //Runtime.SetUserInApp();
             Frame.Navigate(typeof(MainPage)); //mainpage is own wishlists
         }
 

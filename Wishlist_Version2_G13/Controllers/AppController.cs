@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -18,16 +19,80 @@ namespace Wishlist_Version2_G13.Controllers
         public Item SelectedItem { get; set; }
 
         //Constructors
+        #region Constructors
         public AppController() { }
 
         public AppController(User loggedInUser)
         {
             User = loggedInUser;
         }
-
+        #endregion
 
         //Functions
-        //Function 1)AddContact - add contact to contactlist of logged in user via email address
+        #region Methods
+        public User LoginUser(string email, string password) {
+
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+
+                    return context.Users.First(u => string.Equals(u.Email, email, StringComparison.CurrentCultureIgnoreCase));
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+
+            return null;
+
+        }
+
+        public void SetupLoggedInUser(User u) {
+
+            User = u;
+
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+
+                    //Set Contact list
+                    User.Contacts = new ObservableCollection<User>(context.Contacts
+                                                                            .Where(c => c.UserId == User.UserId)
+                                                                            .Select(c => c.Contact)
+                                                                            .ToList()
+                                                                          as List<User>);
+
+                    //Set Wishlists
+                    User.Favorites =  context.OwnedWishlists.FirstOrDefault(ow => ow.IsFavorite && ow.OwnerId == User.UserId).Wishlist;
+                    User.MyWishlists = new ObservableCollection<Wishlist>(context.OwnedWishlists
+                                                                            .Where(ow => !ow.IsFavorite && ow.OwnerId == User.UserId)
+                                                                            .Select(ow => ow.Wishlist)
+                                                                            .ToList()
+                                                                          as List<Wishlist>);
+                    User.OthersWishlists = new ObservableCollection<Wishlist>(context.Participants
+                                                                            .Where(p => p.ParticipantId == User.UserId)
+                                                                            .Select(p => p.Wishlist)
+                                                                            .ToList()
+                                                                          as List<Wishlist>);
+                    //Set Notifications
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+
+        }
+
+
+
+        //Function )AddContact - add contact to contactlist of logged in user via email address
         public bool addContact(string email)//DIRECT ADDING, FIRST SEND REQUEST THEN ON CONFIRM ADD
         {
 
@@ -127,7 +192,7 @@ namespace Wishlist_Version2_G13.Controllers
             SelectedWishlist.addItem(i);
         }
 
-        
+        #endregion
 
     }
 
