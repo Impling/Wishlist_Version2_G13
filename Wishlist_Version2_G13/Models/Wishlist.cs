@@ -62,12 +62,14 @@ namespace Wishlist_Version2_G13.Models
             Title = title;
             Occasion = occasion;
             IsOpen = false;
+
+
         }
         public Wishlist(User owner, string title, string occasion, DateTime deadline) : this(title, occasion)
         {
             Owner = owner;
             Deadline = deadline;
-            DeadlineS = "Deadline: " + deadline.ToString("ddd dd/MM/yyyy");
+            SetDeadlineText();
         }
 
 
@@ -90,6 +92,17 @@ namespace Wishlist_Version2_G13.Models
         public void addItem(Item item)
         {
             Items.Add(item);
+        }
+
+        public void SetDeadlineText() {
+            if (Deadline.ToString("ddd dd/MM/yyyy").Equals("MON 01-01-0001"))
+            {
+                DeadlineS = "No deadline given.";
+            }
+            else {
+                DeadlineS = "Deadline: " + Deadline.ToString("ddd dd/MM/yyyy");
+            }
+                
         }
 
         #endregion
