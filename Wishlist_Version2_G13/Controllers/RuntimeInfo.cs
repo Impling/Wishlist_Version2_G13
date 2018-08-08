@@ -30,7 +30,7 @@ namespace Wishlist_Version2_G13.Controllers
 
         private RuntimeInfo()
         {
-            TestRepos = new TestRepository();
+            //TestRepos = new TestRepository();
             AppController = new AppController();
 
         }

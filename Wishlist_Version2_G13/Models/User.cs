@@ -39,18 +39,19 @@ namespace Wishlist_Version2_G13.Models
         //STill needs image added once db in order
 
         //Constructors
-        public User() { }
+        public User() {
+            Contacts = new ObservableCollection<User>();
+            Notifications = new ObservableCollection<Message>();
+            MyWishlists = new ObservableCollection<Wishlist>();
+            OthersWishlists = new ObservableCollection<Wishlist>();
+        }
 
-        public User(string firstname, string lastname, string email, string password)
+        public User(string firstname, string lastname, string email, string password) : this()
         {
             Firstname = firstname;
             Lastname = lastname;
             Email = email;
             Password = password;
-            Contacts = new ObservableCollection<User>();
-            Notifications = new ObservableCollection<Message>();
-            MyWishlists = new ObservableCollection<Wishlist>();
-            OthersWishlists = new ObservableCollection<Wishlist>();
             Favorites = new Wishlist("Mijn favoriete cadeau's", "General");
         }
 
