@@ -9,7 +9,7 @@ namespace WishlistManager.Models
     {
 
         public int MessageId { get; set; }
-        public int Sender { get; set; }               //Sender as id (multiple relations with same class not supported) - try foreign key
+        public int IdSender { get; set; }               //Sender as id (multiple relations with same class not supported) - try foreign key
         public User Receiver { get; set; }
         //public Boolean IsInvite { get; set; }              //Is invite to join wishlist or is request by friend to join wishlist, check if needed as property
         public Boolean IsAccepted { get; set; }            //not really needed if we delete messages that have been handled, however if we want to keep messagelog but not allow another accept we could use this
@@ -21,7 +21,7 @@ namespace WishlistManager.Models
 
         #region Constructors
         public Message(User sender, User receiver) {
-            Sender = sender.UserId;
+            IdSender = sender.UserId;
             Receiver = receiver;
 
             IsAccepted = false;

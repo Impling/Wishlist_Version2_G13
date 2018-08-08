@@ -48,8 +48,6 @@ namespace WishlistManager.Data
 
         #region Methods
 
-
-
         private void MapUserContact(EntityTypeBuilder<UserContact> uc) {
 
             uc.ToTable("UserContacts");
@@ -92,11 +90,11 @@ namespace WishlistManager.Data
             uw.HasKey(t => new { t.OwnerId, t.WishlistId });  //Use combo of id's for key values
 
             uw.HasOne(t => t.Owner)
-                .WithMany(w => w.MyWishlists);
+                .WithMany(w => w.OwnWishlists);
 
 
             uw.HasOne(t => t.Wishlist)
-                .WithOne(u => u.Owner)
+                .WithOne(u => u.WishlistOwner)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
 
@@ -156,7 +154,8 @@ namespace WishlistManager.Data
             //.HasDefaultValue(true);
 
             wl.HasMany(t => t.Gifts)
-                .WithOne(g => g.Wishlist)
+                //.WithOne(g => g.Wishlist)
+                .WithOne()
                 .HasForeignKey(g => g.ItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -186,7 +185,7 @@ namespace WishlistManager.Data
                  .HasColumnName("Picture")
                  .IsRequired(false);
 
-            i.Property(t => t.Category)
+            i.Property(t => t.CategoryName)
                  .HasColumnName("Category")
                  .IsRequired()
                  .HasMaxLength(30);

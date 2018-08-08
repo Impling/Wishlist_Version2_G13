@@ -20,6 +20,10 @@ namespace Wishlist_Version2_G13.Models
         public string Email { get; set; }                  //email of user, can be used to add user to contacts/friendlist
         public string Password { get; set; }
         public virtual ICollection<UserContact> UserContacts { get; set; }
+        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();                     //list of messages user recieved - could be determined by get by recipant id in messages
+        public virtual ICollection<UserWishlist> OwnWishlists { get; set; }                //Can be done from wishlist context get by ownerid
+        public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
+
 
         [NotMapped]
         public ObservableCollection<User> Contacts { get; set; }           //list of people the user can add to his wishlist (get from phone contact list or facebook account)

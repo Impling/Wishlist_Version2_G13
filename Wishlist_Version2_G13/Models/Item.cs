@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,13 @@ namespace Wishlist_Version2_G13.Models
         public string Description { get; set; }                //item description - semi optional when you give a store link
         public string WebLink { get; set; }                    //link to the item in an online store
         public string Image { get; set; }                      // hyperlink to image 
-        public Category Category { get; set; }                 //item category for filtering and determening order of item presentation
+        public Category CategoryName { get; set; }                 //item category for filtering and determening order of item presentation
+
+        public int? BuyerId { get; set; }
         public User Buyer { get; set; }                        //function isbought returns bool (if Buyer == null then not bought) - can multiple people buy same gift
+
+        [NotMapped]
+        public Category Category { get; set; }                 //item category for filtering and determening order of item presentation
 
         //Constructors
         public Item(string name, Category category)

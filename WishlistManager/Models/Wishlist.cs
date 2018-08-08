@@ -15,7 +15,7 @@ namespace WishlistManager.Models
         public bool IsOpen { get; set; }            //Bool for accesslevel of wishlist
         public DateTime Deadline { get; set; }      //Deadline wishlist event, ?Does this need to be a string for web service
 
-        public virtual UserWishlist Owner { get; set; }
+        public virtual UserWishlist WishlistOwner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
         public virtual List<Item> Gifts { get; set; }
 
@@ -65,7 +65,7 @@ namespace WishlistManager.Models
         */
         public void AddGift(Item gift) {
             Gifts.Add(gift);
-            gift.WishlistId = this.WishlistId;
+            //gift.WishlistId = this.WishlistId;
         }
 
         #endregion

@@ -19,7 +19,7 @@ namespace WishlistManager.Models
         public virtual ICollection<UserContact> Contacts { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; } = new List<Message>();                     //list of messages user recieved - could be determined by get by recipant id in messages
-        public virtual ICollection<UserWishlist> MyWishlists { get; set; }                //Can be done from wishlist context get by ownerid
+        public virtual ICollection<UserWishlist> OwnWishlists { get; set; }                //Can be done from wishlist context get by ownerid
         public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
 
 
@@ -31,7 +31,7 @@ namespace WishlistManager.Models
         #region Constructors
         protected User() {
             Contacts = new List<UserContact>();
-            MyWishlists = new List<UserWishlist>();
+            OwnWishlists = new List<UserWishlist>();
             OtherWishlists = new List<WishlistParticipant>();
             AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
             Messages = new List<Message>();
@@ -53,15 +53,15 @@ namespace WishlistManager.Models
         public void AddFavoriteWishlist(Wishlist wishlist)
         {
             UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, true);
-            MyWishlists.Add(userWishlist);
-            wishlist.Owner = userWishlist;
+            OwnWishlists.Add(userWishlist);
+            wishlist.WishlistOwner = userWishlist;
         }
 
         //Add personal wishlist
         public void AddOwnWishlist(Wishlist wishlist) {
             UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, false);
-            MyWishlists.Add(userWishlist);
-            wishlist.Owner = userWishlist;
+            OwnWishlists.Add(userWishlist);
+            wishlist.WishlistOwner = userWishlist;
         }
 
         //Add wishlist to closed wishlist you participate in
