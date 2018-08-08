@@ -25,6 +25,8 @@ namespace Wishlist_Version2_G13.Models
         public Category Category { get; set; }                 //item category for filtering and determening order of item presentation
 
         //Constructors
+        public Item(){}
+        
         public Item(string name, Category category)
         {
             Name = name;

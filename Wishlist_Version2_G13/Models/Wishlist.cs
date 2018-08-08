@@ -107,6 +107,9 @@ namespace Wishlist_Version2_G13.Models
         public int ParticipantId { get; set; }
         public virtual User Participant { get; set; }
 
+
+        public WishlistParticipant(){}
+        
         public WishlistParticipant(int wishlistId, int participantId, Wishlist wishlist, User participant)
         {
 
@@ -131,6 +134,9 @@ namespace Wishlist_Version2_G13.Models
         public virtual Wishlist Wishlist { get; set; }
 
         public bool IsFavorite { get; set; }
+
+        public UserWishlist() {}
+       
 
         public UserWishlist(int ownerId, int wishlistId, User owner, Wishlist wishlist, bool isFavorite)
         {

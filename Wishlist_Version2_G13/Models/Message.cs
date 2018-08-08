@@ -25,6 +25,8 @@ namespace Wishlist_Version2_G13.Models
         public User Sender { get; set; }
 
         #region Constructors
+        public Message(){}
+
         public Message(User sender, User receiver)
         {
             IdSender = sender.UserId;

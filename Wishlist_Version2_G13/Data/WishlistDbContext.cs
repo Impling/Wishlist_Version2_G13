@@ -196,7 +196,7 @@ namespace Wishlist_Version2_G13.Data
                  .HasColumnName("Picture")
                  .IsRequired(false);
 
-            i.Property(t => t.Category)
+            i.Property(t => t.CategoryName)
                  .HasColumnName("Category")
                  .IsRequired()
                  .HasMaxLength(30);
