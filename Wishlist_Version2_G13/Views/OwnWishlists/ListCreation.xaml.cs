@@ -63,7 +63,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             //Maybe relocate wishlist creatin into viewmodel and change addwishlist parameters to the data from the screen
             //Create wishlist for user and add to the logged in user, appcontroller connects to database and adds it there as well
             Wishlist w = new Wishlist(WishlistsViewModel.activeUser, Namelist.Text, NameOccasion.Text, eventDatePicker.Date.UtcDateTime);
-            w.IsOpen = checkboxPublic.IsChecked.Value;
+            w.IsOpen = !checkboxPublic.IsChecked.Value;
             WishlistsViewModel.AddWishlist(w);
             Frame.Navigate(typeof(Wishlists), WishlistsViewModel.activeUser);
         }

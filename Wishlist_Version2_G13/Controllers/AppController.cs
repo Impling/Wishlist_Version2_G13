@@ -175,11 +175,17 @@ namespace Wishlist_Version2_G13.Controllers
 
         }
 
-
-        //Function 2)AddWishlist - add wishlist to currently logged in user widouth users or items
-        public void addWishlist(Wishlist w)
+        //Function) AddWishlist - add wishlist to currently logged in user widouth users or items
+        public void addWishlist(Wishlist w, bool isFavorite)
         {
-            this.User.addWishlist(w);
+            CreateWishlist(w, isFavorite);
+            User.addWishlist(w);        //Prepare for calling UpdateUser Method
+            UpdateLoggedInUser();
+        }
+        //Function remove wishlist
+        public void RemoveWishlist(Wishlist w) {
+            User.MyWishlists.Remove(w);
+            DeleteWishlist(w);
         }
 
         public void addWishlist(string title, string occasion, DateTime deadline)
@@ -230,7 +236,7 @@ namespace Wishlist_Version2_G13.Controllers
         #endregion
 
         //DB METHODS
-        #region DBmethods GET
+        #region DBmethods GET/READ
         public User GetUserById(int userId)
         {
             try
@@ -449,6 +455,98 @@ namespace Wishlist_Version2_G13.Controllers
 
         #endregion
 
+        #region DBMethods POST/CREATE
+        public void CreateUser(User u) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+        public void CreateWishlist(Wishlist w, bool favorite) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    //Update joined table
+                    UserWishlist uw = new UserWishlist(User.UserId, w.WishlistId, User, w, favorite);
+                    context.OwnedWishlists.Add(uw);
+                    w.WishlistOwner = uw;
+
+                    context.Wishlists.Add(w);
+                    context.SaveChanges();
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+        #endregion
+
+        #region DBMethods PUT/UPDATE
+        public void UpdateLoggedInUser()
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Update(User);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+        public void UpdateUser(User u) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
+        #endregion
+
+        #region DBMethods REMOVE/DELETE
+        public void DeleteWishlist(Wishlist w)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    UserWishlist uw = context.OwnedWishlists.FirstOrDefault(ow => ow.OwnerId == User.UserId && ow.WishlistId == w.WishlistId);
+                    context.Remove(uw);
+
+                    context.Remove(w);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
+        #endregion
 
     }
 
