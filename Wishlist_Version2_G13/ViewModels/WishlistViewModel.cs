@@ -26,14 +26,16 @@ namespace Wishlist_Version2_G13.ViewModels
             Runtime = RuntimeInfo.Instance;
 
             activeUser = Runtime.LoggedInUser;
-            selectedWishlist = Runtime.SetupSelectedWishlist(w);
+            Runtime.SetupSelectedWishlist(w);
+            selectedWishlist = Runtime.AppController.SelectedWishlist;
             removeItemCommand = new RemoveWishlistItemCommand(this);
             buyItemCommand = new BuyItemCommand(this);
         }
 
         public void AddItem(Item item)
         {
-            selectedWishlist.Items.Add(item);
+            //selectedWishlist.Items.Add(item);
+            Runtime.AppController.AddItem(item);
         }
 
         public void AddBuyers(List<User> buyers)
@@ -46,7 +48,8 @@ namespace Wishlist_Version2_G13.ViewModels
 
         public void RemoveItem()
         {
-            selectedWishlist.Items.Remove(seletedItem);
+            //selectedWishlist.Items.Remove(seletedItem);
+            Runtime.AppController.RemoveItem(seletedItem);
         }
 
         public void BuyItem()

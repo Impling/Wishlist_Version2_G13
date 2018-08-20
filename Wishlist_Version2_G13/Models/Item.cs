@@ -14,7 +14,9 @@ namespace Wishlist_Version2_G13.Models
     {
 
         //Variable declaration with getters and setters
-        public int ItemId { get; set; }                        //id of item
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? ItemId { get; set; }                        //id of item
         public string Name { get; set; }                       //name of the item
         public string Description { get; set; }                //item description - semi optional when you give a store link
         public string WebLink { get; set; }                    //link to the item in an online store
@@ -34,10 +36,11 @@ namespace Wishlist_Version2_G13.Models
         //Constructors
         public Item(){}
         
-        public Item(string name, Category category)
+        public Item(string name, Category category) : this()
         {
             Name = name;
             Category = category;
+            CategoryName = category.ToString();
             Image = "/Images/testImage.png"; //placeholder value to prevent uri conversion error
             WebLink = "https://stackoverflow.com/questions/2552853/how-to-bind-multiple-values-to-a-single-wpf-textblock";  //placeholder weblink to prevent uri conversion error - look into how to disable when no weblink given
         }

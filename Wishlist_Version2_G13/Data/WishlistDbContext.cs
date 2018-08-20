@@ -142,6 +142,7 @@ namespace Wishlist_Version2_G13.Data
         {
             //Set table name
             wl.ToTable("Wishlists");
+            
             //Map primary key
             wl.HasKey(t => t.WishlistId);
             //Properties
@@ -164,10 +165,11 @@ namespace Wishlist_Version2_G13.Data
             //.HasDefaultValue(true);
 
             /*
-            wl.HasMany(t => t.Gifts)
+            wl.HasMany(t => t.Items)
                 //.WithOne(g => g.Wishlist)
                 .WithOne()
-                //.HasForeignKey<Wishlist>(g => g.ItemId)
+                .HasForeignKey(t => t.List)
+                .HasConstraintName("ForeignKey_Wishlist_Item")
                 .OnDelete(DeleteBehavior.Cascade);
             */
 
@@ -207,10 +209,11 @@ namespace Wishlist_Version2_G13.Data
                 .HasColumnName("List");
 
             i.HasOne(t => t.Buyer)
-                .WithOne()
+                .WithOne().IsRequired(false)
                 .HasForeignKey<Item>(t => t.BuyerId)
                 .HasConstraintName("ForeignKey_Item_User")
                 .OnDelete(DeleteBehavior.Restrict);
+                
             /*
             i.HasOne(t => t.Wishlist)
                 .WithOne()

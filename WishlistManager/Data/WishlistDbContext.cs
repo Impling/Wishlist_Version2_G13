@@ -153,6 +153,7 @@ namespace WishlistManager.Data
                 .IsRequired();
             //.HasDefaultValue(true);
 
+            
             wl.HasMany(t => t.Gifts)
                 //.WithOne(g => g.Wishlist)
                 .WithOne()
@@ -191,8 +192,7 @@ namespace WishlistManager.Data
                  .HasMaxLength(30);
 
             i.Property(t => t.List)
-                 .HasColumnName("List")
-                 .IsRequired();
+                 .HasColumnName("List");
 
             i.HasOne(t => t.Buyer)
                 .WithOne()

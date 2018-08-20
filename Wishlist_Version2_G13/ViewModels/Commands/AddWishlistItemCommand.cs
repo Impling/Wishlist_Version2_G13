@@ -27,7 +27,11 @@ namespace Wishlist_Version2_G13.ViewModels.Commands
 
         public void Execute(object item)
         {
-            _wishViewModel.AddItem(item as Item);
+            //_wishViewModel.AddItem(item as Item);
+
+            Item subItem = item as Item;
+            Item i = new Item(subItem.Name, subItem.Category, subItem.Description, subItem.WebLink);
+            _wishViewModel.AddItem(i);
         }
     }
 }

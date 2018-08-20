@@ -19,8 +19,6 @@ namespace Wishlist_Version2_G13.Models
         public string Occasion { get; set; }
         public Boolean IsOpen { get; set; }
         public DateTime Deadline { get; set; }         //deadline of event, when it takes place, maybe allow for days before so everything is in order before the deadline
-
-
         public virtual UserWishlist WishlistOwner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
         [NotMapped]
@@ -28,10 +26,8 @@ namespace Wishlist_Version2_G13.Models
 
         [NotMapped]
         public User Owner { get; set; }                    //user that made the wishlist
-
         [NotMapped]
         public string DeadlineS { get; set; }
-
         [NotMapped]
         private ObservableCollection<User> _buyers = new ObservableCollection<User>();
         //private List<Item> _items = new List<Item>();
@@ -98,7 +94,10 @@ namespace Wishlist_Version2_G13.Models
         //Function 2)AddItem
         public void addItem(Item item)
         {
+            item.List = this.WishlistId;
             Items.Add(item);
+            Gifts.Add(item);
+
         }
 
         public void SetDeadlineText() {

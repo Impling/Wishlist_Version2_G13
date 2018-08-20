@@ -54,15 +54,12 @@ namespace Wishlist_Version2_G13.ViewModels
         //Button action functions
         public void AddWishlist(Wishlist wishlist)
         {
-            
-            //activeUser.MyWishlists.Add(wishlist);
             Runtime.AppController.addWishlist(wishlist, false); //Add wishlist as a (false) non-favorite wishlist
             Sort();
         }
 
         public void RemoveWishlistCommand()
         {
-            //activeUser.MyWishlists.Remove(SelectedWishlist);
             Runtime.AppController.RemoveWishlist(SelectedWishlist);
         }
 

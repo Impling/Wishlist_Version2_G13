@@ -51,7 +51,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
         private void SelectionChanged_WishlistItem(object sender, SelectionChangedEventArgs e)
         {
 
-            if (myWishlistItems.SelectedItem != null && WishlistViewModel.selectedWishlist.Owner == Runtime.LoggedInUser)
+            if (myWishlistItems.SelectedItem != null && WishlistViewModel.selectedWishlist.Owner.UserId == Runtime.LoggedInUser.UserId)
             {
                 ButtonRemove.Visibility = Visibility.Visible;
             }
@@ -76,7 +76,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             {
                 selectedItemContainer.ContentTemplate = (DataTemplate)this.Resources["SelectedItemView"];
             }
-            if (WishlistViewModel.selectedWishlist.Owner != Runtime.LoggedInUser)
+            if (WishlistViewModel.selectedWishlist.Owner.UserId != Runtime.LoggedInUser.UserId)
             {
 
                 if (WishlistViewModel.seletedItem.Buyer != null || WishlistViewModel.CheckUserAlreadyBought())//as long as item has been bought no need to show buybutton  or if active user has bought an item in the wishlist already
@@ -91,6 +91,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
                 }
             }
 
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -101,7 +102,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             {
                 WishlistViewModel = new WishlistViewModel(selectedWishlist);
                 DataContext = WishlistViewModel;
-                if (selectedWishlist.Owner != Runtime.LoggedInUser)
+                if (selectedWishlist.Owner.UserId != Runtime.LoggedInUser.UserId)
                 {
                     ButtonAdd.Visibility = Visibility.Collapsed;
                     ButtonAddBuyer.Visibility = Visibility.Collapsed;

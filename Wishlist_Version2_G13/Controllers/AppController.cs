@@ -104,6 +104,7 @@ namespace Wishlist_Version2_G13.Controllers
                     //Set Wishlist owner
                     SelectedWishlist.Owner = GetOwnerByWishlistId(SelectedWishlist.WishlistId);
                     //Set Items of wishlist
+                    SelectedWishlist.Items = new ObservableCollection<Item>();
                     foreach (Item i in GetItemsByWishlistId(SelectedWishlist.WishlistId)) {
                         i.SetCategory();
                         SelectedWishlist.Items.Add(i);
@@ -231,6 +232,18 @@ namespace Wishlist_Version2_G13.Controllers
         public void AddItem(Item i)
         {
             SelectedWishlist.addItem(i);
+            UpdateWishlist(SelectedWishlist);
+
+            CreateItem(i);
+
+            UpdateItem(i);
+            
+        }
+        public void RemoveItem(Item i)
+        {
+            SelectedWishlist.Items.Remove(i);
+            DeleteItem(i);
+            UpdateWishlist(SelectedWishlist);
         }
 
         #endregion
@@ -490,6 +503,21 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
+
+        public void CreateItem(Item i) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Items.Add(i);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
         #endregion
 
         #region DBMethods PUT/UPDATE
@@ -513,8 +541,8 @@ namespace Wishlist_Version2_G13.Controllers
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
-                    
-
+                    context.Update(u);
+                    context.SaveChanges();
                 }
             }
             catch (Exception eContext)
@@ -523,6 +551,36 @@ namespace Wishlist_Version2_G13.Controllers
             }
         }
 
+        public void UpdateWishlist(Wishlist w) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Update(w);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
+        public void UpdateItem(Item i) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Update(i);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+ 
         #endregion
 
         #region DBMethods REMOVE/DELETE
@@ -536,7 +594,27 @@ namespace Wishlist_Version2_G13.Controllers
                     UserWishlist uw = context.OwnedWishlists.FirstOrDefault(ow => ow.OwnerId == User.UserId && ow.WishlistId == w.WishlistId);
                     context.Remove(uw);
 
+                    foreach (Item i in GetItemsByWishlistId(w.WishlistId)) {
+                        DeleteItem(i);
+                    }
+
                     context.Remove(w);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
+        public void DeleteItem(Item i)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Remove(i);
                     context.SaveChanges();
                 }
             }
