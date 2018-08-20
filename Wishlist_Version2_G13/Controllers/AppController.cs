@@ -91,6 +91,40 @@ namespace Wishlist_Version2_G13.Controllers
 
         }
 
+        public void SetupSelectedWishlist(Wishlist w) {
+
+            SelectedWishlist = w;
+
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+
+                    //Set Wishlist owner
+                    SelectedWishlist.Owner = GetOwnerByWishlistId(SelectedWishlist.WishlistId);
+                    //Set Items of wishlist
+                    foreach (Item i in GetItemsByWishlistId(SelectedWishlist.WishlistId)) {
+                        i.SetCategory();
+                        SelectedWishlist.Items.Add(i);
+                    }
+                    //Set Wishlist participants
+                    foreach (User u in GetParticipantsByWishlistId(SelectedWishlist.WishlistId)) {
+                        SelectedWishlist.Buyers.Add(u);
+                    }
+
+
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+
+
+        }
+
 
 
         //Function )AddContact - add contact to contactlist of logged in user via email address
@@ -354,6 +388,62 @@ namespace Wishlist_Version2_G13.Controllers
                 return null;
             }
 
+        }
+        public User GetOwnerByWishlistId(int wishlistId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    int ownerId = context.OwnedWishlists.FirstOrDefault(ow => ow.WishlistId == wishlistId).OwnerId;
+                    return GetUserById(ownerId);
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
+        }
+        public List<Item> GetItemsByWishlistId(int wishlistId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    List<Item> gifts = new List<Item>();
+                    context.Database.EnsureCreated();
+                    gifts = context.Items
+                                        .Where(i => i.List == wishlistId)
+                                        .ToList();
+                    //ObservableCollection<Item> gifts = new ObservableCollection<Item>(context.Items.Where(i => w.WishlistId == wishlistId).Select(w => w.Gifts) as List<Item>);
+                    return gifts;
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
+        }
+        public List<User> GetParticipantsByWishlistId(int wishlistId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    List< User> participants = new List<User>();
+
+                    List<int> particpantIds = context.Participants.Where(p => p.WishlistId == wishlistId).Select(p => p.ParticipantId).ToList();
+                    foreach (int id in particpantIds) {
+                        participants.Add(context.Users.FirstOrDefault(u => u.UserId == id));
+                    }
+
+                    return participants;
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
         }
 
 

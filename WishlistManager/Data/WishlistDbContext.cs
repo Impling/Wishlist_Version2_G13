@@ -190,6 +190,10 @@ namespace WishlistManager.Data
                  .IsRequired()
                  .HasMaxLength(30);
 
+            i.Property(t => t.List)
+                 .HasColumnName("List")
+                 .IsRequired();
+
             i.HasOne(t => t.Buyer)
                 .WithOne()
                 .HasForeignKey<Item>(t => t.BuyerId)

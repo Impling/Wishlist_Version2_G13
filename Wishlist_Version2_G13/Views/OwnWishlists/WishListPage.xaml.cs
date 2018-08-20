@@ -96,6 +96,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Wishlist selectedWishlist = e.Parameter as Wishlist;
+
             if (selectedWishlist != null)
             {
                 WishlistViewModel = new WishlistViewModel(selectedWishlist);
@@ -105,8 +106,6 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
                     ButtonAdd.Visibility = Visibility.Collapsed;
                     ButtonAddBuyer.Visibility = Visibility.Collapsed;
                     ButtonRemove.Visibility = Visibility.Collapsed;
-
-
                 }
             }
             else

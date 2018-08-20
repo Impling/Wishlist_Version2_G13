@@ -64,8 +64,8 @@ namespace WishlistManager.Models
         }
         */
         public void AddGift(Item gift) {
+            gift.List = this.WishlistId;
             Gifts.Add(gift);
-            //gift.WishlistId = this.WishlistId;
         }
 
         #endregion

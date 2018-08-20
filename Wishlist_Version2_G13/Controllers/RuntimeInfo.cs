@@ -43,6 +43,12 @@ namespace Wishlist_Version2_G13.Controllers
             
         }
 
+        public Wishlist SetupSelectedWishlist(Wishlist w) {
+            AppController.SetupSelectedWishlist(w);
+            return AppController.SelectedWishlist;
+
+        }
+
         public bool LoginUser(string email, string password) {  //Throw error on failure
 
             //Check if user exists in database

@@ -17,7 +17,7 @@ namespace WishlistManager.Models
 
         public int? BuyerId { get; set; }
         public virtual User Buyer { get; set; }           //Id of user that bought the item
-        //public int WishlistId { get; set; }
+        public int List { get; set; }
         //public Wishlist  Wishlist{ get; set; }        //Id of Wishlist item belongs to, item should not be shared between wishlists as the users create their own, so even for the same gift the information should vary.
         #endregion
 

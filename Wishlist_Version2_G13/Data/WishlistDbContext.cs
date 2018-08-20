@@ -163,18 +163,20 @@ namespace Wishlist_Version2_G13.Data
                 .IsRequired();
             //.HasDefaultValue(true);
 
+            /*
             wl.HasMany(t => t.Gifts)
                 //.WithOne(g => g.Wishlist)
                 .WithOne()
-                .HasForeignKey(g => g.ItemId)
+                //.HasForeignKey<Wishlist>(g => g.ItemId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            */
 
         }
         private void MapItems(EntityTypeBuilder<Item> i)
         {
             //Set table name
             i.ToTable("Items");
+            
             //Map primary key
             i.HasKey(t => t.ItemId);
             //Properties
@@ -200,6 +202,9 @@ namespace Wishlist_Version2_G13.Data
                  .HasColumnName("Category")
                  .IsRequired()
                  .HasMaxLength(30);
+
+            i.Property(t => t.List)
+                .HasColumnName("List");
 
             i.HasOne(t => t.Buyer)
                 .WithOne()

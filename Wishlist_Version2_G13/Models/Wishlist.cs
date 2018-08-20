@@ -23,6 +23,7 @@ namespace Wishlist_Version2_G13.Models
 
         public virtual UserWishlist WishlistOwner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
+        [NotMapped]
         public virtual List<Item> Gifts { get; set; }
 
         [NotMapped]
@@ -57,6 +58,12 @@ namespace Wishlist_Version2_G13.Models
         #endregion
 
         //Constructors
+        public Wishlist() {
+            Gifts = new List<Item>();
+            Items = new ObservableCollection<Item>();
+            Buyers = new ObservableCollection<User>();
+        }
+
         public Wishlist(string title, string occasion)  //constructor for favorite wishlist, as those dont have a deadline
         {
             Title = title;
