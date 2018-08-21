@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,9 @@ namespace Wishlist_Version2_G13.Models
     {
         #region Properties
         //Variable declaration with getters and setters
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("WishlistId")]
         public int WishlistId { get; set; }                //id of whislist
         private String _title = "testtitle";
         public String Title { get { return _title; } set { _title = value; NotifyPropertyChanged("Title"); } }                   //name of wishlist
@@ -21,8 +25,7 @@ namespace Wishlist_Version2_G13.Models
         public DateTime Deadline { get; set; }         //deadline of event, when it takes place, maybe allow for days before so everything is in order before the deadline
         public virtual UserWishlist WishlistOwner { get; set; }
         public virtual ICollection<WishlistParticipant> Participants { get; set; }
-        [NotMapped]
-        public virtual List<Item> Gifts { get; set; }
+        public virtual ICollection<WishlistItem> Gifts { get; set; }
 
         [NotMapped]
         public User Owner { get; set; }                    //user that made the wishlist
@@ -55,7 +58,10 @@ namespace Wishlist_Version2_G13.Models
 
         //Constructors
         public Wishlist() {
-            Gifts = new List<Item>();
+            IsOpen = true;                  //already set in buildmodel
+            Deadline = new DateTime();      //If not set use default datetime
+            Participants = new List<WishlistParticipant>();
+            Gifts = new List<WishlistItem>();
             Items = new ObservableCollection<Item>();
             Buyers = new ObservableCollection<User>();
         }
@@ -94,9 +100,10 @@ namespace Wishlist_Version2_G13.Models
         //Function 2)AddItem
         public void addItem(Item item)
         {
-            item.List = this.WishlistId;
+            Gifts.Add(new WishlistItem(item.ItemId, this.WishlistId, item, this));
+            //item.List = this.WishlistId;
             Items.Add(item);
-            Gifts.Add(item);
+            //Gifts.Add(item);
 
         }
 
@@ -168,6 +175,28 @@ namespace Wishlist_Version2_G13.Models
 
             IsFavorite = isFavorite;
 
+        }
+
+    }
+
+    public class WishlistItem
+    {
+        public int ItemId { get; set; }
+        public virtual Item Item { get; set; }
+
+        public int WishlistId { get; set; }
+        public virtual Wishlist Wishlist { get; set; }
+
+        public WishlistItem() { }
+
+        public WishlistItem(int wishId, int wishlistId, Item wish, Wishlist wishlist)
+        {
+
+            ItemId = wishId;
+            WishlistId = wishlistId;
+
+            Item = wish;
+            Wishlist = wishlist;
         }
 
     }

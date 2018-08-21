@@ -14,9 +14,10 @@ namespace Wishlist_Version2_G13.Models
     {
 
         //Variable declaration with getters and setters
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? ItemId { get; set; }                        //id of item
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("ItemId")]
+        public int ItemId { get; set; }                        //id of item
         public string Name { get; set; }                       //name of the item
         public string Description { get; set; }                //item description - semi optional when you give a store link
         public string WebLink { get; set; }                    //link to the item in an online store
@@ -26,8 +27,8 @@ namespace Wishlist_Version2_G13.Models
         public int? BuyerId { get; set; }
         [NotMapped]
         public User Buyer { get; set; }                        //function isbought returns bool (if Buyer == null then not bought) - can multiple people buy same gift
-        public int List { get; set; }
-
+        [NotMapped]
+        public virtual WishlistItem Wishlist {get;set;}
 
 
         [NotMapped]

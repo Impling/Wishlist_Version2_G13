@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,8 +33,11 @@ namespace Wishlist_Version2_G13.Views
 
         public Login()
         {
+
             this.InitializeComponent();
             Runtime = RuntimeInfo.Instance;
+            Runtime.RefreshSize();
+
         }
 
         public void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -75,7 +79,10 @@ namespace Wishlist_Version2_G13.Views
             Frame.Navigate(typeof(MainPage)); //mainpage is own wishlists
         }
 
-
+        private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+        {
+            Runtime.RefreshSize();
+        }
 
     }
 

@@ -105,10 +105,14 @@ namespace Wishlist_Version2_G13.Controllers
                     SelectedWishlist.Owner = GetOwnerByWishlistId(SelectedWishlist.WishlistId);
                     //Set Items of wishlist
                     SelectedWishlist.Items = new ObservableCollection<Item>();
+                    SelectedWishlist.Gifts = new ObservableCollection<WishlistItem>();
+
                     foreach (Item i in GetItemsByWishlistId(SelectedWishlist.WishlistId)) {
                         i.SetCategory();
                         SelectedWishlist.Items.Add(i);
+                        SelectedWishlist.Gifts.Add(context.WishlistItems.FirstOrDefault(wi => wi.ItemId==i.ItemId && wi.WishlistId==SelectedWishlist.WishlistId));
                     }
+                    
                     //Set Wishlist participants
                     foreach (User u in GetParticipantsByWishlistId(SelectedWishlist.WishlistId)) {
                         SelectedWishlist.Buyers.Add(u);
@@ -189,55 +193,12 @@ namespace Wishlist_Version2_G13.Controllers
             DeleteWishlist(w);
         }
 
-        public void addWishlist(string title, string occasion, DateTime deadline)
-        {
-            Wishlist w = new Wishlist(this.User, title, occasion, deadline);
-        }
-        //Function 3)AddWishlist - add wishlist to currently logged in user with users including contacts you wish to add
-        public void addWishlist(string title, string occasion, DateTime deadline, List<User> buyers)
-        {
-            Wishlist w = new Wishlist(this.User, title, occasion, deadline);
-            foreach (User b in buyers)
-            {
-                w.addBuyer(b);
-            }
-        }
-        //Function 4)AddWishlist - add wishlist to currently logged in user widouth users but with items
-        public void addWishlist(string title, string occasion, DateTime deadline, List<Item> items)
-        {
-            Wishlist w = new Wishlist(this.User, title, occasion, deadline);
-            foreach (Item i in items)
-            {
-                w.addItem(i);
-            }
 
-        }
-        //Function 5)AddWishlist - add wishlist to currently logged in user with users but with items
-        public void addWishlist(string title, string occasion, DateTime deadline, List<User> buyers, List<Item> items)
-        {
-            Wishlist w = new Wishlist(this.User, title, occasion, deadline);
-            foreach (User b in buyers)
-            {
-                w.addBuyer(b);
-            }
-            foreach (Item i in items)
-            {
-                w.addItem(i);
-            }
-        }
-
-
-        //Function 6)GetOwnWishlist
 
         public void AddItem(Item i)
         {
-            SelectedWishlist.addItem(i);
-            UpdateWishlist(SelectedWishlist);
-
-            CreateItem(i);
-
-            UpdateItem(i);
-            
+            WishlistItem wi = new WishlistItem(i.ItemId, SelectedWishlist.WishlistId, i, null); //Set null for wishlistobject or errors on attempted id overwrite will pop up
+            AddWishlistItem(wi);
         }
         public void RemoveItem(Item i)
         {
@@ -428,11 +389,16 @@ namespace Wishlist_Version2_G13.Controllers
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
+                    List<int> giftIds = new List<int>();
                     List<Item> gifts = new List<Item>();
-                    context.Database.EnsureCreated();
-                    gifts = context.Items
-                                        .Where(i => i.List == wishlistId)
+                    giftIds = context.WishlistItems
+                                        .Where(wi => wi.WishlistId == wishlistId)
+                                        .Select(wi => wi.ItemId)
                                         .ToList();
+
+                    foreach (int id in giftIds) {
+                        gifts.Add(context.Items.FirstOrDefault(i => i.ItemId == id));
+                    }
                     //ObservableCollection<Item> gifts = new ObservableCollection<Item>(context.Items.Where(i => w.WishlistId == wishlistId).Select(w => w.Gifts) as List<Item>);
                     return gifts;
                 }
@@ -509,8 +475,47 @@ namespace Wishlist_Version2_G13.Controllers
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
+
                     context.Items.Add(i);
                     context.SaveChanges();
+
+                    
+                    //context.WishlistItems.Add(wi);
+                    //context.Update(SelectedWishlist);
+                    //context.SaveChanges();
+
+                    //i.Wishlist = wi;
+                    //UpdateItem(i);
+
+                    /*
+                    WishlistItem wi = new WishlistItem(i.ItemId, SelectedWishlist.WishlistId, i, SelectedWishlist);
+                    context.WishlistItems.Add(wi);
+                    i.Wishlist = wi;
+                    // SelectedWishlist.Gifts.Add(wi);
+                    //context.SaveChanges();
+                    context.Items.Add(i);
+                    context.Update(SelectedWishlist);
+                    context.Update(wi);
+                    context.SaveChanges();
+                    */
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
+        public void AddWishlistItem(WishlistItem wi)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    context.WishlistItems.Add(wi);
+                    context.SaveChanges();
+
                 }
             }
             catch (Exception eContext)
@@ -593,10 +598,13 @@ namespace Wishlist_Version2_G13.Controllers
 
                     UserWishlist uw = context.OwnedWishlists.FirstOrDefault(ow => ow.OwnerId == User.UserId && ow.WishlistId == w.WishlistId);
                     context.Remove(uw);
-
-                    foreach (Item i in GetItemsByWishlistId(w.WishlistId)) {
-                        DeleteItem(i);
+                    
+                    if (GetItemsByWishlistId(w.WishlistId)!= null || GetItemsByWishlistId(w.WishlistId).Count > 0) {
+                        foreach (Item i in GetItemsByWishlistId(w.WishlistId)) {
+                          DeleteItem(i);
+                        }
                     }
+                    
 
                     context.Remove(w);
                     context.SaveChanges();
@@ -614,6 +622,9 @@ namespace Wishlist_Version2_G13.Controllers
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
+                    WishlistItem wi = context.WishlistItems.FirstOrDefault(wis => wis.ItemId == i.ItemId && wis.WishlistId == SelectedWishlist.WishlistId);
+                    context.Remove(wi);
+
                     context.Remove(i);
                     context.SaveChanges();
                 }

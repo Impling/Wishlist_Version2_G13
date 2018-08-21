@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 using Wishlist_Version2_G13.Data;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.Repository;
@@ -33,6 +35,8 @@ namespace Wishlist_Version2_G13.Controllers
             //TestRepos = new TestRepository();
             AppController = new AppController();
 
+            //get screen dimensions
+            //RefreshSize();
         }
 
         public void SetUserInApp(User u)
@@ -69,6 +73,13 @@ namespace Wishlist_Version2_G13.Controllers
                 return true;
             }
 
+        }
+
+        public void RefreshSize() {
+            //Set screen dimensions
+            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            SetBounds(bounds.Height * scaleFactor, bounds.Width * scaleFactor);
         }
 
         public void SetBounds(double height, double width)
