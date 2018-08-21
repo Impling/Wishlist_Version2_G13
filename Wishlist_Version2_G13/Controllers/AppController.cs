@@ -44,6 +44,7 @@ namespace Wishlist_Version2_G13.Controllers
             catch (Exception eContext)
             {
                 Debug.WriteLine("Exception: " + eContext.Message);
+                
             }
 
             return null;
@@ -440,7 +441,8 @@ namespace Wishlist_Version2_G13.Controllers
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
-
+                    context.Users.Add(u);
+                    context.SaveChanges();
                 }
             }
             catch (Exception eContext)

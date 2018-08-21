@@ -43,7 +43,10 @@ namespace Wishlist_Version2_G13.Models
             Contacts = new ObservableCollection<User>();
             Notifications = new ObservableCollection<Message>();
             MyWishlists = new ObservableCollection<Wishlist>();
+            OwnWishlists = new List<UserWishlist>();
             OthersWishlists = new ObservableCollection<Wishlist>();
+            AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
+            Messages = new List<Message>();
         }
 
         public User(string firstname, string lastname, string email, string password) : this()
@@ -52,7 +55,6 @@ namespace Wishlist_Version2_G13.Models
             Lastname = lastname;
             Email = email;
             Password = password;
-            Favorites = new Wishlist("Mijn favoriete cadeau's", "General");
         }
 
 
@@ -64,6 +66,7 @@ namespace Wishlist_Version2_G13.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+        #region Methods
         //Functions
         //Function 1)GetFullName
         public string getFullName()
@@ -71,6 +74,23 @@ namespace Wishlist_Version2_G13.Models
             string fullname = String.Format("{0} {1}", Firstname, Lastname);
             return fullname;
         }
+
+        //Add personal Favorite wishlist
+        public void AddFavoriteWishlist(Wishlist wishlist)
+        {
+            UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, true);
+            OwnWishlists.Add(userWishlist);
+            wishlist.WishlistOwner = userWishlist;
+        }
+
+        //Add personal wishlist
+        public void AddOwnWishlist(Wishlist wishlist)
+        {
+            UserWishlist userWishlist = new UserWishlist(this.UserId, wishlist.WishlistId, this, wishlist, false);
+            OwnWishlists.Add(userWishlist);
+            wishlist.WishlistOwner = userWishlist;
+        }
+
 
         //Function 2)AddContact - add single user to contact list
         public void addContact(User contact)
@@ -117,6 +137,8 @@ namespace Wishlist_Version2_G13.Models
         {
             Favorites.Items = gifts;
         }
+        #endregion
+
 
     }
 

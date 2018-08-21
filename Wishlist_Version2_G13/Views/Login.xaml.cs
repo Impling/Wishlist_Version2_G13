@@ -42,41 +42,26 @@ namespace Wishlist_Version2_G13.Views
 
         public void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            txtError.Visibility = Visibility.Collapsed;
+            int success = Runtime.LoginUser(txtEmail.Text, txtPassword.Password.ToString());
 
-            Runtime.LoginUser("Timo.spanhove@Hotmail.com", "Password1"); //Current strings for testing, replace with viewbox data later on 
-
-            /*
-            //TEST DB connection
-            try
+            if (success == 1)
             {
-                using (WishlistDbContext context = new WishlistDbContext())
-                {
-                    context.Database.EnsureCreated();                    
-                    
-                    //DB connection tests
-
-                    //List<User> users = context.Users.ToList();
-                    //context.Users.Add(new User("Testy", "Mctestface", "T.T@gmail.com", "Test1234"));
-                    //context.SaveChanges();
-
-                    //List<UserContact> userContacts = context.Contacts.ToList(); //Test get test
-                    //List<User> contacts = context.Contacts.Where(c => c.UserId == users[0].UserId).Select(t => t.Contact).ToList(); //Test get test contact
-                    //User contact = contacts[0];//Data passed from contact test
-
-                }
+                txtError.Text = "User not found in Database.";
             }
-            catch (Exception eContext)
+            else if (success == 2)
             {
-                Debug.WriteLine("Exception: " + eContext.Message);
+                txtError.Text = "Password incorrect.";
             }
-            */
-
-            //call get textfield password and textfield user, if validated => go to mainpage and set login user to logged in user in runtime
-
-            //Runtime.LoggedInUserId = 1;
-            //Runtime.LoggedInUser = Runtime.TestRepos.GetUsers().FirstOrDefault(u => u.UserId == 1);
-            //Runtime.SetUserInApp();
-            Frame.Navigate(typeof(MainPage)); //mainpage is own wishlists
+            else if (success == 3)
+            {
+                Frame.Navigate(typeof(MainPage)); //mainpage is own wishlists
+            }
+            else {
+                txtError.Text = "Unknown Error";
+            }
+            txtError.Visibility = Visibility.Visible;
+   
         }
 
         private void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -84,6 +69,10 @@ namespace Wishlist_Version2_G13.Views
             Runtime.RefreshSize();
         }
 
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(Register));
+        }
     }
 
 }

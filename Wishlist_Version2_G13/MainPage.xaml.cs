@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Wishlist_Version2_G13.Controllers;
+using Wishlist_Version2_G13.Views;
 using Wishlist_Version2_G13.Views.OtherWishlists;
 using Wishlist_Version2_G13.Views.OwnWishlists;
 using Wishlist_Version2_G13.Views.Profile;
@@ -55,6 +56,12 @@ namespace Wishlist_Version2_G13
         public void ButtonSocial_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(typeof(SocialView));
+        }
+
+        public void ButtonLogout_Click(object sender, RoutedEventArgs e)
+        {
+            Runtime.ClearLoggedInUser();
+            Frame.Navigate(typeof(Login));
         }
 
 

@@ -100,5 +100,7 @@
                 <Button x:Name="DetailItemBuyerButton" Content="{Binding seletedItem, Mode=TwoWay}" Command="{Binding buyItemCommand}" Grid.Row="1" Grid.ColumnSpan="3" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Visibility="Collapsed"></Button>
             </Grid>
         </StackPanel>
+        
     </StackPanel>
+    
 </Page>

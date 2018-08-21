@@ -47,11 +47,33 @@ namespace Wishlist_Version2_G13.Controllers
             
         }
 
+        public int RegisterUser(String firstname, String lastname, string email, string password)
+        {
+
+            //If user already exists 
+            if (AppController.GetUserByEmail(email) != null) {
+                return 1;
+            }
+            User registeredUser = new User(firstname, lastname, email, password);
+            AppController.CreateUser(registeredUser);
+            //Check on error in db transaction
+            if (registeredUser == null)
+            {
+                return 2;
+            }
+            else {
+                SetUserInApp(registeredUser);
+                return 3;
+            }
+
+
+        }
+
         public void SetupSelectedWishlist(Wishlist w) {
             AppController.SetupSelectedWishlist(w);
         }
 
-        public bool LoginUser(string email, string password) {  //Throw error on failure
+        public int LoginUser(string email, string password) {  //Throw error on failure
 
             //Check if user exists in database
             User user = AppController.LoginUser(email, password);
@@ -59,19 +81,24 @@ namespace Wishlist_Version2_G13.Controllers
             if (user == null)
             {
                 //Message: User not found in database please try again
-                return false;
+                return 1;
             }
             else if (!user.Password.Equals(password))
             {
                 //Message: The given password was incorrect.
-                return false;
+                return 2;
             }
             else
             {
                 //Message: Login successfull
                 SetUserInApp(user);
-                return true;
+                return 3;
             }
+
+        }
+
+        public void ClearLoggedInUser() {
+            LoggedInUser = null;
 
         }
 

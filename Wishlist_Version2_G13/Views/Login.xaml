@@ -11,46 +11,15 @@
         <StackPanel Name="Loginview" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300"  HorizontalAlignment="Stretch" VerticalAlignment="Center"  Padding="5" Margin="5,5,5,5" >
             <TextBlock Text="Login" FontWeight="Bold" FontSize="24"/>
             <TextBlock Text="Email" HorizontalTextAlignment="Left"/>
-            <TextBox />
+            <TextBox Name="txtEmail" />
             <TextBlock Text="Password" HorizontalTextAlignment="Left"/>
-            <PasswordBox/>
+            <PasswordBox Name="txtPassword"/>
             <TextBlock />
-            <Button x:Name="btnLogin" Content="Login"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Click="LoginButton_Click"/>
-
+            <TextBlock Name="txtError" Text="" Visibility="Collapsed" Margin="3"/>
+            <Button x:Name="btnLogin" Content="Login"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Click="LoginButton_Click" Margin="3"/>
+            <Button x:Name="btnRegister" Content="register"  HorizontalAlignment="Right"  VerticalAlignment="Stretch" Click="btnRegister_Click" Margin="3"/>
         </StackPanel>        
     </Viewbox>
 
-
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup x:Name="VisualStateGroup">
-            <VisualState x:Name="VisualStateMobile">
-                <VisualState.StateTriggers>
-                    <AdaptiveTrigger MinWindowWidth="0"/>
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="Loginview.Width" Value="200"/>
-                </VisualState.Setters>
-            </VisualState>
-
-            <VisualState x:Name="VisualStateTablet">
-                <VisualState.StateTriggers>
-                    <AdaptiveTrigger MinWindowWidth="600"/>
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="Loginview.Width"  Value="600"/>
-                </VisualState.Setters>
-            </VisualState>
-            <VisualState x:Name="VisualStateDesktop">
-                <VisualState.StateTriggers>
-                    <AdaptiveTrigger MinWindowWidth="800"/>
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="Loginview.Width" Value="800"/>
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-        
-        
-    </VisualStateManager.VisualStateGroups>
     
 </Page>
