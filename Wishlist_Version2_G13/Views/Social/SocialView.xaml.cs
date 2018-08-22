@@ -38,7 +38,7 @@ namespace Wishlist_Version2_G13.Views.Social
         }
         public void ViewNotifications_Click(object sender, RoutedEventArgs e)
         {
-            SocialFrame.Navigate(typeof(Notifications), Runtime.LoggedInUser);
+            SocialFrame.Navigate(typeof(Notifications), this.SocialFrame);
         }
     }
 }

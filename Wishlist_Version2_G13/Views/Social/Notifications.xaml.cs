@@ -49,12 +49,14 @@ namespace Wishlist_Version2_G13.Views.Social
                 //get unselected item container
                 var unselectedItemContainer = listBox.ContainerFromItem(unselectedItem) as ListBoxItem;
                 //set ContentTemplate
-                unselectedItemContainer.ContentTemplate = (DataTemplate)this.Resources["ItemView"];
+                if(unselectedItemContainer != null)
+                    unselectedItemContainer.ContentTemplate = (DataTemplate)this.Resources["ItemView"];
 
             }
             //get selected item container
             var selectedItemContainer = listBox.ContainerFromItem(listBox.SelectedItem) as ListBoxItem;
-            selectedItemContainer.ContentTemplate = (DataTemplate)this.Resources["SelectedItemView"];
+            if(selectedItemContainer != null)
+                selectedItemContainer.ContentTemplate = (DataTemplate)this.Resources["SelectedItemView"];
 
 
         }
@@ -62,12 +64,13 @@ namespace Wishlist_Version2_G13.Views.Social
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            User ActiveUser = e.Parameter as User;
-            if (ActiveUser != null)//check if logged in
-            {
-                ContactViewModel = new ContactViewModel();
-                DataContext = ContactViewModel;
-            }
+
+            ContactViewModel = new ContactViewModel();
+            ContactViewModel.SocialFrame = e.Parameter as Frame;
+            DataContext = ContactViewModel;
+            
         }
+
+
     }
 }

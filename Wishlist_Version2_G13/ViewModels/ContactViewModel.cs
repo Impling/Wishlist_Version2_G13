@@ -4,9 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels.Commands;
+using Wishlist_Version2_G13.Views.Social;
 
 namespace Wishlist_Version2_G13.ViewModels
 {
@@ -21,6 +24,7 @@ namespace Wishlist_Version2_G13.ViewModels
         public ObservableCollection<User> selectedBuyers { get; set; }
         public AcceptMessageCommand acceptRequest { get; set; }
         public AddBuyersCommand addBuyers { get; set; }
+        public Frame SocialFrame { get; set; }
 
 
 
@@ -96,7 +100,6 @@ namespace Wishlist_Version2_G13.ViewModels
                     {
                         msg += "This is already one of your contacts\n";
                     }
-
                 }
                 else
                 {
@@ -119,7 +122,10 @@ namespace Wishlist_Version2_G13.ViewModels
             selectedMessage.IsAccepted = true;
             
             Runtime.AppController.RespondToMessage(selectedMessage);
-
+            //Update view
+            activeUser.Notifications.Remove(selectedMessage);
+            selectedMessage = null;
+            SocialFrame.Navigate(typeof(Notifications), SocialFrame);
 
         }
 
@@ -128,7 +134,10 @@ namespace Wishlist_Version2_G13.ViewModels
             selectedMessage.IsAccepted = false;  //is accepted means that the message was responded to with noting else done
             //update message in db
             Runtime.AppController.UpdateMessage(selectedMessage);
-
+            //Update view
+            activeUser.Notifications.Remove(selectedMessage);
+            selectedMessage = null;
+            SocialFrame.Navigate(typeof(Notifications), SocialFrame);
         }
 
         //Is valid email
