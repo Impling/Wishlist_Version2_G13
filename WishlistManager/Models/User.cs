@@ -18,7 +18,7 @@ namespace WishlistManager.Models
         public string Password { get; set; }
         public virtual ICollection<UserContact> Contacts { get; set; }
 
-        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();                     //list of messages user recieved - could be determined by get by recipant id in messages
+        public virtual ICollection<MessageUser> Messages { get; set; } = new List<MessageUser>();                     //list of messages user recieved - could be determined by get by recipant id in messages
         public virtual ICollection<UserWishlist> OwnWishlists { get; set; }                //Can be done from wishlist context get by ownerid
         public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
 
@@ -34,7 +34,7 @@ namespace WishlistManager.Models
             OwnWishlists = new List<UserWishlist>();
             OtherWishlists = new List<WishlistParticipant>();
             AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
-            Messages = new List<Message>();
+            Messages = new List<MessageUser>();
             //List has functionallity like ordening, while Hashset is quicker in removing and adding
         }
 
@@ -117,6 +117,26 @@ namespace WishlistManager.Models
             User = user;
             Contact = contact;
 
+        }
+
+    }
+
+    public class MessageUser
+    {
+        public int MessageId { get; set; }
+        public virtual Message Message { get; set; }
+
+        public int ReceiverId { get; set; }
+        public virtual User Receiver { get; set; }
+
+        public MessageUser(int messageId, int receiverId, Message message, User receiver)
+        {
+
+            MessageId = messageId;
+            ReceiverId = receiverId;
+
+            Message = message;
+            Receiver = receiver;
         }
 
     }

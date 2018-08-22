@@ -97,8 +97,10 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Wishlist selectedWishlist = e.Parameter as Wishlist;
-
-            if (selectedWishlist != null)
+            Runtime.AppController.SetupSelectedWishlist(selectedWishlist);
+            selectedWishlist = Runtime.AppController.SelectedWishlist;
+            
+                if (selectedWishlist != null)
             {
                 WishlistViewModel = new WishlistViewModel(selectedWishlist);
                 DataContext = WishlistViewModel;

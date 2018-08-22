@@ -35,7 +35,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             //Check if passed
             if (w != null)
             {
-                ContactViewModel = new ContactViewModel(w.Owner);    //pass a selected wishlist to model so both contacts and wishlist can get updated
+                ContactViewModel = new ContactViewModel();    //pass a selected wishlist to model so both contacts and wishlist can get updated
                 ContactViewModel.relatedWishlist = w;
                 ContactViewModel.SetPotentialBuyers();
                 DataContext = ContactViewModel;

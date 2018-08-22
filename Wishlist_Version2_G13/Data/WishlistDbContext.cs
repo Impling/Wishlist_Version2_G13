@@ -22,6 +22,7 @@ namespace Wishlist_Version2_G13.Data
         public DbSet<WishlistParticipant> Participants { get; set; }
         public DbSet<UserWishlist> OwnedWishlists { get; set; }
         public DbSet<WishlistItem> WishlistItems { get; set; }
+        public DbSet<MessageUser> Notifications { get; set; }
         #endregion
 
         #region Constructors
@@ -47,6 +48,7 @@ namespace Wishlist_Version2_G13.Data
             modelBuilder.Entity<WishlistParticipant>(MapWishlistParticipant);
             modelBuilder.Entity<UserWishlist>(MapUserWishlist);
             modelBuilder.Entity<WishlistItem>(MapWishlistItems);
+            modelBuilder.Entity<MessageUser>(MapNotifications);
 
             modelBuilder.Entity<User>(MapUser);
             modelBuilder.Entity<Wishlist>(MapWishlist);
@@ -124,6 +126,24 @@ namespace Wishlist_Version2_G13.Data
 
             wi.HasOne(t => t.Item)
                 .WithOne(i => i.Wishlist)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+        }
+
+        private void MapNotifications(EntityTypeBuilder<MessageUser> mu)
+        {
+
+            mu.ToTable("Notifications");
+
+            mu.HasKey(t => new { t.MessageId, t.ReceiverId });  //Use combo of id's for key values
+
+            mu.HasOne(t => t.Receiver)
+                .WithMany(r => r.Messages);
+
+
+            mu.HasOne(t => t.Message)
+                .WithOne(m => m.Receiver)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
 
@@ -263,17 +283,17 @@ namespace Wishlist_Version2_G13.Data
 
             m.Property(t => t.IsAccepted)
                 .HasColumnName("Accepted")
-                .IsRequired();
+                .IsRequired(false);
 
             m.Property(t => t.DateCreated)
                  .HasColumnName("CreationDate")
                  .IsRequired();
-
+            /*
             m.HasOne(t => t.Receiver)
                 .WithMany(u => u.Messages)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
+                */
             m.HasOne(t => t.RelatedWishlist)        //Relationship is nullable
                 .WithMany()
                 .HasForeignKey(t => t.WishlistId)

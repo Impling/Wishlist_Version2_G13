@@ -12,9 +12,9 @@ namespace Wishlist_Version2_G13.Models
 
         public int MessageId { get; set; }
         public int IdSender { get; set; }               //Sender as id (multiple relations with same class not supported) - try foreign key
-        public User Receiver { get; set; }
+        public MessageUser Receiver { get; set; }
         //public Boolean IsInvite { get; set; }              //Is invite to join wishlist or is request by friend to join wishlist, check if needed as property
-        public Boolean IsAccepted { get; set; }            //not really needed if we delete messages that have been handled, however if we want to keep messagelog but not allow another accept we could use this
+        public Boolean? IsAccepted { get; set; }            //not really needed if we delete messages that have been handled, however if we want to keep messagelog but not allow another accept we could use this
 
         public int? WishlistId { get; set; }
         public virtual Wishlist RelatedWishlist { get; set; }      //wishlist to join or invite to
@@ -30,9 +30,8 @@ namespace Wishlist_Version2_G13.Models
         public Message(User sender, User receiver)
         {
             IdSender = sender.UserId;
-            Receiver = receiver;
 
-            IsAccepted = false;
+            IsAccepted = null;
         }
 
         //Constructor for invite/request to add to contact list

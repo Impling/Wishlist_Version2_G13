@@ -27,6 +27,8 @@ namespace WishlistManager.Data
                 User u1 = new User("Timo", "Spanhove","Timo.spanhove@Hotmail.com","Password1");
                 User u2 = new User("Victor", "Van Weyenberg", "Vic.VW@hotmail.com", "Password2");
                 User u3 = new User("Sander", "De Sutter", "Sander.desutter@hotmail.com", "Password3");
+                User u4 = new User("testy", "McTestface", "Tester", "12345678");
+                User u5 = new User("testuser", "testington", "testuser", "12345678");
 
                 Wishlist w1 = new Wishlist("Happy times", "Anniversery", false, new DateTime(2018, 12, 16));
                 Wishlist w2 = new Wishlist("New Garden", "Garden renovations finished", true, new DateTime(2018, 9, 2));
@@ -37,7 +39,7 @@ namespace WishlistManager.Data
 
 
                 //Add Users
-                User[] users = new User[] { u1, u2, u3 };
+                User[] users = new User[] { u1, u2, u3, u4, u5 };
                 _context.Users.AddRange(users);
                 _context.SaveChanges();
 

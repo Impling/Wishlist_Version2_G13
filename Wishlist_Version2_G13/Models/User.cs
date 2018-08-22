@@ -20,7 +20,7 @@ namespace Wishlist_Version2_G13.Models
         public string Email { get; set; }                  //email of user, can be used to add user to contacts/friendlist
         public string Password { get; set; }
         public virtual ICollection<UserContact> UserContacts { get; set; }
-        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();                     //list of messages user recieved - could be determined by get by recipant id in messages
+        public virtual ICollection<MessageUser> Messages { get; set; } = new List<MessageUser>();                     //list of messages user recieved - could be determined by get by recipant id in messages
         public virtual ICollection<UserWishlist> OwnWishlists { get; set; }                //Can be done from wishlist context get by ownerid
         public virtual ICollection<WishlistParticipant> OtherWishlists { get; set; }           //id list of closed wishlist the user is participating in - should have this list in those wishlists for easy lookup, can be left out here
 
@@ -46,7 +46,7 @@ namespace Wishlist_Version2_G13.Models
             OwnWishlists = new List<UserWishlist>();
             OthersWishlists = new ObservableCollection<Wishlist>();
             AddFavoriteWishlist(new Wishlist("My favorite gifts", "These are gifts I appreciate receiving on any occasion."));//Every user has a wishlist for item he likes to get on multiple occasions, like favorite flowers or wines.
-            Messages = new List<Message>();
+            Messages = new List<MessageUser>();
         }
 
         public User(string firstname, string lastname, string email, string password) : this()
@@ -143,6 +143,7 @@ namespace Wishlist_Version2_G13.Models
     }
 
     //Extra class for the joined table between user and his contacts
+    #region table classes
     public class UserContact
     {
         public int UserId { get; set; }
@@ -166,4 +167,26 @@ namespace Wishlist_Version2_G13.Models
 
 
     }
+    public class MessageUser
+    {
+        public int MessageId { get; set; }
+        public virtual Message Message { get; set; }
+
+        public int ReceiverId { get; set; }
+        public virtual User Receiver { get; set; }
+
+        public MessageUser() { }
+
+        public MessageUser(int messageId, int receiverId, Message message, User receiver)
+        {
+
+            MessageId = messageId;
+            ReceiverId = receiverId;
+
+            Message = message;
+            Receiver = receiver;
+        }
+
+    }
+    #endregion
 }

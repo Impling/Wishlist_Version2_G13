@@ -35,8 +35,14 @@ namespace Wishlist_Version2_G13.Views.Profile
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            //Extra read from db in case of contact user
             User selectedUser = e.Parameter as User;
-            WishlistViewModel = new WishlistViewModel(selectedUser.Favorites);
+            Wishlist f = Runtime.AppController.GetFavoritesByUserId(selectedUser.UserId);
+            Runtime.AppController.SetupSelectedWishlist(f);
+            f = Runtime.AppController.SelectedWishlist;
+            f.Owner = selectedUser;
+
+            WishlistViewModel = new WishlistViewModel(f);
             WishlistViewModel.selectedUser = selectedUser;
 
             FavoriteFrame.Navigate(typeof(FavoriteWishes), WishlistViewModel);

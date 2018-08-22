@@ -24,19 +24,12 @@ namespace Wishlist_Version2_G13.Views.Social
     public sealed partial class Contacts : Page
     {
 
-
-        RuntimeInfo Runtime;
         ContactViewModel ContactViewModel;
 
 
         public Contacts()
         {
             this.InitializeComponent();
-            Runtime = RuntimeInfo.Instance;
-
-            MyFriends.Height = Runtime.ScreenHeight / 1.2;
-            MyFriends.Width = Runtime.ScreenWidth - 40;
-
 
         }
 
@@ -67,17 +60,13 @@ namespace Wishlist_Version2_G13.Views.Social
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            User ActiveUser = e.Parameter as User;
-            if (ActiveUser != null)//check if logged in
-            {
-                ContactViewModel = new ContactViewModel(ActiveUser);
-                DataContext = ContactViewModel;
-            }
+            ContactViewModel = new ContactViewModel();
+            DataContext = ContactViewModel;
         }
 
         public void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(AddContact));
+            Frame.Navigate(typeof(AddContact), ContactViewModel);
         }
         public void ViewDetailButton_Click(object sender, RoutedEventArgs e)
         {

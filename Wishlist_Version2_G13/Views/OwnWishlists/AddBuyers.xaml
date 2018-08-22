@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:src="using:Wishlist_Version2_G13.Models"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Background="CadetBlue">
 
     <Page.Resources>
         <!--  brief information template  -->
@@ -21,7 +21,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <StackPanel>
 
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Participant selection" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
 

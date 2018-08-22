@@ -74,7 +74,7 @@ namespace Wishlist_Version2_G13.ViewModels
             Message FoundMessage = SelectedWishlist.Owner.Notifications.FirstOrDefault(r => r.MessageContent == request.MessageContent);
             if (FoundMessage != null) //FirstOrDefaut used to return null when not found
             {
-                if (FoundMessage.IsAccepted)
+                if (FoundMessage.IsAccepted != null && FoundMessage.IsAccepted == true)
                     return false;
                 return true; //message found so already requested
             }

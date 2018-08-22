@@ -35,7 +35,7 @@ namespace Wishlist_Version2_G13.Views.Social
         {
 
             //only allow accept or deny when message has not been responded to and something is indeed selected
-            if (myMessages.SelectedItem != null && !ContactViewModel.selectedMessage.IsAccepted)
+            if (myMessages.SelectedItem != null && (ContactViewModel.selectedMessage.IsAccepted != null && ContactViewModel.selectedMessage.IsAccepted == false))
             {
                 ButtonAccept.Visibility = Visibility.Visible;
                 ButtonDeny.Visibility = Visibility.Visible;
@@ -65,7 +65,7 @@ namespace Wishlist_Version2_G13.Views.Social
             User ActiveUser = e.Parameter as User;
             if (ActiveUser != null)//check if logged in
             {
-                ContactViewModel = new ContactViewModel(ActiveUser);
+                ContactViewModel = new ContactViewModel();
                 DataContext = ContactViewModel;
             }
         }

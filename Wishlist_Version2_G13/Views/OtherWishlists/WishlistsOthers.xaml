@@ -6,45 +6,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:src="using:Wishlist_Version2_G13.Models"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Background="CadetBlue">
     
     <Page.Resources>
         <!--  brief information template  -->
         <DataTemplate x:Key="ItemView" x:DataType="src:Wishlist">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Title, Mode=OneWay}" />
-            </StackPanel>
+            <Border BorderBrush="Bisque" BorderThickness="3" Background="CadetBlue" >
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch" >
+                    <TextBlock Margin="12, 15, 12, 15" FontSize="18" FontWeight="Bold" Text="{x:Bind Path=Title, Mode=OneWay}" />
+                </StackPanel>
+            </Border>
         </DataTemplate>
         <!--  details expand template  -->
         <DataTemplate x:Key="SelectedItemView" x:DataType="src:Wishlist">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Title, Mode=OneWay}" />
-                <StackPanel>
-                    <TextBlock Margin="12, 15, 12, 0" Text="{x:Bind Path=DeadlineS, Mode=OneWay}" />
+            <Border BorderBrush="Bisque" BorderThickness="3" Background="CadetBlue">
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                    <TextBlock Margin="12, 15, 12, 0" FontSize="18" FontWeight="Bold" Text="{x:Bind Path=Title, Mode=OneWay}" />
+                    <StackPanel>
+                        <TextBlock Margin="12, 15, 12, 0" Text="{x:Bind Path=DeadlineS, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="10, 0, 0, 0" Text="Wishlist owner: " />
+                        <TextBlock Margin="5, 0, 0, 0" Text="{x:Bind Path=Owner.Firstname, Mode=OneWay}" />
+                        <TextBlock Margin="5, 0, 0, 5" Text="{x:Bind Path=Owner.Lastname, Mode=OneWay}" />
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="10, 0, 0, 0" Text="Wishlist owner: " />
-                    <TextBlock Margin="5, 0, 0, 0" Text="{x:Bind Path=Owner.Firstname, Mode=OneWay}" />
-                    <TextBlock Margin="5, 0, 0, 0" Text="{x:Bind Path=Owner.Lastname, Mode=OneWay}" />
-                </StackPanel>
-            </StackPanel>
+            </Border>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="other Wishlists" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
+        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="other Wishlists" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
 
-        <ComboBox SelectedItem="{Binding SortingMethod, Mode=TwoWay}" ItemsSource="{Binding SortingMethods}"  HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch" Grid.Row="1"/>
+        <ComboBox SelectedItem="{Binding SortingMethod, Mode=TwoWay}" ItemsSource="{Binding SortingMethods}"  HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" Grid.Row="1"/>
 
 
-        <ListBox x:Name="myWishlists" Grid.Row="2" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.OthersWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5">
+        <ListBox x:Name="myWishlists" Grid.Row="2" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="200" MaxHeight="600" Width="auto" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"  ItemsSource="{Binding activeUser.OthersWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

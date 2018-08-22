@@ -50,7 +50,6 @@ namespace Wishlist_Version2_G13.Controllers
             return null;
 
         }
-
         public void SetupLoggedInUser(User u) {
 
             User = u;
@@ -81,7 +80,11 @@ namespace Wishlist_Version2_G13.Controllers
                     }
 
                     //Set Notifications
-
+                    foreach (Message m in GetWaitingMessagesLoggedInUser()) {
+                        m.Sender = GetUserById(m.IdSender);
+                        User.Notifications.Add(m);
+                    }
+                    
 
                 }
             }
@@ -91,7 +94,6 @@ namespace Wishlist_Version2_G13.Controllers
             }
 
         }
-
         public void SetupSelectedWishlist(Wishlist w) {
 
             SelectedWishlist = w;
@@ -130,9 +132,26 @@ namespace Wishlist_Version2_G13.Controllers
 
 
         }
+        public bool CheckContactList(string email) {
 
+            foreach (User c in User.Contacts) {
+                if (c.Email.Equals(email)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public void SendMessage(string email) {
 
+            User Contact = GetUserByEmail(email);
+            Message msg = new Message(User, Contact, true);
 
+            MessageUser mu = new MessageUser(msg.MessageId, Contact.UserId, msg, null);//Insert id error as it also tries overwritting the user receiver, versioning error
+            AddMessageUser(mu);
+
+            //CreateMessage(msg);
+
+        }
         //Function )AddContact - add contact to contactlist of logged in user via email address
         public bool addContact(string email)//DIRECT ADDING, FIRST SEND REQUEST THEN ON CONFIRM ADD
         {
@@ -180,7 +199,6 @@ namespace Wishlist_Version2_G13.Controllers
 
 
         }
-
         //Function) AddWishlist - add wishlist to currently logged in user widouth users or items
         public void addWishlist(Wishlist w, bool isFavorite)
         {
@@ -193,9 +211,6 @@ namespace Wishlist_Version2_G13.Controllers
             User.MyWishlists.Remove(w);
             DeleteWishlist(w);
         }
-
-
-
         public void AddItem(Item i)
         {
             WishlistItem wi = new WishlistItem(i.ItemId, SelectedWishlist.WishlistId, i, null); //Set null for wishlistobject or errors on attempted id overwrite will pop up
@@ -431,7 +446,32 @@ namespace Wishlist_Version2_G13.Controllers
                 return null;
             }
         }
+        public List<Message> GetWaitingMessagesLoggedInUser()
+        {
+            List<Message> messages = new List<Message>();
 
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    //All messages where IsAccepted is null have not been responded to yet
+                    //messages = context.Messages.Where(msg => msg.Receiver.UserId == User.UserId && msg.IsAccepted == null).ToList();
+                    List<int> msgIds = context.Notifications.Where(n => n.ReceiverId == User.UserId).Select(n => n.MessageId).ToList();
+                    foreach (int id in msgIds) {
+                        Message m = context.Messages.FirstOrDefault(msg => msg.MessageId == id);
+                        if (m.IsAccepted == null) {
+                            messages.Add(m);
+                        }
+                    }
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+
+            return messages;
+        }
 
         #endregion
 
@@ -471,7 +511,6 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
-
         public void CreateItem(Item i) {
             try
             {
@@ -507,7 +546,6 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
-
         public void AddWishlistItem(WishlistItem wi)
         {
             try
@@ -525,6 +563,37 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
+        public void AddMessageUser(MessageUser mu) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    context.Notifications.Add(mu);
+                    context.SaveChanges();
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+        public void CreateMessage(Message msg) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Messages.Add(msg);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+
         #endregion
 
         #region DBMethods PUT/UPDATE
