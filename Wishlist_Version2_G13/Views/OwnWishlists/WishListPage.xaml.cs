@@ -30,9 +30,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
         {
             this.InitializeComponent();
             Runtime = RuntimeInfo.Instance;
-
-            myWishlistItems.Height = Runtime.ScreenHeight / 1.2;  //temprary method of scaling by screen
-            myWishlistItems.Width = Runtime.ScreenWidth - 50;
+              
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -54,6 +52,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             if (myWishlistItems.SelectedItem != null && WishlistViewModel.selectedWishlist.Owner.UserId == Runtime.LoggedInUser.UserId)
             {
                 ButtonRemove.Visibility = Visibility.Visible;
+                DetailItemBuyerButton.Visibility = Visibility.Collapsed;
             }
 
             var listBox = sender as ListBox;
@@ -92,6 +91,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             }
 
 
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -99,8 +99,15 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             Wishlist selectedWishlist = e.Parameter as Wishlist;
             Runtime.AppController.SetupSelectedWishlist(selectedWishlist);
             selectedWishlist = Runtime.AppController.SelectedWishlist;
-            
-                if (selectedWishlist != null)
+
+            //Dont show addbuyer button when wishlist is open
+            if (selectedWishlist.IsOpen)
+            {
+                ButtonAddBuyer.Visibility = Visibility.Collapsed;
+            }
+
+            //dont show buttons at startup until wishlist selected
+            if (selectedWishlist != null)
             {
                 WishlistViewModel = new WishlistViewModel(selectedWishlist);
                 DataContext = WishlistViewModel;

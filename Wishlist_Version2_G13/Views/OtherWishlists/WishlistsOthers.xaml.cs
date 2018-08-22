@@ -60,7 +60,7 @@ namespace Wishlist_Version2_G13.Views.OtherWishlists
                 selectedItem.ContentTemplate = (DataTemplate)this.Resources["SelectedItemView"];
 
             //TODO add code to show wishlistbutton as content = view if user is buyer in wishlist or if wishlist is open  - content= request to join if wishlist not open and buyer not part of wishlist
-            if (WishlistsViewModel.SelectedWishlist.IsOpen || WishlistsViewModel.SelectedWishlist.Buyers.Contains(Runtime.LoggedInUser))
+            if (WishlistsViewModel.SelectedWishlist.IsOpen || WishlistsViewModel.CheckIfUserParticipates())
             {
                 ButtonToWishlist.Content = "View Wishlist";
                 ButtonToWishlist.IsEnabled = true; //re enable button
@@ -94,7 +94,7 @@ namespace Wishlist_Version2_G13.Views.OtherWishlists
         public void ViewWishlistButton_Click(object sender, RoutedEventArgs e)
         {
             //Show wishlist to user if user is member of wishlist or if the wishlist is open
-            if (WishlistsViewModel.SelectedWishlist.IsOpen || WishlistsViewModel.SelectedWishlist.Buyers.Contains(Runtime.LoggedInUser))
+            if (WishlistsViewModel.SelectedWishlist.IsOpen || WishlistsViewModel.CheckIfUserParticipates())
             {
                 WishlistsViewModel.JoinWishlist();  //If you are not yet allready in list of buyers you get added automaticly, this is only for open wishllists
                 Frame.Navigate(typeof(WishListPage), WishlistsViewModel.SelectedWishlist);

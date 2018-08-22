@@ -26,7 +26,7 @@
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Participant selection" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
 
         <StackPanel>
-            <ListBox x:Name="myContacts" ItemTemplate="{StaticResource ItemView}" SelectionMode="Multiple" SelectionChanged="SelectionChanged_buyer" SelectedItem="{Binding selectedContact, Mode=TwoWay}" ItemsSource="{Binding activeUser.Contacts, Mode=TwoWay}"  Margin="5,5,5,5" >
+            <ListBox x:Name="myContacts" ItemTemplate="{StaticResource ItemView}" SelectionMode="Multiple" SelectionChanged="SelectionChanged_buyer" SelectedItem="{Binding selectedContact, Mode=TwoWay}" ItemsSource="{Binding PotentialBuyers, Mode=TwoWay}"  Margin="5,5,5,5" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

@@ -26,8 +26,6 @@ namespace Wishlist_Version2_G13.ViewModels
 
         public DenyMessageCommand denyRequest { get; set; }
 
-
-
         public ContactViewModel()
         {
             Runtime = RuntimeInfo.Instance;
@@ -40,17 +38,11 @@ namespace Wishlist_Version2_G13.ViewModels
 
         public void SetPotentialBuyers()
         {
-
             PotentialBuyers = new ObservableCollection<User>();
-            foreach (User contact in activeUser.Contacts)
-            {
-                if (relatedWishlist.Buyers.FirstOrDefault(buyer => contact == buyer) == null)
-                {    //potentialbuyers are all contacts that are not yet buyers for wishlist
-                    PotentialBuyers.Add(contact);
-                }
+            //Edit to only show contacts not yet participating
+            foreach (User b in Runtime.AppController.GetPotentialBuyers(relatedWishlist.WishlistId)) {
+                PotentialBuyers.Add(b);
             }
-
-
         }
 
         public void AddBuyers()
@@ -59,6 +51,11 @@ namespace Wishlist_Version2_G13.ViewModels
             {
                 Message m = new Message(activeUser, b, true, relatedWishlist);
                 b.addNotification(m);
+                //If no request pending send message
+                if (Runtime.AppController.CheckIfMessageExists(m.MessageContent) == null)
+                {
+                    Runtime.AppController.SendJoinWishlistInvite(b.Email, relatedWishlist.WishlistId);
+                }
             }
 
         }
@@ -93,7 +90,7 @@ namespace Wishlist_Version2_G13.ViewModels
                     if (Runtime.AppController.CheckContactList(email))
                     {
                         msg += "Request has been send to contact\n";
-                        Runtime.AppController.SendMessage(email);
+                        Runtime.AppController.SendContactInvite(email);
                     }
                     else
                     {
@@ -118,13 +115,20 @@ namespace Wishlist_Version2_G13.ViewModels
 
         public void AcceptRequest()
         {
-            selectedMessage.Sender.MyWishlists.FirstOrDefault(w => w == selectedMessage.RelatedWishlist).addBuyer(activeUser);
+            //selectedMessage.Sender.MyWishlists.FirstOrDefault(w => w == selectedMessage.RelatedWishlist).addBuyer(activeUser);
             selectedMessage.IsAccepted = true;
+            
+            Runtime.AppController.RespondToMessage(selectedMessage);
+
+
         }
 
         public void DenyRequest()
         {
-            selectedMessage.IsAccepted = true;  //is accepted means that the message was responded to with noting else done
+            selectedMessage.IsAccepted = false;  //is accepted means that the message was responded to with noting else done
+            //update message in db
+            Runtime.AppController.UpdateMessage(selectedMessage);
+
         }
 
         //Is valid email

@@ -19,8 +19,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <Button Content="View contacts" Click="ViewContacts_Click"  Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Stretch" x:Name="ButtonContacts" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"/>
-        <Button Content="Notifications" Click="ViewNotifications_Click" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" x:Name="ButtonNotifications" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"/> 
+        <Button Content="View contacts" FontWeight="Bold" FontSize="18" Click="ViewContacts_Click"  Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Stretch" x:Name="ButtonContacts" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"/>
+        <Button Content="Notifications" FontWeight="Bold" FontSize="18" Click="ViewNotifications_Click" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" x:Name="ButtonNotifications" VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"/> 
 
         <Frame Grid.Row="1" Grid.ColumnSpan="2" x:Name="SocialFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </Grid>

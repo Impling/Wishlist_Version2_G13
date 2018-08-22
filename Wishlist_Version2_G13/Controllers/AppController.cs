@@ -61,11 +61,16 @@ namespace Wishlist_Version2_G13.Controllers
                     context.Database.EnsureCreated();
 
                     //Set Contact list
+                    
                     User.Contacts = new ObservableCollection<User>(GetContactsByUserId(User.UserId) as List<User>);
 
                     //Set Wishlists
                     //Set Wishlist of favorites
                     User.Favorites = GetFavoritesByUserId(User.UserId);
+                    //Reset lists
+                    User.MyWishlists = new ObservableCollection<Wishlist>();
+                    User.OthersWishlists = new ObservableCollection<Wishlist>();
+                    User.Notifications = new ObservableCollection<Message>();
                     //Set Own Wishlists
                     foreach (Wishlist w in GetOwnedWishlistsByUserId(User.UserId)) {
                         User.MyWishlists.Add(w);
@@ -76,6 +81,10 @@ namespace Wishlist_Version2_G13.Controllers
                     }
                     //Set closed wishlists user is participating with                  
                     foreach (Wishlist w in GetClosedParticipatingWishlistsByUserId(User.UserId)){
+                        User.OthersWishlists.Add(w);
+                    }
+                    //Set closed wishlist user is capable of requesting to join
+                    foreach (Wishlist w in GetClosedNonParticipatingWishlistsByUserId(User.UserId)) {
                         User.OthersWishlists.Add(w);
                     }
 
@@ -109,11 +118,15 @@ namespace Wishlist_Version2_G13.Controllers
                     //Set Items of wishlist
                     SelectedWishlist.Items = new ObservableCollection<Item>();
                     SelectedWishlist.Gifts = new ObservableCollection<WishlistItem>();
+                    SelectedWishlist.Buyers = new ObservableCollection<User>();
 
                     foreach (Item i in GetItemsByWishlistId(SelectedWishlist.WishlistId)) {
                         i.SetCategory();
                         SelectedWishlist.Items.Add(i);
                         SelectedWishlist.Gifts.Add(context.WishlistItems.FirstOrDefault(wi => wi.ItemId==i.ItemId && wi.WishlistId==SelectedWishlist.WishlistId));
+                        if (i.BuyerId.GetValueOrDefault() != 0) {
+                            i.Buyer = GetUserById(i.BuyerId.GetValueOrDefault());
+                        }
                     }
                     
                     //Set Wishlist participants
@@ -141,7 +154,7 @@ namespace Wishlist_Version2_G13.Controllers
             }
             return true;
         }
-        public void SendMessage(string email) {
+        public void SendContactInvite(string email) {
 
             User Contact = GetUserByEmail(email);
             Message msg = new Message(User, Contact, true);
@@ -149,56 +162,79 @@ namespace Wishlist_Version2_G13.Controllers
             MessageUser mu = new MessageUser(msg.MessageId, Contact.UserId, msg, null);//Insert id error as it also tries overwritting the user receiver, versioning error
             AddMessageUser(mu);
 
-            //CreateMessage(msg);
+        }
+
+        public void SendJoinWishlistRequest(int wishlistId)
+        {
+            User wishlistOwner = GetOwnerByWishlistId(wishlistId);
+            Message msg = new Message(User, wishlistOwner, false, GetWishlistById(wishlistId));
+            msg.RelatedWishlist = null;
+            MessageUser mu = new MessageUser(msg.MessageId, wishlistOwner.UserId, msg, null);//Insert id error as it also tries overwritting the user receiver, versioning error
+            AddMessageUser(mu);
 
         }
-        //Function )AddContact - add contact to contactlist of logged in user via email address
-        public bool addContact(string email)//DIRECT ADDING, FIRST SEND REQUEST THEN ON CONFIRM ADD
+        public void SendJoinWishlistInvite(string email, int wishlistId)
         {
+            User Contact = GetUserByEmail(email);
+            Message msg = new Message(User, Contact, true, GetWishlistById(wishlistId));
+            msg.RelatedWishlist = null; //Prevent id overwrite error
 
-            //TO DO first Send REQUEST, only add on confirm
+            MessageUser mu = new MessageUser(msg.MessageId, Contact.UserId, msg, null);//Insert id error as it also tries overwritting the user receiver, versioning error
+            AddMessageUser(mu);
 
-            //check email ignore case - Valid email check in view
-          
-            if (email == User.Email){ //MAKE NONCASE SENSITIVE
-                //1) check if email same as email of loggedInUser, if so dont add and return false          [Errormessage: You cannot add yourself to your contactlist]
-                //Messsage
-                return false;
-            }
-            
-            try
+        }
+        public void RespondToMessage(Message msg) { 
+
+            //Message response;
+            //User Receiver = GetUserById(msg.IdSender);
+            //MessageUser mu;
+
+            //update message in db, Updates IsAccepted status
+            UpdateMessage(msg);
+
+            //If Message accepted
+            if (msg.IsAccepted.GetValueOrDefault())
             {
-                using (WishlistDbContext _context = new WishlistDbContext())
+                //if wishlistid null add sender and user to usercontact in db
+                if (msg.WishlistId == null)
                 {
-                    User contact = _context.Users.FirstOrDefault(c => c.Email == email);
-
-                    if (contact == null) {
-                        //3) check if contact is a registered user (check if contact exists), if so return false    [Errormessage: The contact {email} you wish to add was not found in the user database]
-                        //Message
-                        return false;
-                    } else if (_context.Contacts.FirstOrDefault(uc => uc.UserId == User.UserId && uc.ContactId == contact.UserId) != null) {
-                        //2) check if new contact allready exists in contactlist, if so return false               [Errormessage: You allready have contact {contactname} in your list]
-                        //MESSAGE
-                        return false;
+                    AddContact(msg);
+                    //response = new Message(User, msg.Sender, false);
+                }
+                //if wishlistid not null, add related user and relatedwishlist to wishparticipant in db
+                else
+                {
+                    //If responding to request to join
+                    if (msg.MessageContent.Contains("Has invited you")) {
+                        WishlistParticipant wp = new WishlistParticipant(msg.WishlistId.GetValueOrDefault(), User.UserId, null, null);  //getvalueorDefault to deal with nullability of wishlistid
+                        AddParticipant(wp);
                     }
-                    else {
-                        _context.Contacts.Add(new UserContact(User.UserId, contact.UserId, User, contact)); //duplicate mirrored call for many to many relationship (EF does not support join table well enough to autmate this.)
-                        _context.Contacts.Add(new UserContact(contact.UserId, User.UserId, contact, User));
-                        return true;
+                    //if responding to request to be added to wishlist
+                    else if (msg.MessageContent.Contains("Wishes to participate")) {
+                        WishlistParticipant wp = new WishlistParticipant(msg.WishlistId.GetValueOrDefault(), msg.IdSender, null, null);  //getvalueorDefault to deal with nullability of wishlistid
+                        AddParticipant(wp);
                     }
-                                        
                 }
             }
-            catch (Exception eContext)
-            {
-                Debug.WriteLine("Exception: " + eContext.Message);
-                return false;
-            }
 
-            //returen false on failure, true on success
-
+            //Update loggedinuser to shown new wishlists or messages
+            SetupLoggedInUser(User);
 
         }
+        public void AddContact(Message msg)
+        {
+            //Contact and user need to be set in both directions
+            UserContact uc = new UserContact(User.UserId, msg.IdSender, null, null); //Keep objects null to prevent insert id error
+            AddUserContact(uc);
+
+            //User and Contact need to be set in both directions
+            uc = new UserContact(msg.IdSender, User.UserId, null, null); //Keep objects null to prevent insert id error
+            AddUserContact(uc);
+
+            //Update contact list of logged in user
+            User.Contacts = new ObservableCollection<User>(GetContactsByUserId(User.UserId) as List<User>);
+        }
+        
         //Function) AddWishlist - add wishlist to currently logged in user widouth users or items
         public void addWishlist(Wishlist w, bool isFavorite)
         {
@@ -221,6 +257,59 @@ namespace Wishlist_Version2_G13.Controllers
             SelectedWishlist.Items.Remove(i);
             DeleteItem(i);
             UpdateWishlist(SelectedWishlist);
+        }
+        public Message CheckIfMessageExists(string content) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    //Message FoundMessage = SelectedWishlist.Owner.Notifications.FirstOrDefault(r => r.MessageContent == request.MessageContent);
+                    return context.Messages.FirstOrDefault(m => m.MessageContent == content);
+                  
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
+        }
+        public bool CheckIfUserParticipates(int wishlistId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    if (context.Participants.Where(p => p.WishlistId == wishlistId).Select(p => p.ParticipantId).Contains(User.UserId)) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return false;
+            }
+        }
+        public bool CheckIfBought(int itemId)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    int item = context.Items.FirstOrDefault(it => it.ItemId == itemId).BuyerId.GetValueOrDefault();
+                    if (item != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return false;
+            }
         }
 
         #endregion
@@ -261,6 +350,21 @@ namespace Wishlist_Version2_G13.Controllers
             }
 
         }
+        public Wishlist GetWishlistById(int? wishlistId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+                    return context.Wishlists.FirstOrDefault(w => w.WishlistId == wishlistId);
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
+        }
         public Wishlist GetFavoritesByUserId(int userId)
         {
             try
@@ -287,7 +391,7 @@ namespace Wishlist_Version2_G13.Controllers
                     context.Database.EnsureCreated();
 
                     List<int> wishlistIds = context.OwnedWishlists
-                                                .Where(ow => !ow.IsFavorite && ow.OwnerId == User.UserId)
+                                                .Where(ow => !ow.IsFavorite && ow.OwnerId == userId)
                                                 .Select(ow => ow.WishlistId).ToList();
 
                     List<Wishlist> wishlists = new List<Wishlist>();
@@ -323,6 +427,41 @@ namespace Wishlist_Version2_G13.Controllers
                         wl.Owner = context.Users.FirstOrDefault(o => o.UserId == context.OwnedWishlists.FirstOrDefault(ow => ow.WishlistId == id).OwnerId);
                         ws.Add(wl);
                     }
+                    return ws;
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
+        }
+        public List<Wishlist> GetClosedNonParticipatingWishlistsByUserId(int userId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Database.EnsureCreated();
+
+                    List<Wishlist> ws = new List<Wishlist>();
+                    List<Wishlist> wl = new List<Wishlist>();
+
+                    foreach (int id in context.Contacts.Where(c => c.UserId == User.UserId).Select(c => c.ContactId).ToList())
+                    {
+                        wl = GetOwnedWishlistsByUserId(id);
+                        foreach (Wishlist wishlist in wl)
+                        {
+                            //add all wishlists that arent open and that haven't been joined yet by logged in user
+                            if ((!wishlist.IsOpen) && (GetParticipantsByWishlistId(wishlist.WishlistId).FirstOrDefault(p => p.UserId == userId) == null)) //&& GetOwnerByWishlistId(wishlist.WishlistId).UserId != User.UserId
+                            {
+                                wishlist.SetDeadlineText();
+                                wishlist.Owner = context.Users.FirstOrDefault(o => o.UserId == context.OwnedWishlists.FirstOrDefault(ow => ow.WishlistId == wishlist.WishlistId).OwnerId);
+                                ws.Add(wishlist);
+                            }
+                        }
+                    }
+
+
                     return ws;
                 }
             }
@@ -446,6 +585,7 @@ namespace Wishlist_Version2_G13.Controllers
                 return null;
             }
         }
+        //Get all messages that have not been answered yet
         public List<Message> GetWaitingMessagesLoggedInUser()
         {
             List<Message> messages = new List<Message>();
@@ -471,6 +611,15 @@ namespace Wishlist_Version2_G13.Controllers
             }
 
             return messages;
+        }
+        //Returns list of user that can be added to closed wishlist by owner
+        public List<User> GetPotentialBuyers(int wishlistId) {
+
+            List<int> participantIds = GetParticipantsByWishlistId(wishlistId).Select(p => p.UserId).ToList();
+
+            //Returns all contacts that are not yet participating in wishlist
+            return User.Contacts.Where(c => !participantIds.Contains(c.UserId)).ToList();
+
         }
 
         #endregion
@@ -579,6 +728,40 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
+        public void AddUserContact(UserContact uc)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    context.Contacts.Add(uc);
+                    context.SaveChanges();
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
+        public void AddParticipant(WishlistParticipant wp)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+
+                    context.Participants.Add(wp);
+                    context.SaveChanges();
+
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
         public void CreateMessage(Message msg) {
             try
             {
@@ -656,7 +839,21 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
             }
         }
- 
+        public void UpdateMessage(Message m)
+        {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    context.Update(m);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+            }
+        }
         #endregion
 
         #region DBMethods REMOVE/DELETE

@@ -39,7 +39,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="My Friends" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
+        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="My Friends" FontWeight="Bold" FontSize="24" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="10,5,5,5"/>
 
 
         <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  >

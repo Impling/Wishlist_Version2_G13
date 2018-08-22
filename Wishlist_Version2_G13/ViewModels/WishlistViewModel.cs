@@ -56,21 +56,17 @@ namespace Wishlist_Version2_G13.ViewModels
         {
             //validations
             //A single user can only buy an item once - should already be checked when creating buy item button but just in case -> buttonvisibility checks if bought in general so this should never be necesary, but button remains after is pressed so user could push it multiple times not that that would have any effect as he would litarly be setting himself
-            if (!CheckUserAlreadyBought())   //if user hasnt bought anything yet he can buy
-                seletedItem.Buyer = activeUser;
+            if (!CheckUserAlreadyBought()) //if user hasnt bought anything yet he can buy
+            {   
+                seletedItem.BuyerId = activeUser.UserId;
+                Runtime.AppController.UpdateItem(seletedItem);
+            }
             //Small update 
         }
 
         public bool CheckUserAlreadyBought()
         {
-            if (selectedWishlist.Items.FirstOrDefault(item => item.Buyer == activeUser) == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return Runtime.AppController.CheckIfBought(seletedItem.ItemId);
         }
 
 

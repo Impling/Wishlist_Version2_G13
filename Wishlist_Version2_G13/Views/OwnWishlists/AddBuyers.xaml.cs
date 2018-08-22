@@ -78,6 +78,9 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 
         private void Button_AddBuyers(object sender, RoutedEventArgs e)
         {
+
+            //Call Contactview model function Addbuyer -> check if users already participating
+
             Frame.Navigate(typeof(WishListPage), ContactViewModel.relatedWishlist);
         }
 

@@ -65,18 +65,20 @@ namespace Wishlist_Version2_G13.ViewModels
 
         public void RequestToJoin()
         {
-            Message request = new Message(activeUser, SelectedWishlist.Owner, false, SelectedWishlist); //create message
-            SelectedWishlist.Owner.addNotification(request);    //add message to wishlist owner
+            //Setup message
+            Message request = new Message(activeUser, SelectedWishlist.Owner, false, SelectedWishlist);
+            Runtime.AppController.SendJoinWishlistRequest(SelectedWishlist.WishlistId);
         }
         public bool CheckIfAlreadyRequested()
         {
             Message request = new Message(activeUser, SelectedWishlist.Owner, false, SelectedWishlist);
-            Message FoundMessage = SelectedWishlist.Owner.Notifications.FirstOrDefault(r => r.MessageContent == request.MessageContent);
+           
+            Message FoundMessage = Runtime.AppController.CheckIfMessageExists(request.MessageContent);
             if (FoundMessage != null) //FirstOrDefaut used to return null when not found
             {
                 if (FoundMessage.IsAccepted != null && FoundMessage.IsAccepted == true)
-                    return false;
-                return true; //message found so already requested
+                    return true;//message found so already requested
+                return false; 
             }
             else
             {
@@ -84,8 +86,11 @@ namespace Wishlist_Version2_G13.ViewModels
             }
 
         }
+        public bool CheckIfUserParticipates() {
 
+            return Runtime.AppController.CheckIfUserParticipates(SelectedWishlist.WishlistId);
 
+        }
         public void JoinWishlist()
         {
             if (!SelectedWishlist.Buyers.Contains(activeUser))

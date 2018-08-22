@@ -47,6 +47,7 @@ namespace Wishlist_Version2_G13.Models
         {
             //IsInvite = isInvite;
             RelatedWishlist = relatedWishlist;
+            WishlistId = relatedWishlist.WishlistId;
 
             GenerateMessageWishlist(isInvite, sender);
             DateCreated = System.DateTime.Now;
@@ -59,11 +60,11 @@ namespace Wishlist_Version2_G13.Models
 
             if (isInvite)
             {
-                MessageContent = String.Format("{0} {1}: Will u toevoegen aan zijn contacten. ", sender.Firstname, sender.Lastname);
+                MessageContent = String.Format("{0} {1}: Wants to add you to their contact list", sender.Firstname, sender.Lastname);
             }
             else
             {
-                MessageContent = String.Format("{0} {1}: Zou graag toegevoegd worden aan uw contacten.", sender.Firstname, sender.Lastname);
+                MessageContent = String.Format("{0} {1}: Has accepted your invitation", sender.Firstname, sender.Lastname);
             }
 
         }
@@ -72,11 +73,11 @@ namespace Wishlist_Version2_G13.Models
 
             if (isInvite)
             {
-                MessageContent = String.Format("{0} {1}: Heeft u uitgenodigd om deel te nemen aan wishlist {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
+                MessageContent = String.Format("{0} {1}: Has invited you to participate in {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
             }
             else
             {
-                MessageContent = String.Format("{0} {1} wenst deel te nemen aan wishlist {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
+                MessageContent = String.Format("{0} {1} Wishes to participate in {2}. ", sender.Firstname, sender.Lastname, RelatedWishlist.Title);
             }
 
         }
