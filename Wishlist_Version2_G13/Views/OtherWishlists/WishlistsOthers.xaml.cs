@@ -83,6 +83,8 @@ namespace Wishlist_Version2_G13.Views.OtherWishlists
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SetupLayout();
+
             User ActiveUser = e.Parameter as User;
             if (ActiveUser != null)//check if logged in
             {
@@ -107,5 +109,13 @@ namespace Wishlist_Version2_G13.Views.OtherWishlists
             }
         }
 
+        public void SetupLayout()
+        {
+            myWishlists.Width = Double.NaN;//Do to listbox that changes based on selection, width=auto does not really work, needs this to be set correctly
+            myWishlists.Height = Double.NaN;
+
+            Runtime.RefreshSize();
+            myWishlists.MaxHeight = Runtime.ScreenHeight - 100;
+        }
     }
 }

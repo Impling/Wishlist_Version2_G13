@@ -84,6 +84,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SetupLayout();
             User ActiveUser = e.Parameter as User;
             if (ActiveUser != null)//check if logged in
             {
@@ -98,8 +99,15 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             //this.Frame.Navigate(typeof(WishListPage));
         }
 
-        // need functions to change view filter by deadline or name
+        
+        public void SetupLayout()
+        {
+            myWishlists.Width = Double.NaN;//Do to listbox that changes based on selection, width=auto does not really work, needs this to be set correctly
+            myWishlists.Height = Double.NaN;
 
+            Runtime.RefreshSize();
+            myWishlists.MaxHeight = Runtime.ScreenHeight - 100;
+        }
 
     }
 }

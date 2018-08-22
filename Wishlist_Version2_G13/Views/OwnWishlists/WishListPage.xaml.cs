@@ -96,6 +96,8 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SetupLayout();
+
             Wishlist selectedWishlist = e.Parameter as Wishlist;
             Runtime.AppController.SetupSelectedWishlist(selectedWishlist);
             selectedWishlist = Runtime.AppController.SelectedWishlist;
@@ -122,6 +124,14 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             {
                 throw new ArgumentNullException("Always pass a wishlist to this page");
             }
+        }
+
+        public void SetupLayout() {
+            myWishlistItems.Width = Double.NaN;
+            myWishlistItems.Height = Double.NaN;
+
+            Runtime.RefreshSize();
+            myWishlistItems.MaxHeight = Runtime.ScreenHeight - 100;
         }
 
     }

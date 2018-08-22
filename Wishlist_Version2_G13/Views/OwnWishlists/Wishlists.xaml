@@ -51,7 +51,7 @@
         <ComboBox SelectedItem="{Binding SortingMethod, Mode=TwoWay}" ItemsSource="{Binding SortingMethods}"  HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" Grid.Row="1"/>
 
 
-            <ListBox Grid.Row="2" x:Name="myWishlists" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="200" MaxHeight="600" Width="auto" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"  ItemsSource="{Binding activeUser.MyWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5" >
+            <ListBox Grid.Row="2" x:Name="myWishlists" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="200" Width="auto"  MinWidth="120" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"  ItemsSource="{Binding activeUser.MyWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -75,8 +75,6 @@
             <Button Content="View" Click="ViewWishlistButton_Click" Grid.Row="0" Grid.Column="1" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="ButtonView" Visibility="Collapsed"/>
             <Button Content="Remove" Command="{Binding removeWishlist}" CommandParameter="Untitled"  Grid.Row="0" Grid.Column="2" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="ButtonRemove" Visibility="Collapsed"/>
         </Grid>            
-
-
     </Grid>
   
 </Page>
