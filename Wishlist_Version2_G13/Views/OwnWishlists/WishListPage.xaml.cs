@@ -45,6 +45,12 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             Frame.Navigate(typeof(AddBuyers), WishlistViewModel.selectedWishlist);
         }
 
+        
+        private void ButtonToText_Click(object sender, RoutedEventArgs e)
+        {
+            WishlistViewModel.SaveToTextAsync(myWishlistItems);
+        }
+
         //listview layout manipulation based on selected item
         private void SelectionChanged_WishlistItem(object sender, SelectionChangedEventArgs e)
         {

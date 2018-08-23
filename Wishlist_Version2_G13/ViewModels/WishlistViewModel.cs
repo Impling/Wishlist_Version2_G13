@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels.Commands;
@@ -70,6 +73,42 @@ namespace Wishlist_Version2_G13.ViewModels
         {
             return Runtime.AppController.CheckIfBought(seletedItem.ItemId);
         }
+
+        
+        public async Task SaveToTextAsync(ListBox wishlist) {
+
+            string filename = "Wishlist_" + selectedWishlist.Title + ".txt";
+            string listdata = "";
+
+            foreach (Item item in wishlist.Items) {
+                string formattext = "----------------------\n";
+                formattext += "Item: " + item.Name+"\n";
+                formattext += "Category: " + item.CategoryName + "\n";
+                if (item.BuyerId != null) 
+                    formattext += "ITEM BOUGHT\n";
+                formattext += "----------------------\n\n";
+
+                listdata += formattext + "\n";
+            }
+
+            //Create file
+            StorageFolder storageFolder = KnownFolders.SavedPictures;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            //Write file
+            await FileIO.WriteTextAsync(sampleFile, listdata);
+
+            /*//Interop not supported
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+            string path = storageFolder.Path + filename;
+            Microsoft.Office.Interop.Word.Document doc = app.Documents.Open(path);
+            object missing = System.Reflection.Missing.Value;
+            doc.Content.Text += listdata;
+            app.Visible = true;    //Optional
+            doc.Save();
+            */
+
+        }
+
 
 
 

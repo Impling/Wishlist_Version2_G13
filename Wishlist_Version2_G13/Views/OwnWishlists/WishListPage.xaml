@@ -105,9 +105,11 @@
                 <Button x:Name="ButtonAddBuyer" Grid.Row="0" Grid.Column="1" Margin="10" Width="110" HorizontalAlignment="Center" Content="Add Buyer(s)" Click="ButtonAddBuyers_Click"  Visibility="Visible"/>
                 <Button x:Name="ButtonRemove" Command="{Binding removeItemCommand}" CommandParameter="Untitled" Grid.Row="0" Grid.Column="2" Margin="10" Width="110" HorizontalAlignment="Center" Content="Remove" Visibility="Collapsed"/>
                 <Button x:Name="DetailItemBuyerButton" Content="{Binding seletedItem, Mode=TwoWay}" Command="{Binding buyItemCommand}" Grid.Row="1" Grid.ColumnSpan="3" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Visibility="Collapsed"></Button>
+                <Button x:Name="ButtonPrint" Click="ButtonToText_Click" Grid.Row="1" Grid.Column="1" Margin="10" Width="110" HorizontalAlignment="Center" Content="To Text" Visibility="Visible"/>
             </Grid>
         </StackPanel>
         
     </StackPanel>
-    
+
 </Page>
+
