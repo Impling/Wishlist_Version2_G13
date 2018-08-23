@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels;
 
@@ -21,11 +22,13 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 {
     public sealed partial class AddBuyers : Page
     {
+        RuntimeInfo Runtime { get; }
         ContactViewModel ContactViewModel { get; set; }
 
         public AddBuyers()
         {
             this.InitializeComponent();
+            Runtime = RuntimeInfo.Instance;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -82,6 +85,15 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             //Call Contactview model function Addbuyer -> check if users already participating
 
             Frame.Navigate(typeof(WishListPage), ContactViewModel.relatedWishlist);
+        }
+
+        public void SetupLayout()
+        {
+            myContacts.Width = Double.NaN;//Do to listbox that changes based on selection, width=auto does not really work, needs this to be set correctly
+            myContacts.Height = Double.NaN;
+
+            Runtime.RefreshSize();
+            myContacts.MaxHeight = Runtime.ScreenHeight - 100;
         }
 
     }

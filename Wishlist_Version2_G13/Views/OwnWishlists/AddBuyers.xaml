@@ -13,7 +13,7 @@
         <DataTemplate x:Key="ItemView" x:DataType="src:User">
             <StackPanel Width="Auto" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="User: " HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="User: " FontWeight="Bold" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                 </StackPanel>
@@ -26,10 +26,11 @@
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Participant selection" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
 
         <StackPanel>
-            <ListBox x:Name="myContacts" ItemTemplate="{StaticResource ItemView}" SelectionMode="Multiple" SelectionChanged="SelectionChanged_buyer" SelectedItem="{Binding selectedContact, Mode=TwoWay}" ItemsSource="{Binding PotentialBuyers, Mode=TwoWay}"  Margin="5,5,5,5" >
+            <ListBox x:Name="myContacts" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" Width="auto" MinWidth="120" SelectionMode="Multiple" SelectionChanged="SelectionChanged_buyer" SelectedItem="{Binding selectedContact, Mode=TwoWay}" ItemsSource="{Binding PotentialBuyers, Mode=TwoWay}"  Margin="5,5,5,5" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Background" Value="CadetBlue" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

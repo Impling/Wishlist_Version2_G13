@@ -15,11 +15,6 @@
                 <StackPanel Width="Auto" HorizontalAlignment="Stretch">
                     <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Name, Mode=OneWay}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
-                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                </StackPanel>
             </StackPanel>
 
         </DataTemplate>
@@ -44,11 +39,6 @@
                             <Image Margin="0, 15, 12, 0" Width="100" Height="120" Source="{x:Bind Path=Image, Mode=OneWay}" />
                         </HyperlinkButton>
                     </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
-                        <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                        <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                    </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                         <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Category: "/>
                         <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="{x:Bind Path=Category, Mode=OneWay}" />
@@ -69,18 +59,22 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
-
-
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Favorite gift" FontWeight="Bold"  Style="{StaticResource TitleTextBlockStyle}" Grid.Row="0" Margin="5,5,5,0"/>
+        <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Favorite gifts" FontWeight="Bold"  Style="{StaticResource TitleTextBlockStyle}" Grid.Row="0" Margin="5,5,5,0"/>
 
-        <ListBox Grid.Row="1" x:Name="FavoriteGifts" ItemTemplate="{StaticResource ItemView}" SelectionChanged="SelectionChanged_Item" ItemsSource="{Binding selectedUser.Favorites.Items}" Margin="5,5,5,5" >
+        <ListBox Grid.Row="1" x:Name="FavoriteGifts" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Auto" Height="auto" MinHeight="0" Width="auto"  MinWidth="120" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionChanged="SelectionChanged_Item" ItemsSource="{Binding selectedWishlist.Items, Mode=TwoWay}" SelectedItem="{Binding seletedItem, Mode=TwoWay}" Margin="5,5,5,5" >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Background" Value="CadetBlue" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+        <StackPanel Orientation="Horizontal"  Grid.Row="2" HorizontalAlignment="Center">
+            <Button Content="Add Item" Click="AddFavorite_Click"   Margin="5" x:Name="ButtonAdd" Visibility="Visible"/>
+            <Button Content="Remove item" Command="{Binding removeItemCommand}" CommandParameter="Untitled"  Margin="5" x:Name="ButtonRemove" Visibility="Collapsed"/>            
+        </StackPanel>
 
     </Grid>
 </Page>

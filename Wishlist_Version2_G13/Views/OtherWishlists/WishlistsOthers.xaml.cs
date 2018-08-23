@@ -29,8 +29,6 @@ namespace Wishlist_Version2_G13.Views.OtherWishlists
             this.InitializeComponent();
             Runtime = RuntimeInfo.Instance;
 
-            myWishlists.Height = Runtime.ScreenHeight - 150;
-            myWishlists.Width = Runtime.ScreenWidth;
         }
 
 

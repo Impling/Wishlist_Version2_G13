@@ -44,9 +44,9 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 
             WishlistViewModel.AddItem(i);
             //end testcode
-            if (WishlistViewModel.selectedWishlist.Title == "Mijn favoriete cadeau's")
+            if (WishlistViewModel.selectedWishlist.Title == "My favorite gifts")
             {
-                Frame.Navigate(typeof(FavoriteWishes), WishlistViewModel);
+                Frame.Navigate(typeof(FavoriteWishes), WishlistViewModel.selectedUser);
             }
             else
             {
@@ -56,7 +56,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
         }
         public void ButtonReturn_Click(object sender, RoutedEventArgs e)
         {
-            if (WishlistViewModel.selectedWishlist.Title == "Mijn favoriete cadeau's")
+            if (WishlistViewModel.selectedWishlist.Title == "My favorite gifts")
             {
                 Frame.Navigate(typeof(FavoriteWishes), WishlistViewModel);
             }
@@ -71,7 +71,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
 
             WishlistViewModel = e.Parameter as WishlistViewModel;
             //Check if passed
-            WishlistName.Text = "Voor Wishlist: " + WishlistViewModel.selectedWishlist.Title;
+            WishlistName.Text = "For Wishlist: " + WishlistViewModel.selectedWishlist.Title;
             CategoryBox.ItemsSource = Enum.GetValues(typeof(Category));
             CategoryBox.SelectedIndex = 0; //can only be done here as contents of list are only initialized in the line above
 

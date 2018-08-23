@@ -126,7 +126,7 @@ namespace Wishlist_Version2_G13.Data
 
             wi.HasOne(t => t.Item)
                 .WithOne(i => i.Wishlist)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         }

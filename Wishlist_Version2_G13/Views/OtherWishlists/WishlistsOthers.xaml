@@ -48,7 +48,7 @@
         <ComboBox SelectedItem="{Binding SortingMethod, Mode=TwoWay}" ItemsSource="{Binding SortingMethods}"  HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" Grid.Row="1"/>
 
 
-        <ListBox x:Name="myWishlists" Grid.Row="2" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" Width="auto" MinWidth="120" ItemsSource="{Binding activeUser.OthersWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5">
+        <ListBox x:Name="myWishlists" Grid.Row="2" ItemTemplate="{StaticResource ItemView}"  ScrollViewer.VerticalScrollBarVisibility="Auto" Height="auto" Width="auto" MinWidth="120" ItemsSource="{Binding activeUser.OthersWishlists}" SelectionChanged="SelectionChanged_Wishlist" Margin="5,5,5,5">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

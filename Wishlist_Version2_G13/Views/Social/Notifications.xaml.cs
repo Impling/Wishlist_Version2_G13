@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Wishlist_Version2_G13.Controllers;
 using Wishlist_Version2_G13.Models;
 using Wishlist_Version2_G13.ViewModels;
 
@@ -21,11 +22,13 @@ namespace Wishlist_Version2_G13.Views.Social
 {
     public sealed partial class Notifications : Page
     {
+        RuntimeInfo Runtime { get; }
         ContactViewModel ContactViewModel { get; set; }
 
         public Notifications()
         {
             this.InitializeComponent();
+            Runtime = RuntimeInfo.Instance;
 
         }
 
@@ -71,6 +74,14 @@ namespace Wishlist_Version2_G13.Views.Social
             
         }
 
+        public void SetupLayout()
+        {
+            myMessages.Width = Double.NaN;//Do to listbox that changes based on selection, width=auto does not really work, needs this to be set correctly
+            myMessages.Height = Double.NaN;
+
+            Runtime.RefreshSize();
+            myMessages.MaxHeight = Runtime.ScreenHeight - 100;
+        }
 
     }
 }

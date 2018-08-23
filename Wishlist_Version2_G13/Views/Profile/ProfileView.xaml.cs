@@ -35,32 +35,20 @@ namespace Wishlist_Version2_G13.Views.Profile
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //Extra read from db in case of contact user
             User selectedUser = e.Parameter as User;
             Wishlist f = Runtime.AppController.GetFavoritesByUserId(selectedUser.UserId);
-            Runtime.AppController.SetupSelectedWishlist(f);
-            f = Runtime.AppController.SelectedWishlist;
+            f = Runtime.AppController.SetupSelectedWishlist(f);
             f.Owner = selectedUser;
 
             WishlistViewModel = new WishlistViewModel(f);
             WishlistViewModel.selectedUser = selectedUser;
 
-            FavoriteFrame.Navigate(typeof(FavoriteWishes), WishlistViewModel);
-            if (WishlistViewModel.selectedUser == Runtime.LoggedInUser)
-            {
-                WishlistViewModel.activeUser = Runtime.LoggedInUser;
-                ButtonAdd.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ButtonAdd.Visibility = Visibility.Collapsed;
-            }
+            FavoriteFrame.Navigate(typeof(FavoriteWishes), selectedUser);
+
             DataContext = WishlistViewModel;
         }
 
-        public void AddFavorite_Click(object sender, RoutedEventArgs e)
-        {
-            FavoriteFrame.Navigate(typeof(NewItem), WishlistViewModel);
-        }
+
+
     }
 }

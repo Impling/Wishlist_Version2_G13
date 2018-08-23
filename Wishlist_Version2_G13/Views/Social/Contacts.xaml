@@ -50,7 +50,7 @@
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="My Friends" FontWeight="Bold" FontSize="24" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="10,5,5,5"/>
 
 
-        <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact"   ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="0"  Width="auto" MinWidth="120"   >
+        <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact"   ScrollViewer.VerticalScrollBarVisibility="Auto" Height="auto" MinHeight="0"  Width="auto" MinWidth="120"   >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

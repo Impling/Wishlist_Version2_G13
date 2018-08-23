@@ -41,7 +41,7 @@
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="Notifications" FontWeight="Bold" FontSize="24" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="10,5,5,5"/>
 
         <StackPanel>
-            <ListBox x:Name="myMessages" ItemTemplate="{StaticResource ItemView}" SelectionChanged="SelectionChanged_Message" SelectionMode="Single" ItemsSource="{Binding activeUser.Notifications, Mode=TwoWay}" SelectedItem="{Binding selectedMessage, Mode=TwoWay}" Margin="5,5,5,5" >
+            <ListBox x:Name="myMessages" ItemTemplate="{StaticResource ItemView}" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="auto" Width="auto" MinWidth="120" SelectionChanged="SelectionChanged_Message" SelectionMode="Single" ItemsSource="{Binding activeUser.Notifications, Mode=TwoWay}" SelectedItem="{Binding selectedMessage, Mode=TwoWay}" Margin="5,5,5,5" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

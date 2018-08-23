@@ -99,8 +99,7 @@ namespace Wishlist_Version2_G13.Views.OwnWishlists
             SetupLayout();
 
             Wishlist selectedWishlist = e.Parameter as Wishlist;
-            Runtime.AppController.SetupSelectedWishlist(selectedWishlist);
-            selectedWishlist = Runtime.AppController.SelectedWishlist;
+            selectedWishlist = Runtime.AppController.SetupSelectedWishlist(selectedWishlist);
 
             //Dont show addbuyer button when wishlist is open
             if (selectedWishlist.IsOpen)

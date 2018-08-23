@@ -103,7 +103,7 @@ namespace Wishlist_Version2_G13.Controllers
             }
 
         }
-        public void SetupSelectedWishlist(Wishlist w) {
+        public Wishlist SetupSelectedWishlist(Wishlist w) {
 
             SelectedWishlist = w;
 
@@ -134,13 +134,14 @@ namespace Wishlist_Version2_G13.Controllers
                         SelectedWishlist.Buyers.Add(u);
                     }
 
-
+                    return SelectedWishlist;
 
                 }
             }
             catch (Exception eContext)
             {
                 Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
             }
 
 
@@ -374,12 +375,21 @@ namespace Wishlist_Version2_G13.Controllers
         }
         public Wishlist GetFavoritesByUserId(int userId)
         {
+
+            Wishlist favorite;
             try
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
                     context.Database.EnsureCreated();
-                    return context.Wishlists.FirstOrDefault(w => w.WishlistId == context.OwnedWishlists.FirstOrDefault(ow => ow.IsFavorite && ow.OwnerId == userId).WishlistId);
+                    favorite = context.Wishlists.FirstOrDefault(w => w.WishlistId == context.OwnedWishlists.FirstOrDefault(ow => ow.IsFavorite && ow.OwnerId == userId).WishlistId);
+
+                    favorite.Items = new ObservableCollection<Item>();
+
+                    foreach (Item i in GetItemsByWishlistId(favorite.WishlistId)) {
+                        favorite.Items.Add(i);
+                    }
+                    return favorite;
                 }
             }
             catch (Exception eContext)
@@ -913,7 +923,7 @@ namespace Wishlist_Version2_G13.Controllers
                 {
                     WishlistItem wi = context.WishlistItems.FirstOrDefault(wis => wis.ItemId == i.ItemId && wis.WishlistId == SelectedWishlist.WishlistId);
                     context.Remove(wi);
-
+                    context.SaveChanges();
                     context.Remove(i);
                     context.SaveChanges();
                 }

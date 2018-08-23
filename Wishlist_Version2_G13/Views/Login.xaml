@@ -17,8 +17,8 @@
             <PasswordBox Name="txtPassword"/>
             <TextBlock />
             <TextBlock Name="txtError" Text="" Visibility="Collapsed" Margin="3"/>
-            <Button x:Name="btnLogin" Content="Login"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Click="LoginButton_Click" Margin="3"/>
-            <Button x:Name="btnRegister" Content="register"  HorizontalAlignment="Right"  VerticalAlignment="Stretch" Click="btnRegister_Click" Margin="3"/>
+            <Button x:Name="btnLogin" Content="Login"  HorizontalAlignment="Stretch"  FontWeight="Bold" VerticalAlignment="Stretch" Click="LoginButton_Click" Margin="3"/>
+            <Button x:Name="btnRegister" Content="register"  HorizontalAlignment="Right"  FontWeight="Bold" VerticalAlignment="Stretch" Click="btnRegister_Click" Margin="3"/>
         </StackPanel>        
     </Viewbox>
 

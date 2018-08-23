@@ -49,7 +49,9 @@ namespace Wishlist_Version2_G13.ViewModels
         public void RemoveItem()
         {
             //selectedWishlist.Items.Remove(seletedItem);
+            
             Runtime.AppController.RemoveItem(seletedItem);
+            selectedWishlist.Items.Remove(seletedItem);
         }
 
         public void BuyItem()
