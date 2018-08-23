@@ -258,14 +258,20 @@ namespace Wishlist_Version2_G13.Controllers
             DeleteItem(i);
             UpdateWishlist(SelectedWishlist);
         }
-        public Message CheckIfMessageExists(string content) {
+        public Message CheckIfMessageExists(Message msg) {
             try
             {
                 using (WishlistDbContext context = new WishlistDbContext())
                 {
-                    //Message FoundMessage = SelectedWishlist.Owner.Notifications.FirstOrDefault(r => r.MessageContent == request.MessageContent);
-                    return context.Messages.FirstOrDefault(m => m.MessageContent == content);
-                  
+                    Message message;
+
+                    //First get all messages of receiver
+                    foreach (int messageId in context.Notifications.Where(n => n.ReceiverId == msg.Receiver.ReceiverId).Select(n => n.MessageId).ToList()){
+                         message = GetMessageById(messageId);
+                        if (message.MessageContent.Equals(msg.MessageContent)) {
+                            return message;
+                        }
+                    }
                 }
             }
             catch (Exception eContext)
@@ -273,6 +279,7 @@ namespace Wishlist_Version2_G13.Controllers
                 Debug.WriteLine("Exception: " + eContext.Message);
                 return null;
             }
+            return null;
         }
         public bool CheckIfUserParticipates(int wishlistId) {
             try
@@ -611,6 +618,20 @@ namespace Wishlist_Version2_G13.Controllers
             }
 
             return messages;
+        }
+        public Message GetMessageById (int messageId) {
+            try
+            {
+                using (WishlistDbContext context = new WishlistDbContext())
+                {
+                    return context.Messages.FirstOrDefault(m => m.MessageId == messageId);
+                }
+            }
+            catch (Exception eContext)
+            {
+                Debug.WriteLine("Exception: " + eContext.Message);
+                return null;
+            }
         }
         //Returns list of user that can be added to closed wishlist by owner
         public List<User> GetPotentialBuyers(int wishlistId) {

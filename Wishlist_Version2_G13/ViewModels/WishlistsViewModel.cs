@@ -73,7 +73,7 @@ namespace Wishlist_Version2_G13.ViewModels
         {
             Message request = new Message(activeUser, SelectedWishlist.Owner, false, SelectedWishlist);
            
-            Message FoundMessage = Runtime.AppController.CheckIfMessageExists(request.MessageContent);
+            Message FoundMessage = Runtime.AppController.CheckIfMessageExists(request);
             if (FoundMessage != null) //FirstOrDefaut used to return null when not found
             {
                 if (FoundMessage.IsAccepted != null && FoundMessage.IsAccepted == true)

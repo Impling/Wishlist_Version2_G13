@@ -13,7 +13,7 @@
         <DataTemplate x:Key="ItemView" x:DataType="src:Message">
             <StackPanel Width="Auto" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                    <TextBlock  Margin="10, 0, 0, 0" FontSize="18" Text="Message from: " HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="10, 0, 0, 0" FontSize="18" Text="Sender: " FontWeight="Bold" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Sender.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Sender.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                 </StackPanel>
@@ -24,11 +24,11 @@
         <DataTemplate x:Key="SelectedItemView" x:DataType="src:Message">
             <StackPanel Width="Auto" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                    <TextBlock  Margin="10, 0, 0, 0" FontSize="18" Text="Message from: " HorizontalAlignment="Left"/>
+                    <TextBlock  Margin="10, 0, 0, 0" FontSize="18" Text="Sender: " FontWeight="Bold" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Sender.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                     <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Sender.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                 </StackPanel>
-                <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Message: " HorizontalAlignment="Left"/>
+                <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Message: " FontWeight="Bold" HorizontalAlignment="Left"/>
                 <Border BorderBrush="Gray" BorderThickness="2" Grid.Row="0" Margin="0, 0, 10, 10">
                     <TextBlock TextWrapping="Wrap"  Margin="10, 10, 10, 10" FontSize="18" Text="{x:Bind Path=MessageContent, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 </Border>
@@ -45,6 +45,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Background" Value="CadetBlue" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

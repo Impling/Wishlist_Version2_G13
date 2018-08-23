@@ -56,7 +56,7 @@ namespace Wishlist_Version2_G13.ViewModels
                 Message m = new Message(activeUser, b, true, relatedWishlist);
                 b.addNotification(m);
                 //If no request pending send message
-                if (Runtime.AppController.CheckIfMessageExists(m.MessageContent) == null)
+                if (Runtime.AppController.CheckIfMessageExists(m) == null)
                 {
                     Runtime.AppController.SendJoinWishlistInvite(b.Email, relatedWishlist.WishlistId);
                 }

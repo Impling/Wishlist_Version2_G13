@@ -10,25 +10,33 @@
 
     <Page.Resources>
         <!--  brief information template  -->
-        <DataTemplate x:Key="ItemView" x:DataType="src:User">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
-                    <TextBlock Margin="5, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
-                </StackPanel>
-            </StackPanel>
+            <DataTemplate x:Key="ItemView" x:DataType="src:User">
+            <Border BorderBrush="BurlyWood"  BorderThickness="3" Background="CadetBlue">
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
+                        <TextBlock Margin="10, 5, 0, 5" FontSize="18" FontWeight="Bold" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
+                        <TextBlock Margin="5, 5, 0, 5" FontSize="18" FontWeight="Bold" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
+                    </StackPanel>
+                </StackPanel>                
+            </Border>
+
         </DataTemplate>
         <!--  details expand template  -->
         <DataTemplate x:Key="SelectedItemView" x:DataType="src:User">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
-                    <TextBlock Margin="5, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Margin="12, 15, 12, 0" Text="{x:Bind Path=Email, Mode=OneWay}" />
-                </StackPanel>
-            </StackPanel>
+            <Border BorderBrush="Gold"  BorderThickness="3" Background="CadetBlue">
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
+                        <TextBlock Margin="10, 2, 0, 0" Text="Name: " FontSize="20" FontWeight="Bold" />
+                        <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Firstname, Mode=OneWay}" />
+                        <TextBlock Margin="10, 5, 0, 0" FontSize="18" Text="{x:Bind Path=Lastname, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Stretch">
+                        <TextBlock Margin="10, 0, 5, 5" Text="Email: " FontSize="20" FontWeight="Bold" />
+                        <TextBlock Margin="10, 3, 12, 5" Text="{x:Bind Path=Email, Mode=OneWay}" FontSize="18" />
+                    </StackPanel>
+                </StackPanel>                
+            </Border>
+
         </DataTemplate>
     </Page.Resources>
 
@@ -36,16 +44,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="Title" TextWrapping="Wrap" Text="My Friends" FontWeight="Bold" FontSize="24" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="10,5,5,5"/>
 
 
-        <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  >
+        <ListBox Grid.Row="1" Margin="10"  x:Name="MyFriends" ItemTemplate="{StaticResource ItemView}" ItemsSource="{Binding activeUser.Contacts}" SelectionChanged="SelectionChanged_Contact"   ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="0"  Width="auto" MinWidth="120"   >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Background" Value="CadetBlue" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

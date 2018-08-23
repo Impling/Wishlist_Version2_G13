@@ -11,56 +11,62 @@
     <Page.Resources>
         <!--  brief information template  -->
         <DataTemplate x:Key="ItemView" x:DataType="src:Item">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                    <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Name, Mode=OneWay}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
-                    <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
-                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                    <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
-                </StackPanel>
-            </StackPanel>
-
-        </DataTemplate>
-        <!--  details expand template  -->
-        <DataTemplate x:Key="SelectedItemView" x:DataType="src:Item">
-            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock  Margin="0, 5,5, 5" FontSize="22" Text="{x:Bind Path=Name, Mode=OneWay}"  HorizontalAlignment="Left"/>
-
-                </StackPanel>
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Orientation="Horizontal">
-                        <HyperlinkButton NavigateUri="{x:Bind WebLink}">
-                            <Image Margin="0, 15, 12, 0" Width="100" Height="120" Source="{x:Bind Path=Image, Mode=OneWay}" />
-                        </HyperlinkButton>
+            <Border BorderBrush="Firebrick" BorderThickness="3" Background="CadetBlue">
+                 <StackPanel Width="Auto" HorizontalAlignment="Stretch" Margin="5">
+                    <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                        <TextBlock Margin="12, 15, 12, 0" FontSize="18" Text="{x:Bind Path=Name, Mode=OneWay}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
                         <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
                         <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                         <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Category: "/>
-                        <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="{x:Bind Path=Category, Mode=OneWay}" />
+                </StackPanel>
+            </Border>
+
+
+        </DataTemplate>
+        <!--  details expand template  -->
+        <DataTemplate x:Key="SelectedItemView" x:DataType="src:Item">
+            <Border BorderBrush="GreenYellow" BorderThickness="3" Background="CadetBlue">
+                <StackPanel Width="Auto" HorizontalAlignment="Stretch" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Margin="0, 5,5, 5" FontSize="22" Text="{x:Bind Path=Name, Mode=OneWay}"  HorizontalAlignment="Left"/>
+
                     </StackPanel>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Orientation="Horizontal">
+                            <HyperlinkButton NavigateUri="{x:Bind WebLink}">
+                                <Image Margin="0, 15, 12, 0" Width="100" Height="120" Source="{x:Bind Path=Image, Mode=OneWay}" />
+                            </HyperlinkButton>
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="Visible" VerticalAlignment="Bottom">
+                            <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Bought by: " HorizontalAlignment="Left"/>
+                            <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Firstname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                            <TextBlock  Margin="5, 0, 0, 0" FontSize="18" Text="{x:Bind Path=Buyer.Lastname, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                            <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="Category: "/>
+                            <TextBlock  Margin="10, 0, 0, 0"  FontSize="18" Text="{x:Bind Path=Category, Mode=OneWay}" />
+                        </StackPanel>
 
-                </Grid>
+                    </Grid>
 
-                <TextBlock Margin="10, 10, 10, 2" FontSize="18" Text="Description: "/>
-                <Border BorderBrush="Gray" BorderThickness="2" Grid.Row="0" Margin="0, 0, 10, 10">
-                    <TextBlock TextWrapping="Wrap"  Margin="10, 10, 10, 10" FontSize="18" Text="{x:Bind Path=Description, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                </Border>
-            </StackPanel>
+                    <TextBlock Margin="10, 10, 10, 2" FontSize="18" Text="Description: "/>
+                    <Border BorderBrush="Gray" BorderThickness="2" Grid.Row="0" Margin="0, 0, 10, 10">
+                        <TextBlock TextWrapping="Wrap"  Margin="10, 10, 10, 10" FontSize="18" Text="{x:Bind Path=Description, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
         </DataTemplate>
     </Page.Resources>
 
@@ -77,10 +83,11 @@
             <TextBlock x:Name="Title" TextWrapping="Wrap" Text="{Binding selectedWishlist.Title, Mode=TwoWay}" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Margin="5,5,5,5"/>
         </Grid>
         <StackPanel>
-            <ListBox x:Name="myWishlistItems" ItemTemplate="{StaticResource ItemView}" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="200"  SelectionChanged="SelectionChanged_WishlistItem" ItemsSource="{Binding selectedWishlist.Items, Mode=TwoWay}" SelectedItem="{Binding seletedItem, Mode=TwoWay}" Margin="5,5,5,5" >
+            <ListBox x:Name="myWishlistItems" ItemTemplate="{StaticResource ItemView}" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto" MinHeight="0"  SelectionChanged="SelectionChanged_WishlistItem" ItemsSource="{Binding selectedWishlist.Items, Mode=TwoWay}" SelectedItem="{Binding seletedItem, Mode=TwoWay}" Margin="5,5,5,5" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Background" Value="CadetBlue" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

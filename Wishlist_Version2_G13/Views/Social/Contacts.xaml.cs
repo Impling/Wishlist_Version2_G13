@@ -24,12 +24,14 @@ namespace Wishlist_Version2_G13.Views.Social
     public sealed partial class Contacts : Page
     {
 
+        RuntimeInfo Runtime;
         ContactViewModel ContactViewModel;
 
 
         public Contacts()
         {
             this.InitializeComponent();
+            Runtime = RuntimeInfo.Instance;
 
         }
 
@@ -44,7 +46,7 @@ namespace Wishlist_Version2_G13.Views.Social
 
             var listBox = sender as ListBox;
             //get unselected item
-            var unselectedPerson = e.RemovedItems.FirstOrDefault() as Wishlist;
+            var unselectedPerson = e.RemovedItems.FirstOrDefault() as User;
             if (unselectedPerson != null)
             {
                 //get unselected item container
@@ -60,6 +62,8 @@ namespace Wishlist_Version2_G13.Views.Social
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SetupLayout();
+
             ContactViewModel = new ContactViewModel();
             DataContext = ContactViewModel;
         }
@@ -71,6 +75,15 @@ namespace Wishlist_Version2_G13.Views.Social
         public void ViewDetailButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(ProfileView), ContactViewModel.selectedContact);
+        }
+
+        public void SetupLayout()
+        {
+            MyFriends.Width = Double.NaN;//Do to listbox that changes based on selection, width=auto does not really work, needs this to be set correctly
+            MyFriends.Height = Double.NaN;
+
+            Runtime.RefreshSize();
+            MyFriends.MaxHeight = Runtime.ScreenHeight - 100;
         }
 
     }
